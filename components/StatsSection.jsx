@@ -92,7 +92,7 @@ export default function StatsSection() {
         />
         <GroupedBars
           title="02 / Output tokens per task"
-          note="Same prompts, different appetites — reasoning tokens included."
+          note="Same prompts, different output volumes. Reasoning tokens are included."
           valueOf={(t, m) => t.meta[m].tokens}
           fmt={(v) => (v >= 1000 ? (v / 1000).toFixed(1) + "k" : v)}
           max={maxTok}

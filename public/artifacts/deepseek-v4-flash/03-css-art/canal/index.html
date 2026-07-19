@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amsterdam at Night</title>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;background:#08071a}
+
+.scene {
+  position:relative;width:100vw;height:100vh;overflow:hidden;
+  background:linear-gradient(180deg,#04020e 0%,#0a0820 15%,#0f0d2e 30%,#14113a 45%,#100e2c 55%,#0b0a22 70%,#060513 100%);
+}
+
+/* ── Sky ── */
+.sky{position:absolute;inset:0 0 52% 0;overflow:hidden}
+
+.stars{position:absolute;inset:0;pointer-events:none}
+.stars::before,.stars::after{content:'';position:absolute;width:2px;height:2px;border-radius:50%;background:#fff;opacity:0.6;
+  box-shadow:
+    8vw 5vh 0 0 rgba(255,255,255,0.7),15vw 2vh 0 0 rgba(255,255,255,0.4),
+    22vw 8vh 0 0 rgba(255,255,255,0.5),30vw 3vh 0 0 rgba(255,255,255,0.3),
+    38vw 10vh 0 0 rgba(255,255,255,0.6),45vw 1vh 0 0 rgba(255,255,255,0.4),
+    53vw 7vh 0 0 rgba(255,255,255,0.5),60vw 4vh 0 0 rgba(255,255,255,0.3),
+    68vw 12vh 0 0 rgba(255,255,255,0.6),75vw 2vh 0 0 rgba(255,255,255,0.4),
+    82vw 9vh 0 0 rgba(255,255,255,0.5),90vw 5vh 0 0 rgba(255,255,255,0.3),
+    95vw 11vh 0 0 rgba(255,255,255,0.4),12vw 15vh 0 0 rgba(255,255,255,0.3),
+    40vw 18vh 0 0 rgba(255,255,255,0.2),70vw 16vh 0 0 rgba(255,255,255,0.3),
+    55vw 20vh 0 0 rgba(255,255,255,0.2),25vw 22vh 0 0 rgba(255,255,255,0.15);
+  animation:twinkle 4s ease-in-out infinite alternate}
+.stars::after{width:1px;height:1px;opacity:0.3;
+  box-shadow:
+    5vw 3vh 0 0 rgba(255,255,255,0.3),18vw 6vh 0 0 rgba(255,255,255,0.2),
+    35vw 2vh 0 0 rgba(255,255,255,0.25),50vw 9vh 0 0 rgba(255,255,255,0.2),
+    65vw 5vh 0 0 rgba(255,255,255,0.3),78vw 1vh 0 0 rgba(255,255,255,0.2),
+    88vw 8vh 0 0 rgba(255,255,255,0.25),42vw 14vh 0 0 rgba(255,255,255,0.15),
+    28vw 19vh 0 0 rgba(255,255,255,0.2),62vw 13vh 0 0 rgba(255,255,255,0.15);
+  animation:twinkle 6s ease-in-out infinite alternate 2s}
+
+@keyframes twinkle{0%,100%{opacity:0.3}50%{opacity:1}}
+
+.city-glow{position:absolute;bottom:0;left:0;right:0;height:18vh;
+  background:radial-gradient(ellipse 80% 100% at 50% 100%,rgba(255,160,60,0.12) 0%,rgba(255,120,40,0.06) 40%,transparent 70%);
+  pointer-events:none}
+
+/* ── Houses ── */
+.houses{position:absolute;bottom:48vh;left:0;right:0;height:50vh;pointer-events:none;z-index:2}
+.house{position:absolute;bottom:0}
+
+.house-wall{position:absolute;inset:0}
+.house-wall::after{content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.15) 3px,rgba(0,0,0,0.15) 4px);
+  pointer-events:none}
+
+.win{position:relative}
+.win::after{content:'';position:absolute;left:0;right:0;height:1px;background:rgba(0,0,0,0.2);top:50%}
+
+/* House 1: Pointed gable */
+.house-1{left:5vw;width:10vw;height:38vh}
+.house-1 .house-wall{bottom:0;left:0;right:0;top:18%;background:linear-gradient(90deg,#1f1c30,#252138,#1f1c30)}
+.house-1 .house-gable{position:absolute;top:0;left:0;right:0;height:18%;
+  background:linear-gradient(135deg,#1a1728,#221e34 50%,#1a1728);
+  clip-path:polygon(50% 0%,5% 22%,5% 100%,95% 100%,95% 22%)}
+.house-1 .house-gable::after{content:'';position:absolute;top:0;left:20%;right:20%;height:100%;
+  background:repeating-linear-gradient(90deg,transparent,transparent 1vw,rgba(255,255,255,0.03) 1vw,rgba(255,255,255,0.03) 1.2vw)}
+.house-1 .windows{position:absolute;top:22%;left:12%;right:12%;bottom:3%}
+.house-1 .windows .floor{position:absolute;left:0;right:0;height:17%;display:flex;justify-content:space-between}
+.house-1 .windows .floor:nth-child(1){top:4%}
+.house-1 .windows .floor:nth-child(2){top:23%}
+.house-1 .windows .floor:nth-child(3){top:42%}
+.house-1 .windows .floor:nth-child(4){top:61%}
+.house-1 .windows .floor:nth-child(5){top:80%}
+.house-1 .win{width:30%;height:100%;border-radius:1px}
+.house-1 .win:nth-child(1){background:#ffd269;box-shadow:0 0 8px rgba(255,180,60,0.6),0 0 25px rgba(255,150,40,0.15);animation:glow 3.5s ease-in-out infinite alternate}
+.house-1 .win:nth-child(2){background:#1a1628;box-shadow:inset 0 0 4px rgba(0,0,0,0.5)}
+
+/* House 2: Step gable */
+.house-2{left:16vw;width:14vw;height:42vh}
+.house-2 .house-wall{bottom:0;left:0;right:0;top:16%;background:linear-gradient(90deg,#231f35,#2a253e,#231f35)}
+.house-2 .house-gable{position:absolute;top:0;left:0;right:0;height:16%;
+  background:linear-gradient(135deg,#1d1a2c,#252138 50%,#1d1a2c);
+  clip-path:polygon(10% 0%,10% 18%,22% 18%,22% 36%,38% 36%,38% 54%,62% 54%,62% 36%,78% 36%,78% 18%,90% 18%,90% 0%,100% 0%,100% 100%,0% 100%,0% 0%)}
+.house-2 .windows{position:absolute;top:19%;left:8%;right:8%;bottom:3%}
+.house-2 .windows .floor{position:absolute;left:0;right:0;height:16%;display:flex;justify-content:space-between;padding:0 4%}
+.house-2 .windows .floor:nth-child(1){top:3%}
+.house-2 .windows .floor:nth-child(2){top:22%}
+.house-2 .windows .floor:nth-child(3){top:41%}
+.house-2 .windows .floor:nth-child(4){top:60%}
+.house-2 .windows .floor:nth-child(5){top:79%}
+.house-2 .win{width:22%;height:100%;border-radius:1px}
+.house-2 .win:nth-child(1){background:#ffc44a;box-shadow:0 0 10px rgba(255,180,60,0.5),0 0 30px rgba(255,150,40,0.12);animation:glow 4.2s ease-in-out infinite alternate 0.5s}
+.house-2 .win:nth-child(2){background:#1a1628;box-shadow:inset 0 0 4px rgba(0,0,0,0.5)}
+.house-2 .win:nth-child(3){background:#ffc44a;box-shadow:0 0 10px rgba(255,180,60,0.5),0 0 30px rgba(255,150,40,0.12);animation:glow 3.8s ease-in-out infinite alternate 1s}
+
+/* House 3: Bell gable, tallest */
+.house-3{left:31vw;width:11vw;height:46vh}
+.house-3 .house-wall{bottom:0;left:0;right:0;top:22%;background:linear-gradient(90deg,#1a1728,#211d32,#1a1728)}
+.house-3 .house-gable{position:absolute;top:0;left:0;right:0;height:22%;
+  background:linear-gradient(135deg,#161324,#1d1a2c 50%,#161324);
+  border-radius:5vw 5vw 0 0 / 4vh 4vh 0 0}
+.house-3 .house-gable::after{content:'';position:absolute;bottom:0;left:8%;right:8%;height:60%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.03) 40%,rgba(255,255,255,0.03) 60%,transparent);
+  clip-path:polygon(0% 100%,20% 0%,80% 0%,100% 100%)}
+.house-3 .windows{position:absolute;top:25%;left:10%;right:10%;bottom:3%}
+.house-3 .windows .floor{position:absolute;left:0;right:0;height:15%;display:flex;justify-content:space-between}
+.house-3 .windows .floor:nth-child(1){top:2%}
+.house-3 .windows .floor:nth-child(2){top:19%}
+.house-3 .windows .floor:nth-child(3){top:36%}
+.house-3 .windows .floor:nth-child(4){top:53%}
+.house-3 .windows .floor:nth-child(5){top:70%}
+.house-3 .windows .floor:nth-child(6){top:87%}
+.house-3 .win{width:35%;height:100%;border-radius:1px}
+.house-3 .win:nth-child(1){background:#ffd269;box-shadow:0 0 6px rgba(255,180,60,0.5),0 0 20px rgba(255,150,40,0.12);animation:glow 3s ease-in-out infinite alternate 1.5s}
+.house-3 .win:nth-child(2){background:#e8b84a;box-shadow:0 0 6px rgba(255,180,60,0.4),0 0 18px rgba(255,150,40,0.1);animation:glow 3.7s ease-in-out infinite alternate 0.3s}
+
+/* House 4: Neck gable */
+.house-4{left:43vw;width:13vw;height:39vh}
+.house-4 .house-wall{bottom:0;left:0;right:0;top:14%;background:linear-gradient(90deg,#221e33,#2a253e,#221e33)}
+.house-4 .house-gable{position:absolute;top:0;left:0;right:0;height:14%;
+  background:linear-gradient(135deg,#1d1a2c,#252138 50%,#1d1a2c);
+  clip-path:polygon(5% 0%,5% 100%,20% 100%,20% 55%,80% 55%,80% 100%,95% 100%,95% 0%,100% 0%,100% 100%,0% 100%,0% 0%)}
+.house-4 .windows{position:absolute;top:17%;left:10%;right:10%;bottom:3%}
+.house-4 .windows .floor{position:absolute;left:0;right:0;height:18%;display:flex;justify-content:space-between}
+.house-4 .windows .floor:nth-child(1){top:3%}
+.house-4 .windows .floor:nth-child(2){top:23%}
+.house-4 .windows .floor:nth-child(3){top:43%}
+.house-4 .windows .floor:nth-child(4){top:63%}
+.house-4 .win{width:35%;height:100%;border-radius:1px}
+.house-4 .win:nth-child(1){background:#1a1628;box-shadow:inset 0 0 4px rgba(0,0,0,0.5)}
+.house-4 .win:nth-child(2){background:#ffd269;box-shadow:0 0 8px rgba(255,180,60,0.5),0 0 25px rgba(255,150,40,0.12);animation:glow 4.5s ease-in-out infinite alternate 2s}
+
+/* House 5: Small narrow */
+.house-5{left:57vw;width:9vw;height:32vh}
+.house-5 .house-wall{bottom:0;left:0;right:0;top:20%;background:linear-gradient(90deg,#181526,#1f1b30,#181526)}
+.house-5 .house-gable{position:absolute;top:0;left:0;right:0;height:20%;
+  background:linear-gradient(135deg,#131123,#1a1728 50%,#131123);
+  clip-path:polygon(50% 0%,5% 20%,5% 100%,95% 100%,95% 20%)}
+.house-5 .windows{position:absolute;top:23%;left:15%;right:15%;bottom:5%}
+.house-5 .windows .floor{position:absolute;left:0;right:0;height:20%;display:flex;justify-content:center}
+.house-5 .windows .floor:nth-child(1){top:5%}
+.house-5 .windows .floor:nth-child(2){top:30%}
+.house-5 .windows .floor:nth-child(3){top:55%}
+.house-5 .windows .floor:nth-child(4){top:80%}
+.house-5 .win{width:55%;height:100%;border-radius:1px}
+.house-5 .win{background:#ffc44a;box-shadow:0 0 10px rgba(255,180,60,0.5),0 0 30px rgba(255,150,40,0.12);animation:glow 3.2s ease-in-out infinite alternate 0.8s}
+
+/* House 6: Tall right */
+.house-6{left:67vw;width:12vw;height:44vh}
+.house-6 .house-wall{bottom:0;left:0;right:0;top:18%;background:linear-gradient(90deg,#1c192e,#231f38,#1c192e)}
+.house-6 .house-gable{position:absolute;top:0;left:0;right:0;height:18%;
+  background:linear-gradient(135deg,#161324,#1e1b2e 50%,#161324);
+  clip-path:polygon(10% 0%,10% 30%,25% 30%,25% 55%,75% 55%,75% 30%,90% 30%,90% 0%,100% 0%,100% 100%,0% 100%,0% 0%)}
+.house-6 .windows{position:absolute;top:21%;left:10%;right:10%;bottom:3%}
+.house-6 .windows .floor{position:absolute;left:0;right:0;height:16%;display:flex;justify-content:space-between}
+.house-6 .windows .floor:nth-child(1){top:3%}
+.house-6 .windows .floor:nth-child(2){top:22%}
+.house-6 .windows .floor:nth-child(3){top:41%}
+.house-6 .windows .floor:nth-child(4){top:60%}
+.house-6 .windows .floor:nth-child(5){top:79%}
+.house-6 .win{width:28%;height:100%;border-radius:1px}
+.house-6 .win:nth-child(1){background:#1a1628;box-shadow:inset 0 0 4px rgba(0,0,0,0.5)}
+.house-6 .win:nth-child(2){background:#ffd269;box-shadow:0 0 8px rgba(255,180,60,0.5),0 0 25px rgba(255,150,40,0.12);animation:glow 4s ease-in-out infinite alternate 1.2s}
+
+@keyframes glow{0%,100%{opacity:0.7;filter:brightness(0.8)}50%{opacity:1;filter:brightness(1.1)}}
+
+/* ── Distant background houses ── */
+.distant-houses{position:absolute;bottom:48vh;left:0;right:0;height:18vh;z-index:1;pointer-events:none}
+.distant-houses::before{content:'';position:absolute;bottom:0;left:0;right:0;height:100%;
+  background:linear-gradient(90deg,
+    transparent 2%,#121024 2%,#121024 6%,transparent 6.5%,
+    transparent 8%,#141126 8%,#141126 12.5%,transparent 13%,
+    transparent 15%,#100e22 15%,#100e22 19%,transparent 19.5%,
+    transparent 21%,#131025 21%,#131025 26%,transparent 26.5%,
+    transparent 28%,#110f23 28%,#110f23 32%,transparent 32.5%,
+    transparent 34%,#0f0d20 34%,#0f0d20 38%,transparent 38.5%,
+    transparent 40%,#141126 40%,#141126 45%,transparent 45.5%,
+    transparent 47%,#121024 47%,#121024 51%,transparent 51.5%,
+    transparent 53%,#131025 53%,#131025 58%,transparent 58.5%,
+    transparent 60%,#100e22 60%,#100e22 64%,transparent 64.5%,
+    transparent 66%,#0f0d20 66%,#0f0d20 70%,transparent 70.5%,
+    transparent 72%,#141126 72%,#141126 77%,transparent 77.5%,
+    transparent 79%,#121024 79%,#121024 83%,transparent 83.5%,
+    transparent 85%,#131025 85%,#131025 90%,transparent 90.5%,
+    transparent 92%,#110f23 92%,#110f23 96%,transparent 96.5%);
+  opacity:0.7}
+
+/* ── Canal / Water ── */
+.water{position:absolute;top:48vh;left:0;right:0;bottom:0;
+  background:linear-gradient(180deg,#0a081e 0%,#0c0a24 15%,#0e0c28 40%,#0a081e 70%,#060416 100%);z-index:1}
+
+.water::before{content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(90deg,transparent,transparent 2vw,rgba(100,120,180,0.04) 2vw,rgba(100,120,180,0.04) 2.2vw,transparent 2.2vw,transparent 4vw);
+  background-size:4vw 100%;animation:shimmer 12s linear infinite;opacity:0.5}
+
+.water::after{content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(0deg,transparent,transparent 3vh,rgba(80,100,160,0.03) 3vh,rgba(80,100,160,0.03) 3.1vh,transparent 3.1vh,transparent 5vh);
+  opacity:0.3}
+
+@keyframes shimmer{0%{transform:translateX(0)}100%{transform:translateX(4vw)}}
+
+/* ── Reflections ── */
+.reflections{position:absolute;top:48vh;left:0;right:0;bottom:0;z-index:2;pointer-events:none;
+  -webkit-mask-image:linear-gradient(180deg,rgba(0,0,0,0.6) 0%,rgba(0,0,0,0.4) 30%,rgba(0,0,0,0.08) 70%,transparent 100%);
+  mask-image:linear-gradient(180deg,rgba(0,0,0,0.6) 0%,rgba(0,0,0,0.4) 30%,rgba(0,0,0,0.08) 70%,transparent 100%);
+  filter:blur(1.5px)}
+
+.ref-house{position:absolute;top:0;transform:scaleY(-1);transform-origin:center center}
+.ref-house .house-wall{position:absolute;inset:0;background:rgba(255,180,60,0.04)}
+.ref-house .rw{position:absolute;background:rgba(255,200,80,0.1);border-radius:1px}
+
+.ref-house-1{left:5vw;width:10vw;height:38vh}
+.ref-house-2{left:16vw;width:14vw;height:42vh}
+.ref-house-3{left:31vw;width:11vw;height:46vh}
+.ref-house-4{left:43vw;width:13vw;height:39vh}
+.ref-house-5{left:57vw;width:9vw;height:32vh}
+.ref-house-6{left:67vw;width:12vw;height:44vh}
+
+/* Reflection window positions mirrored from originals (scaleY(-1) inverts them) */
+.ref-house-1 .rw:nth-child(1){top:4%;left:15%;width:25%;height:12%}
+.ref-house-1 .rw:nth-child(2){top:23%;left:15%;width:25%;height:12%}
+.ref-house-1 .rw:nth-child(3){top:42%;left:15%;width:25%;height:12%}
+.ref-house-1 .rw:nth-child(4){top:61%;left:15%;width:25%;height:12%}
+.ref-house-1 .rw:nth-child(5){top:80%;left:15%;width:25%;height:12%}
+.ref-house-1 .rw:nth-child(6){top:4%;left:55%;width:25%;height:12%}
+.ref-house-1 .rw:nth-child(7){top:42%;left:55%;width:25%;height:12%}
+.ref-house-1 .rw:nth-child(8){top:61%;left:55%;width:25%;height:12%}
+.ref-house-1 .rw:nth-child(9){top:80%;left:55%;width:25%;height:12%}
+
+.ref-house-2 .rw:nth-child(1){top:3%;left:8%;width:18%;height:11%}
+.ref-house-2 .rw:nth-child(2){top:22%;left:8%;width:18%;height:11%}
+.ref-house-2 .rw:nth-child(3){top:41%;left:8%;width:18%;height:11%}
+.ref-house-2 .rw:nth-child(4){top:60%;left:8%;width:18%;height:11%}
+.ref-house-2 .rw:nth-child(5){top:79%;left:8%;width:18%;height:11%}
+.ref-house-2 .rw:nth-child(6){top:3%;left:38%;width:18%;height:11%}
+.ref-house-2 .rw:nth-child(7){top:22%;left:38%;width:18%;height:11%}
+.ref-house-2 .rw:nth-child(8){top:60%;left:38%;width:18%;height:11%}
+.ref-house-2 .rw:nth-child(9){top:79%;left:38%;width:18%;height:11%}
+.ref-house-2 .rw:nth-child(10){top:3%;left:68%;width:18%;height:11%}
+.ref-house-2 .rw:nth-child(11){top:22%;left:68%;width:18%;height:11%}
+.ref-house-2 .rw:nth-child(12){top:41%;left:68%;width:18%;height:11%}
+.ref-house-2 .rw:nth-child(13){top:60%;left:68%;width:18%;height:11%}
+.ref-house-2 .rw:nth-child(14){top:79%;left:68%;width:18%;height:11%}
+
+.ref-house-3 .rw:nth-child(1){top:2%;left:10%;width:30%;height:11%}
+.ref-house-3 .rw:nth-child(2){top:19%;left:10%;width:30%;height:11%}
+.ref-house-3 .rw:nth-child(3){top:36%;left:10%;width:30%;height:11%}
+.ref-house-3 .rw:nth-child(4){top:53%;left:10%;width:30%;height:11%}
+.ref-house-3 .rw:nth-child(5){top:70%;left:10%;width:30%;height:11%}
+.ref-house-3 .rw:nth-child(6){top:87%;left:10%;width:30%;height:11%}
+.ref-house-3 .rw:nth-child(7){top:2%;left:55%;width:30%;height:11%}
+.ref-house-3 .rw:nth-child(8){top:19%;left:55%;width:30%;height:11%}
+.ref-house-3 .rw:nth-child(9){top:36%;left:55%;width:30%;height:11%}
+.ref-house-3 .rw:nth-child(10){top:53%;left:55%;width:30%;height:11%}
+.ref-house-3 .rw:nth-child(11){top:70%;left:55%;width:30%;height:11%}
+.ref-house-3 .rw:nth-child(12){top:87%;left:55%;width:30%;height:11%}
+
+.ref-house-4 .rw:nth-child(1){top:3%;left:12%;width:30%;height:13%}
+.ref-house-4 .rw:nth-child(2){top:23%;left:12%;width:30%;height:13%}
+.ref-house-4 .rw:nth-child(3){top:43%;left:12%;width:30%;height:13%}
+.ref-house-4 .rw:nth-child(4){top:63%;left:12%;width:30%;height:13%}
+.ref-house-4 .rw:nth-child(5){top:3%;left:55%;width:30%;height:13%}
+.ref-house-4 .rw:nth-child(6){top:23%;left:55%;width:30%;height:13%}
+.ref-house-4 .rw:nth-child(7){top:63%;left:55%;width:30%;height:13%}
+
+.ref-house-5 .rw:nth-child(1){top:5%;left:22%;width:50%;height:14%}
+.ref-house-5 .rw:nth-child(2){top:30%;left:22%;width:50%;height:14%}
+.ref-house-5 .rw:nth-child(3){top:55%;left:22%;width:50%;height:14%}
+.ref-house-5 .rw:nth-child(4){top:80%;left:22%;width:50%;height:14%}
+
+.ref-house-6 .rw:nth-child(1){top:3%;left:12%;width:22%;height:11%}
+.ref-house-6 .rw:nth-child(2){top:22%;left:12%;width:22%;height:11%}
+.ref-house-6 .rw:nth-child(3){top:41%;left:12%;width:22%;height:11%}
+.ref-house-6 .rw:nth-child(4){top:60%;left:12%;width:22%;height:11%}
+.ref-house-6 .rw:nth-child(5){top:79%;left:12%;width:22%;height:11%}
+.ref-house-6 .rw:nth-child(6){top:3%;left:55%;width:22%;height:11%}
+.ref-house-6 .rw:nth-child(7){top:22%;left:55%;width:22%;height:11%}
+.ref-house-6 .rw:nth-child(8){top:41%;left:55%;width:22%;height:11%}
+.ref-house-6 .rw:nth-child(9){top:60%;left:55%;width:22%;height:11%}
+.ref-house-6 .rw:nth-child(10){top:79%;left:55%;width:22%;height:11%}
+
+.reflections::before{content:'';position:absolute;bottom:0;left:0;right:0;height:40%;
+  background:radial-gradient(ellipse 60% 100% at 40% 100%,rgba(255,160,60,0.04) 0%,transparent 70%);
+  pointer-events:none}
+
+/* water ripples overlay */
+.ripples{position:absolute;top:48vh;left:0;right:0;bottom:0;z-index:3;pointer-events:none;
+  background:repeating-linear-gradient(0deg,transparent,transparent 1.5vh,rgba(120,150,220,0.02) 1.5vh,rgba(120,150,220,0.02) 1.6vh,transparent 1.6vh,transparent 3vh);
+  -webkit-mask-image:linear-gradient(180deg,rgba(0,0,0,0.8) 0%,rgba(0,0,0,0.5) 40%,transparent 100%);
+  mask-image:linear-gradient(180deg,rgba(0,0,0,0.8) 0%,rgba(0,0,0,0.5) 40%,transparent 100%)}
+
+/* ── Bridge ── */
+.bridge{position:absolute;bottom:46vh;left:0;z-index:5;pointer-events:none}
+.bridge-arch{position:relative;width:22vw;height:14vh}
+/* arch opening */
+.bridge-arch::before{content:'';position:absolute;bottom:0;left:2vw;right:2vw;height:12vh;
+  background:radial-gradient(ellipse 110% 50% at 50% 100%,transparent 48%,#0d0b1a 48%,#0d0b1a 52%,transparent 52%);
+  -webkit-mask-image:radial-gradient(ellipse 110% 50% at 50% 100%,transparent 48%,#000 48%,#000 52%,transparent 52%);
+  mask-image:radial-gradient(ellipse 110% 50% at 50% 100%,transparent 48%,#000 48%,#000 52%,transparent 52%);
+  background:#0d0b1a}
+/* bridge deck and path */
+.bridge-arch::after{content:'';position:absolute;left:-2vw;right:-2vw;bottom:-0.8vh;height:2.5vh;
+  background:#0d0b1a;border-radius:2px 2px 0 0}
+
+/* bridge railing */
+.bridge-railing{position:absolute;bottom:0;left:0;right:0;height:4.5vh}
+.rail-post{position:absolute;bottom:0;width:0.3vw;height:100%;background:#0a0818;border-radius:1px}
+.rail-post:nth-child(1){left:3%}
+.rail-post:nth-child(2){left:13%}
+.rail-post:nth-child(3){left:23%}
+.rail-post:nth-child(4){left:33%}
+.rail-post:nth-child(5){left:43%}
+.rail-post:nth-child(6){left:53%}
+.rail-post:nth-child(7){left:63%}
+.rail-post:nth-child(8){left:73%}
+.rail-post:nth-child(9){left:83%}
+.rail-post:nth-child(10){left:93%}
+.rail-bar{position:absolute;left:0;right:0;height:0.2vh;background:#0a0818;border-radius:1px}
+.rail-bar:nth-child(11){bottom:65%}
+.rail-bar:nth-child(12){bottom:30%}
+
+/* bridge lamp */
+.bridge-lamp{position:absolute;bottom:2.5vh;left:50%;z-index:6;width:0.4vw;height:2vh;background:#0d0b1a;transform:translateX(-50%)}
+.bridge-lamp::before{content:'';position:absolute;top:-0.8vh;left:50%;transform:translateX(-50%);width:0.8vw;height:0.8vh;background:#0d0b1a;border-radius:50% 50% 0 0}
+.bridge-lamp::after{content:'';position:absolute;top:-0.5vh;left:50%;transform:translateX(-50%);width:0.3vw;height:0.4vh;background:#ffd269;border-radius:50%;
+  box-shadow:0 0 8px rgba(255,180,60,0.6),0 0 20px rgba(255,150,40,0.2);
+  animation:lamp-glow 2s ease-in-out infinite alternate}
+
+@keyframes lamp-glow{0%,100%{opacity:0.6;filter:brightness(0.9)}50%{opacity:1;filter:brightness(1.2)}}
+
+/* bridge railing extension over water */
+.bridge-rail-ext{position:absolute;bottom:44vh;left:20vw;width:14vw;height:2vh;z-index:4}
+.bridge-rail-ext::before{content:'';position:absolute;bottom:0;left:0;right:0;height:0.15vh;background:#0a0818}
+.bridge-rail-ext::after{content:'';position:absolute;bottom:55%;left:0;right:0;height:0.15vh;background:#0a0818}
+
+/* ── Bicycle ── */
+.bicycle{position:absolute;bottom:45.5vh;left:18vw;z-index:6;width:3.5vw;height:3.5vh;transform:rotate(-8deg);transform-origin:bottom center}
+.bicycle .wheel-r,.bicycle .wheel-f{position:absolute;bottom:0;width:1.6vw;height:1.6vw;border:0.15vw solid #0a0818;border-radius:50%;background:transparent}
+.bicycle .wheel-r{left:0}
+.bicycle .wheel-f{right:0}
+.bicycle .wheel-r::after,.bicycle .wheel-f::after{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:0.15vw;height:0.15vw;background:#0a0818;border-radius:50%;
+  box-shadow:0 -0.4vw 0 0 #0a0818,0 0.4vw 0 0 #0a0818,-0.4vw 0 0 0 #0a0818,0.4vw 0 0 0 #0a0818,
+    -0.28vw -0.28vw 0 0 #0a0818,0.28vw 0.28vw 0 0 #0a0818,0.28vw -0.28vw 0 0 #0a0818,-0.28vw 0.28vw 0 0 #0a0818}
+.bicycle .frame-tt{position:absolute;bottom:1.1vh;left:0.8vw;width:1.8vw;height:1.5px;background:#0a0818;transform:rotate(-5deg);transform-origin:left center}
+.bicycle .frame-dt{position:absolute;bottom:0.5vh;left:0.8vw;width:1.8vw;height:1.5px;background:#0a0818;transform:rotate(25deg);transform-origin:left center}
+.bicycle .frame-st{position:absolute;bottom:0.5vh;left:1.15vw;width:0.7vw;height:1.5px;background:#0a0818;transform:rotate(-70deg);transform-origin:left center}
+.bicycle .frame-cs{position:absolute;bottom:0.5vh;left:1.15vw;width:0.8vw;height:1.5px;background:#0a0818;transform:rotate(10deg);transform-origin:left center}
+.bicycle .seat{position:absolute;bottom:2vh;left:1.1vw;width:0.5vw;height:2px;background:#0a0818;border-radius:2px}
+.bicycle .bars{position:absolute;bottom:1.8vh;right:0.5vw;width:0.6vw;height:1.5px;background:#0a0818;transform:rotate(-15deg);transform-origin:right center}
+.bicycle .bars::before{content:'';position:absolute;right:0;top:-1.5px;width:0.4vw;height:1.5px;background:#0a0818;transform:rotate(-50deg);transform-origin:right center}
+.bicycle .bars::after{content:'';position:absolute;right:0;top:1.5px;width:0.35vw;height:1.5px;background:#0a0818;transform:rotate(40deg);transform-origin:right center}
+.bicycle .fork{position:absolute;bottom:0;right:0.7vw;width:1.5px;height:1.6vw;background:#0a0818;transform:rotate(-5deg);transform-origin:bottom center}
+
+/* ── Rain ── */
+.rain{position:absolute;inset:0;z-index:10;pointer-events:none;overflow:hidden}
+
+/* fix: wrap each rain layer so initial X offset doesn't conflict with animation transform */
+.rain-layer{position:absolute;inset:0;will-change:transform}
+
+.rain-1{background-image:repeating-linear-gradient(82deg,transparent,transparent 28px,rgba(160,180,220,0.06) 28px,rgba(160,180,220,0.06) 28.5px,transparent 28.5px,transparent 56px);
+  animation:rainfall-1 0.8s linear infinite}
+
+.rain-2{background-image:repeating-linear-gradient(80deg,transparent,transparent 35px,rgba(150,170,210,0.04) 35px,rgba(150,170,210,0.04) 35.4px,transparent 35.4px,transparent 70px);
+  animation:rainfall-2 1.2s linear infinite}
+
+.rain-3{background-image:repeating-linear-gradient(84deg,transparent,transparent 22px,rgba(170,190,230,0.08) 22px,rgba(170,190,230,0.08) 22.3px,transparent 22.3px,transparent 44px);
+  animation:rainfall-3 0.6s linear infinite}
+
+.rain-4{background-image:repeating-linear-gradient(81deg,transparent,transparent 45px,rgba(140,160,200,0.03) 45px,rgba(140,160,200,0.03) 45.5px,transparent 45.5px,transparent 90px);
+  animation:rainfall-4 1.8s linear infinite}
+
+.rain-5{background-image:repeating-linear-gradient(83deg,transparent,transparent 18px,rgba(180,200,240,0.07) 18px,rgba(180,200,240,0.07) 18.2px,transparent 18.2px,transparent 36px);
+  animation:rainfall-5 0.5s linear infinite}
+
+/* each rain layer has unique keyframe with baked-in X offset */
+@keyframes rainfall-1{0%{transform:translateY(-100vh) translateX(0)}100%{transform:translateY(100vh) translateX(1.5vw)}}
+@keyframes rainfall-2{0%{transform:translateY(-100vh) translateX(-2vw)}100%{transform:translateY(100vh) translateX(0.5vw)}}
+@keyframes rainfall-3{0%{transform:translateY(-100vh) translateX(1vw)}100%{transform:translateY(100vh) translateX(3vw)}}
+@keyframes rainfall-4{0%{transform:translateY(-100vh) translateX(-1vw)}100%{transform:translateY(100vh) translateX(0vw)}}
+@keyframes rainfall-5{0%{transform:translateY(-100vh) translateX(3vw)}100%{transform:translateY(100vh) translateX(4.5vw)}}
+
+/* ── Rain splash on water ── */
+.splash{position:absolute;top:48vh;left:0;right:0;bottom:0;z-index:8;pointer-events:none;
+  background:radial-gradient(ellipse 0.2vw 0.1vh at 15% 5%,rgba(180,200,240,0.04) 0%,transparent 100%),
+    radial-gradient(ellipse 0.3vw 0.15vh at 35% 12%,rgba(180,200,240,0.03) 0%,transparent 100%),
+    radial-gradient(ellipse 0.2vw 0.1vh at 55% 8%,rgba(180,200,240,0.04) 0%,transparent 100%),
+    radial-gradient(ellipse 0.25vw 0.12vh at 72% 15%,rgba(180,200,240,0.03) 0%,transparent 100%),
+    radial-gradient(ellipse 0.2vw 0.1vh at 88% 6%,rgba(180,200,240,0.04) 0%,transparent 100%),
+    radial-gradient(ellipse 0.3vw 0.15vh at 10% 25%,rgba(180,200,240,0.02) 0%,transparent 100%),
+    radial-gradient(ellipse 0.2vw 0.1vh at 45% 35%,rgba(180,200,240,0.03) 0%,transparent 100%),
+    radial-gradient(ellipse 0.25vw 0.12vh at 65% 22%,rgba(180,200,240,0.02) 0%,transparent 100%),
+    radial-gradient(ellipse 0.2vw 0.1vh at 25% 45%,rgba(180,200,240,0.03) 0%,transparent 100%),
+    radial-gradient(ellipse 0.3vw 0.15vh at 75% 50%,rgba(180,200,240,0.02) 0%,transparent 100%);
+  animation:splash-pulse 3s ease-in-out infinite alternate}
+
+@keyframes splash-pulse{0%,100%{opacity:0.5}50%{opacity:1}}
+
+/* ── Fog / Mist ── */
+.fog{position:absolute;bottom:40vh;left:0;right:0;height:10vh;z-index:4;pointer-events:none;
+  background:linear-gradient(0deg,rgba(100,120,170,0.04) 0%,rgba(100,120,170,0.03) 30%,rgba(100,120,170,0.015) 60%,transparent 100%);
+  filter:blur(8px);animation:fog-drift 20s ease-in-out infinite alternate}
+
+@keyframes fog-drift{0%{transform:translateX(-5vw);opacity:0.6}100%{transform:translateX(5vw);opacity:1}}
+
+/* warm mist glow near water */
+.warm-mist{position:absolute;bottom:42vh;left:5vw;right:5vw;height:6vh;z-index:3;pointer-events:none;
+  background:radial-gradient(ellipse 60% 100% at 35% 100%,rgba(255,160,60,0.03) 0%,transparent 70%);
+  filter:blur(10px);animation:warm-pulse 6s ease-in-out infinite alternate}
+
+@keyframes warm-pulse{0%,100%{opacity:0.5}50%{opacity:1}}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  .rain-layer,.rain{animation:none!important;opacity:0.25}
+  .stars::before,.stars::after{animation:none!important;opacity:0.4}
+  .water::before{animation:none!important}
+  .fog{animation:none!important;opacity:0.3}
+  .warm-mist{animation:none!important;opacity:0.3}
+  .bridge-lamp::after{animation:none!important;opacity:0.7}
+  .win{animation:none!important;opacity:0.85!important}
+  .splash{animation:none!important;opacity:0.3}
+}
+
+/* tablet / small screen adjustments */
+@media (max-width:768px){
+  .house-1{left:3vw;width:12vw}
+  .house-2{left:16vw;width:16vw}
+  .house-3{left:33vw;width:13vw}
+  .house-4{left:47vw;width:15vw}
+  .house-5{left:63vw;width:11vw}
+  .house-6{left:75vw;width:14vw}
+  .ref-house-1{left:3vw;width:12vw}
+  .ref-house-2{left:16vw;width:16vw}
+  .ref-house-3{left:33vw;width:13vw}
+  .ref-house-4{left:47vw;width:15vw}
+  .ref-house-5{left:63vw;width:11vw}
+  .ref-house-6{left:75vw;width:14vw}
+  .bridge{left:-2vw}
+  .bridge-arch{width:26vw}
+  .bicycle{left:21vw}
+}
+</style>
+</head>
+<body>
+<div class="scene">
+
+  <!-- Sky -->
+  <div class="sky"><div class="stars"></div><div class="city-glow"></div></div>
+
+  <!-- Distant background houses -->
+  <div class="distant-houses"></div>
+
+  <!-- Houses -->
+  <div class="houses">
+
+    <div class="house house-1">
+      <div class="house-gable"></div><div class="house-wall"></div>
+      <div class="windows">
+        <div class="floor"><div class="win"></div><div class="win"></div></div>
+        <div class="floor"><div class="win"></div><div class="win"></div></div>
+        <div class="floor"><div class="win"></div><div class="win"></div></div>
+        <div class="floor"><div class="win"></div><div class="win"></div></div>
+        <div class="floor"><div class="win"></div><div class="win"></div></div>
+      </div>
+    </div>
+
+    <div class="house house-2">
+      <div class="house-gable"></div><div class="house-wall"></div>
+      <div class="windows">
+        <div class="floor"><div class="win"></div><div class="win"></div><div class="win"></div></div>
+        <div class="floor"><div class="win"></div><div class="win"></div><div class="win"></div></div>
+        <div class="floor"><div class="win"></div><div class="win"></div><div class="win"></div></div>
+        <div class="floor"><div class="win"></div><div class="win"></div><div class="win"></div></div>
+        <div class="floor"><div class="win"></div><div class="win"></div><div class="win"></div></div>
+      </div>
+    </div>
+
+    <div class="house house-3">
+      <div class="house-gable"></div><div class="house-wall"></div>
+      <div class="windows">
+        <div class="floor"><div class="win"></div><div class="win"></div></div>
+        <div class="floor"><div class="win"></div><div class="win"></div></div>
+        <div class="floor"><div class="win"></div><div class="win"></div></div>
+        <div class="floor"><div class="win"></div><div class="win"></div></div>
+        <div class="floor"><div class="win"></div><div class="win"></div></div>
+        <div class="floor"><div class="win"></div><div class="win"></div></div>
+      </div>
+    </div>
+
+    <div class="house house-4">
+      <div class="house-gable"></div><div class="house-wall"></div>
+      <div class="windows">
+        <div class="floor"><div class="win"></div><div class="win"></div></div>
+        <div class="floor"><div class="win"></div><div class="win"></div></div>
+        <div class="floor"><div class="win"></div><div class="win"></div></div>
+        <div class="floor"><div class="win"></div><div class="win"></div></div>
+      </div>
+    </div>
+
+    <div class="house house-5">
+      <div class="house-gable"></div><div class="house-wall"></div>
+      <div class="windows">
+        <div class="floor"><div class="win"></div></div>
+        <div class="floor"><div class="win"></div></div>
+        <div class="floor"><div class="win"></div></div>
+        <div class="floor"><div class="win"></div></div>
+      </div>
+    </div>
+
+    <div class="house house-6">
+      <div class="house-gable"></div><div class="house-wall"></div>
+      <div class="windows">
+        <div class="floor"><div class="win"></div><div class="win"></div></div>
+        <div class="floor"><div class="win"></div><div class="win"></div></div>
+        <div class="floor"><div class="win"></div><div class="win"></div></div>
+        <div class="floor"><div class="win"></div><div class="win"></div></div>
+        <div class="floor"><div class="win"></div><div class="win"></div></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Canal Water -->
+  <div class="water"></div>
+
+  <!-- Reflections -->
+  <div class="reflections">
+    <div class="ref-house ref-house-1">
+      <div class="house-wall"></div>
+      <div class="rw"></div><div class="rw"></div><div class="rw"></div><div class="rw"></div><div class="rw"></div>
+      <div class="rw"></div><div class="rw"></div><div class="rw"></div><div class="rw"></div>
+    </div>
+    <div class="ref-house ref-house-2">
+      <div class="house-wall"></div>
+      <div class="rw"></div><div class="rw"></div><div class="rw"></div><div class="rw"></div><div class="rw"></div>
+      <div class="rw"></div><div class="rw"></div><div class="rw"></div><div class="rw"></div>
+      <div class="rw"></div><div class="rw"></div><div class="rw"></div><div class="rw"></div><div class="rw"></div>
+    </div>
+    <div class="ref-house ref-house-3">
+      <div class="house-wall"></div>
+      <div class="rw"></div><div class="rw"></div><div class="rw"></div><div class="rw"></div><div class="rw"></div><div class="rw"></div>
+      <div class="rw"></div><div class="rw"></div><div class="rw"></div><div class="rw"></div><div class="rw"></div><div class="rw"></div>
+    </div>
+    <div class="ref-house ref-house-4">
+      <div class="house-wall"></div>
+      <div class="rw"></div><div class="rw"></div><div class="rw"></div><div class="rw"></div>
+      <div class="rw"></div><div class="rw"></div><div class="rw"></div>
+    </div>
+    <div class="ref-house ref-house-5">
+      <div class="house-wall"></div>
+      <div class="rw"></div><div class="rw"></div><div class="rw"></div><div class="rw"></div>
+    </div>
+    <div class="ref-house ref-house-6">
+      <div class="house-wall"></div>
+      <div class="rw"></div><div class="rw"></div><div class="rw"></div><div class="rw"></div><div class="rw"></div>
+      <div class="rw"></div><div class="rw"></div><div class="rw"></div><div class="rw"></div><div class="rw"></div>
+    </div>
+  </div>
+
+  <div class="ripples"></div>
+  <div class="splash"></div>
+  <div class="fog"></div>
+  <div class="warm-mist"></div>
+
+  <!-- Bridge -->
+  <div class="bridge">
+    <div class="bridge-arch"></div>
+    <div class="bridge-railing">
+      <div class="rail-post"></div><div class="rail-post"></div>
+      <div class="rail-post"></div><div class="rail-post"></div>
+      <div class="rail-post"></div><div class="rail-post"></div>
+      <div class="rail-post"></div><div class="rail-post"></div>
+      <div class="rail-post"></div><div class="rail-post"></div>
+      <div class="rail-bar"></div><div class="rail-bar"></div>
+    </div>
+    <div class="bridge-lamp"></div>
+  </div>
+  <div class="bridge-rail-ext"></div>
+
+  <!-- Bicycle -->
+  <div class="bicycle">
+    <div class="wheel-r"></div>
+    <div class="wheel-f"></div>
+    <div class="frame-tt"></div>
+    <div class="frame-dt"></div>
+    <div class="frame-st"></div>
+    <div class="frame-cs"></div>
+    <div class="seat"></div>
+    <div class="bars"></div>
+    <div class="fork"></div>
+  </div>
+
+  <!-- Rain -->
+  <div class="rain">
+    <div class="rain-layer rain-1"></div>
+    <div class="rain-layer rain-2"></div>
+    <div class="rain-layer rain-3"></div>
+    <div class="rain-layer rain-4"></div>
+    <div class="rain-layer rain-5"></div>
+  </div>
+
+</div>
+</body>
+</html>

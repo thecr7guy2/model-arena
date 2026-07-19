@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Beyond the Horizon</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;background:#000}
+canvas{display:block;width:100%;height:100%}
+#ui{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);color:rgba(255,200,150,0.6);font:12px/1 system-ui;text-transform:uppercase;letter-spacing:3px;pointer-events:none;text-shadow:0 1px 8px rgba(0,0,0,0.8)}
+#start{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;background:rgba(0,0,0,0.4);cursor:pointer;transition:opacity 800ms ease-out}
+#start span{color:rgba(255,200,150,0.9);font:600 14px/1 system-ui;text-transform:uppercase;letter-spacing:4px;text-shadow:0 0 20px rgba(255,150,50,0.5)}
+#start.hidden{opacity:0;pointer-events:none}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="ui">Beyond the Horizon — A Demoscene Tribute</div>
+<div id="start"><span>Click to Begin</span></div>
+<script>
+(function(){
+"use strict";
+
+const canvas = document.getElementById("c");
+const gl = canvas.getContext("webgl2") || canvas.getContext("webgl");
+if (!gl) return;
+
+let W, H, time = 0, audioStarted = false, reduced = false, night = 0;
+const rect = () => canvas.getBoundingClientRect();
+
+function resize() {
+  W = canvas.width = rect().width * devicePixelRatio;
+  H = canvas.height = rect().height * devicePixelRatio;
+  gl.viewport(0, 0, W, H);
+}
+resize();
+window.addEventListener("resize", resize);
+
+const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+if (prefersReduced) reduced = true;
+
+const VERT = `
+attribute vec2 p;
+void main(){gl_Position=vec4(p,0,1);}
+`;
+
+const FRAG = `
+precision highp float;
+uniform float t;
+uniform vec2 r;
+uniform float night;
+
+float hash(vec2 p){
+  p=fract(p*vec2(127.1,311.7));
+  p+=dot(p,p+45.32);
+  return fract(p.x*p.y);
+}
+float noise(vec2 p){
+  vec2 i=floor(p),f=fract(p);
+  f=f*f*(3.0-2.0*f);
+  return mix(mix(hash(i),hash(i+vec2(1,0)),f.x),
+             mix(hash(i+vec2(0,1)),hash(i+vec2(1,1)),f.x),f.y);
+}
+float fbm(vec2 p){
+  float v=0,a=0.5,f=1.0;
+  for(int i=0;i<6;i++){v+=a*noise(p*f);a*=0.5;f*=2.07;}
+  return v;
+}
+float terrain(vec2 p){
+  float h=0.0;
+  h+=fbm(p*0.15)*3.2;
+  h+=fbm(p*0.35+vec2(10.0))*0.8;
+  h+=fbm(p*0.8+vec2(-5.0))*0.25;
+  return h-2.5;
+}
+vec3 norm(vec2 p){
+  float e=0.08;
+  float h=terrain(p),hx=terrain(p+vec2(e,0)),hz=terrain(p+vec2(0,e));
+  return normalize(vec3(h-hx,e,h-hz));
+}
+void main(){
+  vec2 uv=(gl_FragCoord.xy-0.5*r)/r.y;
+  float T=t*0.18;
+  vec3 ro=vec3(T*4.0,1.8,-2.5);
+  vec3 rd=normalize(vec3(uv.x*1.2,uv.y-0.1,1.0));
+  float pitch=sin(T*0.3)*0.08;
+  float cx=cos(pitch),sx=sin(pitch);
+  rd.yz=mat2(cx,-sx,sx,cx)*rd.yz;
+  rd=normalize(rd);
+  float d=0.0;
+  vec3 hit=ro;
+  for(int i=0;i<180;i++){
+    vec3 p=ro+rd*d;
+    float h=p.y-terrain(p.xz);
+    if(h<0.06){hit=p;break;}
+    d+=max(0.15,min(h*0.55,4.0));
+    if(d>60.0)break;
+  }
+  float fogAmt=1.0-exp(-d*0.025);
+  vec2 sunDir=normalize(vec2(0.6,0.35+sin(T*0.1)*0.1));
+  float sun=clamp(dot(rd.xy,sunDir),0.0,1.0);
+  vec3 sunCol=vec3(1.0,0.65,0.25)+vec3(0.3,0.1,0.0)*pow(sun,8.0);
+  float sunGlow=exp(-(1.0-sun)*18.0)*0.8;
+  float sky=direction(rd,sunDir);
+  vec3 horiz=vec3(0.95,0.45,0.12)+vec3(0.3,0.15,0.05)*exp(-abs(rd.y)*3.0);
+  vec3 zenith=vec3(0.05,0.02,0.12)*(1.0-sky);
+  vec3 skyCol=mix(zenith,horiz,clamp(sky*2.0,0.0,1.0));
+  skyCol+=sunCol*sunGlow*0.7;
+  float stars=0.0;
+  if(night>0.0){
+    float starN=hash(floor(rd.xz*400.0/max(0.001,rd.y)));
+    float starS=pow(starN,120.0)*step(0.85,starN);
+    float twinkle=sin(t*3.0+starN*50.0)*0.3+0.7;
+    stars=starS*twinkle*night;
+    float starN2=hash(floor(rd.xz*600.0/max(0.001,rd.y+0.001))+vec2(7.0));
+    float starS2=pow(starN2,150.0)*step(0.9,starN2);
+    stars+=starS2*(sin(t*2.5+starN2*80.0)*0.3+0.7)*night;
+  }
+  skyCol+=vec3(0.9,0.95,1.0)*stars;
+  vec3 col;
+  if(d<60.0){
+    vec3 n=norm(hit.xz);
+    float diff=clamp(dot(n,normalize(vec3(0.5,0.7,0.3))),0.0,1.0);
+    float amb=0.35;
+    float slope=1.0-clamp(n.y,0.0,1.0);
+    vec3 gnd=vec3(0.18,0.14,0.1)+fbm(hit.xz*2.0)*0.08;
+    gnd=mix(gnd,vec3(0.12,0.1,0.08),slope);
+    vec3 grass=vec3(0.15,0.22,0.08)*diff;
+    vec3 rock=vec3(0.25,0.22,0.18)*diff;
+    float g=step(0.5,noise(hit.xz*8.0));
+    col=gnd*(amb+diff*0.65);
+    float forward=dot(rd,n);
+    float fresnel=pow(1.0-clamp(forward,0.0,1.0),4.0);
+    float atm=pow(sky,0.5)*0.5+0.3;
+    atm+=fogAmt*0.6;
+    col=mix(col,skyCol*atm,fresnel*0.25);
+    col=mix(col,skyCol,smoothstep(0.4,1.0,fogAmt));
+    float depth=smoothstep(0.0,0.3,abs(hit.y));
+    col=mix(col,skyCol*0.8,depth*fogAmt*0.4);
+  } else {
+    col=skyCol;
+  }
+  float v=smoothstep(1.2,0.3,length(uv));
+  col*=v;
+  col=col/(1.0+col*0.4);
+  col=pow(col,vec3(0.9));
+  float luma=dot(col,vec3(0.299,0.587,0.114));
+  col=mix(vec3(luma),col,1.15);
+  col*=0.95+0.05*sin(t*0.5);
+  gl_FragColor=vec4(col,1.0);
+}
+`.replace(/direction/g,'dot');
+
+function compile(src, type) {
+  const s = gl.createShader(type);
+  gl.shaderSource(s, src);
+  gl.compileShader(s);
+  return s;
+}
+
+const prog = gl.createProgram();
+gl.attachShader(prog, compile(VERT, gl.VERTEX_SHADER));
+gl.attachShader(prog, compile(FRAG, gl.FRAGMENT_SHADER));
+gl.linkProgram(prog);
+gl.useProgram(prog);
+
+const buf = gl.createBuffer();
+gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1,1,1]), gl.STATIC_DRAW);
+const loc = gl.getAttribLocation(prog, "p");
+gl.enableVertexAttribArray(loc);
+gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+
+const uT = gl.getUniformLocation(prog, "t");
+const uR = gl.getUniformLocation(prog, "r");
+const uNight = gl.getUniformLocation(prog, "night");
+
+let startTime = performance.now();
+
+function render() {
+  time = (performance.now() - startTime) / 1000;
+  night = reduced ? 0.3 : Math.max(0, Math.sin(time * 0.05 - 0.5)) * 0.85;
+  gl.uniform1f(uT, time);
+  gl.uniform2f(uR, W, H);
+  gl.uniform1f(uNight, night);
+  gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+  requestAnimationFrame(render);
+}
+render();
+
+const startEl = document.getElementById("start");
+let audioCtx, masterGain, reverb;
+
+function createReverb(ctx) {
+  const len = ctx.sampleRate * 3.5;
+  const buf = ctx.createBuffer(2, len, ctx.sampleRate);
+  for (let c = 0; c < 2; c++) {
+    const d = buf.getChannelData(c);
+    for (let i = 0; i < len; i++) {
+      d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 2.2);
+    }
+  }
+  const conv = ctx.createConvolver();
+  conv.buffer = buf;
+  return conv;
+}
+
+function createAudio() {
+  if (audioStarted) return;
+  audioStarted = true;
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  masterGain = audioCtx.createGain();
+  masterGain.gain.value = 0.45;
+  masterGain.connect(audioCtx.destination);
+  reverb = createReverb(audioCtx);
+  const reverbGain = audioCtx.createGain();
+  reverbGain.gain.value = 0.55;
+  reverb.connect(reverbGain);
+  reverbGain.connect(masterGain);
+  const filter = audioCtx.createBiquadFilter();
+  filter.type = "lowpass";
+  filter.frequency.value = 800;
+  filter.Q.value = 0.8;
+  filter.connect(reverb);
+  const drones = [
+    [55, 0.18],
+    [82.5, 0.12],
+    [110, 0.10],
+    [165, 0.06],
+    [220, 0.04],
+    [73.5, 0.08],
+    [98, 0.07]
+  ];
+  drones.forEach(([freq, vol], i) => {
+    const osc = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    const vibrato = audioCtx.createOscillator();
+    const vibratoGain = audioCtx.createGain();
+    vibrato.frequency.value = 0.12 + i * 0.04;
+    vibratoGain.gain.value = 1.5 + i * 0.3;
+    vibrato.connect(vibratoGain);
+    vibratoGain.connect(osc.frequency);
+    osc.type = "sine";
+    osc.frequency.value = freq;
+    g.gain.value = vol;
+    osc.connect(g);
+    g.connect(filter);
+    osc.start();
+    vibrato.start();
+    const lfo = audioCtx.createOscillator();
+    const lfoGain = audioCtx.createGain();
+    lfo.frequency.value = 0.05 + i * 0.015;
+    lfoGain.gain.value = 0.03;
+    lfo.connect(lfoGain);
+    lfoGain.connect(g.gain);
+    lfo.start();
+  });
+  const chordFreqs = [130.8, 164.8, 196, 220];
+  const chord = audioCtx.createOscillator();
+  const chordGain = audioCtx.createGain();
+  const chordLfo = audioCtx.createOscillator();
+  const chordLfoGain = audioCtx.createGain();
+  chord.type = "triangle";
+  chord.frequency.value = 130.8;
+  chordLfo.frequency.value = 0.07;
+  chordLfoGain.gain.value = 0.02;
+  chordGain.gain.value = 0.025;
+  chordLfo.connect(chordLfoGain);
+  chordLfoGain.connect(chordGain.gain);
+  chord.connect(chordGain);
+  chordGain.connect(filter);
+  chord.start();
+  chordLfo.start();
+  setInterval(() => {
+    if (!audioCtx) return;
+    const f = chordFreqs[Math.floor(Math.random() * chordFreqs.length)];
+    const now = audioCtx.currentTime;
+    chord.frequency.setTargetAtTime(f + (Math.random() - 0.5) * 2, now, 4);
+    chordGain.gain.setTargetAtTime(0.02 + Math.random() * 0.015, now, 2);
+  }, 8000);
+  const bell = audioCtx.createOscillator();
+  const bellGain = audioCtx.createGain();
+  bell.type = "sine";
+  bell.frequency.value = 880;
+  bellGain.gain.value = 0;
+  bell.connect(bellGain);
+  bellGain.connect(reverb);
+  bell.start();
+  let bellPhase = 0;
+  (function ringBell() {
+    bellPhase += 0.002;
+    if (bellPhase > 1 && bellPhase < 1.02) {
+      bell.frequency.value = 660 + Math.random() * 440;
+      const now = audioCtx.currentTime;
+      bellGain.gain.setTargetAtTime(0.06 + Math.random() * 0.04, now, 0.1);
+      bellGain.gain.setTargetAtTime(0, now + 0.5, 0.8);
+    }
+    if (bellPhase > 20) bellPhase = 0;
+    requestAnimationFrame(ringBell);
+  })();
+}
+
+startEl.addEventListener("click", () => {
+  startEl.classList.add("hidden");
+  createAudio();
+  if (audioCtx && audioCtx.state === "suspended") {
+    audioCtx.resume();
+  }
+});
+
+})();
+</script>
+</body>
+</html>

@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { TASKS, ORDER, byId } from "@/lib/data";
+import { TASKS, ORDER, byId, REVIEWER } from "@/lib/data";
 import { loadRatings, saveRating } from "@/lib/ratings";
 import Reveal from "./Reveal";
 
@@ -116,7 +116,7 @@ function Panel({ task, modelId, index }) {
         <span className="meta-chip">steps <b>{meta.steps}</b></span>
       </div>
       <div className="rate">
-        <div className="rate-label"><span>Your score</span><small>0 — 10</small></div>
+        <div className="rate-label"><span>Your score</span><small>0 to 10</small></div>
         <div className="rate-row">
           <input type="range" min="0" max="10" step="0.5" value={value}
             style={{ "--fill": `${value * 10}%` }}
@@ -136,18 +136,18 @@ function Panel({ task, modelId, index }) {
           >
             <div className="head">
               <span className="score-num">{task.scores[modelId].toFixed(1)}</span>
-              <span className="out-of">/ 10 — benchmark review</span>
+              <span className="out-of">/ 10 · {REVIEWER.name}&apos;s score</span>
               <span className="verdict">{task.verdicts[modelId]}</span>
             </div>
             <p className="evidence">{task.evidence[modelId]}</p>
             <span className="delta">
               {delta === 0
-                ? "your score matches the benchmark review"
-                : `you scored it ${Math.abs(delta).toFixed(1)} ${delta > 0 ? "higher" : "lower"} than the benchmark review`}
+                ? `your score matches ${REVIEWER.name}`
+                : `you scored it ${Math.abs(delta).toFixed(1)} ${delta > 0 ? "higher" : "lower"} than ${REVIEWER.name}`}
             </span>
           </motion.div>
         ) : (
-          <div key="cta" className="reveal-cta">Score the artifact to reveal the benchmark verdict.</div>
+          <div key="cta" className="reveal-cta">Score the artifact to reveal Fable&apos;s review.</div>
         )}
       </AnimatePresence>
     </Reveal>
@@ -176,7 +176,6 @@ export default function TaskDetail({ taskId }) {
           <h1>{t.title}</h1>
           <p className="one">{t.one}</p>
         </div>
-        <div className="case-context"><span>Field note</span><p>{t.story}</p></div>
         <details className="prompt-box">
           <summary><span>Exact frozen prompt</span><b>Read brief +</b></summary>
           <pre>{t.prompt}</pre>
@@ -184,8 +183,9 @@ export default function TaskDetail({ taskId }) {
         <div className="case-flow" aria-label="How to judge this task">
           <span><b>01</b> Inspect every original output</span>
           <span><b>02</b> Give each model your score</span>
-          <span><b>03</b> Reveal the benchmark review</span>
+          <span><b>03</b> Reveal Fable&apos;s review</span>
         </div>
+        <p className="judge-disclosure"><b>Judge:</b> {REVIEWER.name}, powered by {REVIEWER.model}. Model identities were hidden during visual review. aXite verified executable tasks independently.</p>
         <div className="panels">
           {ORDER.map((mid, i) => <Panel key={mid} task={t} modelId={mid} index={i} />)}
         </div>

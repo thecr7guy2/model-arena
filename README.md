@@ -1,10 +1,12 @@
-# Model Arena
+# Model Showdown by aXite Security Tools
 
 **One cluster, twelve prompts, every era.** A living benchmark of every LLM that has served
 on our 2× NVIDIA DGX Spark cluster: the same twelve creative and engineering prompts, run
 one-shot through the same agent harness, artifacts published exactly as generated — bugs
-included. Visitors judge each artifact themselves; locking in a score reveals Fable's verdict
-and the evidence behind it.
+included. Visitors judge each artifact themselves. Locking in a score reveals Fable's review
+and the evidence behind it. Fable used Claude Opus as a blinded visual judge. The exact Opus
+version was not recorded in the original run metadata. aXite separately verified executable
+tasks, network behavior, and the sealed bug-hunt answer key.
 
 **Era 1:** MiniMax M2.7 (AWQ 4-bit, always-on interleaved thinking) ·
 **Era 2:** DeepSeek V4 Flash (500K context, MTP, `reasoning_effort: max`) ·
@@ -13,7 +15,7 @@ and the evidence behind it.
 ## Stack
 
 Next.js (App Router, static export) · Framer Motion · no database — visitor ratings live in
-`localStorage`, Fable's scores ship in `lib/data.js`.
+`localStorage`. Fable's scores and reviewer disclosure ship in `lib/data.js`.
 
 ```bash
 npm install
@@ -39,8 +41,8 @@ Deploys anywhere static files go: Vercel (zero config), or point nginx at `out/`
 1. Run the frozen bench against the new model.
 2. Drop its artifacts into `public/artifacts/<model-id>/<task-id>/` and screenshots into
    `public/shots/<model-id>/`.
-3. Add the model to `MODELS` in `lib/data.js` (pick a new accent) and extend each task's
+3. Add the model to `MODELS` in `lib/data.js` and extend each task's
    per-model fields (`artifacts`, `scores`, `verdicts`, `evidence`, `meta`, `shots`).
 4. Everything renders from data — no component changes needed.
 
-Benchmarked, scored and built on the cluster it measures.
+Benchmarked and verified by aXite Security Tools on the cluster it measures.

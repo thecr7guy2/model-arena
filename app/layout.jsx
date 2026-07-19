@@ -2,14 +2,12 @@ import "./globals.css";
 import Link from "next/link";
 import NavLinks from "@/components/NavLinks";
 import { MODELS, TASKS } from "@/lib/data";
-import { Archivo_Black, IBM_Plex_Mono, Inter } from "next/font/google";
+import { Inter } from "next/font/google";
 
-const display = Archivo_Black({ subsets: ["latin"], variable: "--font-display", weight: "400" });
-const mono = IBM_Plex_Mono({ subsets: ["latin"], variable: "--font-mono", weight: ["400", "500", "600"] });
-const body = Inter({ subsets: ["latin"], variable: "--font-body" });
+const body = Inter({ subsets: ["latin"], variable: "--font-body", weight: ["400", "500", "600", "700"] });
 
 export const metadata = {
-  title: "Model Showdown | 12 prompts. No second takes.",
+  title: "Model Showdown by aXite Security Tools",
   description:
     "Every model that serves on this cluster faces the same twelve frozen prompts, one shot each. Compare the artifacts side by side and judge them yourself.",
   icons: {
@@ -19,13 +17,13 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${display.variable} ${mono.variable} ${body.variable}`}>
+    <html lang="en" className={body.variable}>
       <body>
         <header className="site-header">
           <div className="wrap header-in">
-            <Link className="wordmark" href="/" aria-label="Model Showdown home">
-              <span className="mark">MS</span>
-              <span>MODEL<br />SHOWDOWN</span>
+            <Link className="wordmark" href="/" aria-label="aXite Security Tools Model Showdown home">
+              <span className="company-name">aXite Security Tools</span>
+              <span className="product-name">Model Showdown</span>
             </Link>
             <NavLinks />
             <Link className="header-cta" href="/tasks/">Start judging <span aria-hidden>↗</span></Link>
@@ -34,7 +32,7 @@ export default function RootLayout({ children }) {
         {children}
         <footer className="site-footer">
           <div className="wrap">
-            <span className="footer-brand">MODEL SHOWDOWN</span>
+            <span className="footer-brand">aXite Security Tools</span>
             <span>{TASKS.length} frozen prompts. One attempt per model. {TASKS.length * MODELS.length} artifacts preserved in the current field.</span>
           </div>
         </footer>

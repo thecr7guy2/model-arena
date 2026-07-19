@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { MODELS, TASKS } from "@/lib/data";
+import { MODELS, TASKS, REVIEWER } from "@/lib/data";
 import Versus from "@/components/Versus";
 import Reveal from "@/components/Reveal";
 
@@ -23,15 +23,14 @@ export default function Home() {
   const leader = ranking[0];
   const lead = ranking.length > 1 ? averages[ranking[0].id] - averages[ranking[1].id] : 0;
   const [first, latest] = MODELS;
-  const featured = [TASKS[2], TASKS[4], TASKS[11]];
 
   return (
     <main className="home">
       <section className="hero">
         <div className="wrap hero-copy">
           <Reveal>
-            <p className="eyebrow">An evolving independent model benchmark / July 2026 edition</p>
-            <h1>MODEL<br />SHOWDOWN<span className="period">.</span></h1>
+            <p className="eyebrow">AXITE SECURITY TOOLS / INDEPENDENT MODEL BENCHMARK</p>
+            <h1>Model<br />Showdown<span className="period">.</span></h1>
             <div className="hero-bottom">
               <p className="lede">Every model faces the same 12 frozen prompts with no retries or cleanup. Inspect the original work, score it yourself, and see how each new model changes the field.</p>
               <div className="hero-actions">
@@ -52,12 +51,16 @@ export default function Home() {
             <div className="protocol-steps">
               <article><b>01</b><h3>We freeze the brief</h3><p>Twelve visual, frontend, and systems tasks stay identical across every run.</p></article>
               <article><b>02</b><h3>Models get one attempt</h3><p>No human cleanup, retries, or selective reruns. The generated artifact is the evidence.</p></article>
-              <article><b>03</b><h3>You inspect and score</h3><p>Judge before revealing the benchmark verdict. Your ratings stay in your browser.</p></article>
+              <article><b>03</b><h3>You inspect and score</h3><p>Score each artifact before revealing Fable&apos;s review. Your ratings stay in your browser.</p></article>
             </div>
             <div className="roster">
               <div className="roster-label">Current roster <span>{MODELS.length} models tested</span></div>
               {MODELS.map((model, index) => <div className="roster-model" key={model.id} style={{ "--ac": model.accent }}><i /><span>0{index + 1}</span><b>{model.name}</b><small>{model.eraLabel}</small><em>{model.ranOn}</em></div>)}
               <div className="roster-next"><span>Next</span><b>Future models join here</b><small>Same prompts. Same scoring. Comparable history.</small></div>
+            </div>
+            <div className="review-method">
+              <div><span>LLM JUDGE</span><h3>{REVIEWER.name}</h3><p>Powered by {REVIEWER.model}. {REVIEWER.visualMethod}</p><small>{REVIEWER.version}</small></div>
+              <div><span>OBJECTIVE VERIFICATION</span><h3>aXite Security Tools</h3><p>{REVIEWER.verificationMethod}</p></div>
             </div>
           </Reveal>
         </div>
@@ -66,7 +69,7 @@ export default function Home() {
       <section className="result-band" id="result">
         <div className="wrap">
           <Reveal>
-            <div className="section-label"><span>01</span> The current result <b>Benchmark review score</b></div>
+            <div className="section-label"><span>01</span> The current result <b>Fable&apos;s score</b></div>
             <div className="scoreboard">
               {MODELS.map((model, index) => (
                 <article className="score-side" key={model.id} style={{ "--ac": model.accent }}>
@@ -106,26 +109,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="field-notes">
-        <div className="wrap">
-          <Reveal>
-            <div className="section-label"><span>03</span> What the averages miss <b>Three decisive tasks</b></div>
-            <div className="notes-grid">
-              {featured.map((task, index) => {
-                const winner = resultFor(task);
-                const model = MODELS.find((item) => item.id === winner) || MODELS[index % 2];
-                return (
-                  <Link className="note-story" href={`/task/${task.id}/`} key={task.id} style={{ "--ac": model.accent }}>
-                    <div className="story-image"><img src={`/${task.shots[model.id]}`} alt={`${task.title} by ${model.name}`} /></div>
-                    <div className="story-copy"><span>{task.cat} / {task.id.slice(0, 2)}</span><h3>{task.title}</h3><p>{task.verdicts[model.id]}</p><b>Open case →</b></div>
-                  </Link>
-                );
-              })}
-            </div>
-            <div className="all-tasks-cta"><p>There are nine more cases in the dossier.</p><Link className="button button-dark" href="/tasks/">View all 12 tasks <span>→</span></Link></div>
-          </Reveal>
-        </div>
-      </section>
+      <section className="home-cta"><div className="wrap"><p>Review all {TASKS.length} tasks and compare your scores with Fable.</p><Link className="button button-dark" href="/tasks/">Open the benchmark <span>→</span></Link></div></section>
     </main>
   );
 }
