@@ -1,8 +1,8 @@
 import Standings from "@/components/Standings";
 
 export const metadata = {
-  title: "Scorecard | Model Showdown by aXite",
-  description: "Benchmark averages against yours, per model.",
+  title: "Results | Model Showdown by aXite",
+  description: "Fable's Claude-based scores across every model and benchmark task.",
 };
 
 export default function StandingsPage() {
@@ -10,9 +10,9 @@ export default function StandingsPage() {
     <main className="page">
       <div className="wrap">
         <div className="page-head dossier-head">
-          <p className="eyebrow">Your scorecard / Stored only in this browser</p>
-          <h1>Your scorecard<span>.</span></h1>
-          <p className="sub">Put your averages beside the benchmark. Scores appear here as you judge each artifact.</p>
+          <p className="eyebrow">Fable scorecard / Claude Opus review</p>
+          <h1>Benchmark results<span>.</span></h1>
+          <p className="sub">See Fable&apos;s average score for each model, task wins, and every case-level result.</p>
         </div>
       </div>
       <Standings standalone />

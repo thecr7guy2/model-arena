@@ -1,15 +1,13 @@
 "use client";
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
-import { TASKS, MODELS, ORDER, byId } from "@/lib/data";
-import { loadRatings } from "@/lib/ratings";
+import { useMemo, useState } from "react";
+import { TASKS, MODELS, ORDER, byId, REVIEWER } from "@/lib/data";
 import Reveal from "./Reveal";
 
 const FILTERS = [
   { id: "all", label: "All tasks" },
   { id: "visual", label: "Visual" },
   { id: "code", label: "Code" },
-  { id: "unrated", label: "Unrated" },
 ];
 
 function winnerOf(task) {
@@ -19,27 +17,16 @@ function winnerOf(task) {
 }
 
 export default function TaskGrid() {
-  const [ratings, setRatings] = useState({});
   const [filter, setFilter] = useState("all");
   const [query, setQuery] = useState("");
 
-  useEffect(() => {
-    const sync = () => setRatings(loadRatings());
-    sync();
-    window.addEventListener("ratings-changed", sync);
-    return () => window.removeEventListener("ratings-changed", sync);
-  }, []);
-
-  const ratedTotal = TASKS.reduce((count, task) => count + ORDER.filter((id) => ratings[task.id]?.[id] != null).length, 0);
   const visible = useMemo(() => TASKS.filter((task) => {
     const matchesQuery = `${task.title} ${task.cat} ${task.one}`.toLowerCase().includes(query.toLowerCase());
-    const complete = ORDER.every((id) => ratings[task.id]?.[id] != null);
     const matchesFilter = filter === "all"
       || (filter === "visual" && task.kind === "iframe")
-      || (filter === "code" && task.kind === "code")
-      || (filter === "unrated" && !complete);
+      || (filter === "code" && task.kind === "code");
     return matchesQuery && matchesFilter;
-  }), [filter, query, ratings]);
+  }), [filter, query]);
 
   return (
     <section className="task-catalog" id="tasks">
@@ -52,12 +39,11 @@ export default function TaskGrid() {
         </div>
         <div className="catalog-status">
           <span>{visible.length} cases shown</span>
-          <span>{ratedTotal} of {TASKS.length * ORDER.length} artifacts scored</span>
-          <i><b style={{ width: `${ratedTotal / (TASKS.length * ORDER.length) * 100}%` }} /></i>
+          <span>{TASKS.length * ORDER.length} artifacts scored by {REVIEWER.name}</span>
+          <i><b style={{ width: "100%" }} /></i>
         </div>
         <div className="task-grid">
           {visible.map((task, index) => {
-            const complete = ORDER.every((id) => ratings[task.id]?.[id] != null);
             const winnerId = winnerOf(task);
             const winner = MODELS.find((model) => model.id === winnerId);
             const visual = task.shots[ORDER[0]];
@@ -67,7 +53,7 @@ export default function TaskGrid() {
                   <div className="task-media">
                     {visual ? <img src={`/${task.shots[winnerId || ORDER[0]]}`} alt={`${task.title} benchmark artifact`} loading="lazy" /> : <div className="code-preview"><span>CPP</span><b>&lt;/&gt;</b></div>}
                     <span className="task-number">{task.id.slice(0, 2)}</span>
-                    <span className={`rating-state ${complete ? "complete" : ""}`}>{complete ? "Scored" : "Open"}</span>
+                    <span className="rating-state complete">Fable scored</span>
                   </div>
                   <div className="task-card-copy">
                     <div className="task-type">{task.cat}</div>

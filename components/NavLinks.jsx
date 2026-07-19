@@ -6,7 +6,7 @@ const LINKS = [
   { href: "/#method", label: "How it works" },
   { href: "/tasks/", label: "Tasks" },
   { href: "/telemetry/", label: "Telemetry" },
-  { href: "/standings/", label: "Scorecard" },
+  { href: "/standings/", label: "Results" },
 ];
 
 export default function NavLinks() {

@@ -1,12 +1,8 @@
 "use client";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { TASKS, ORDER, byId } from "@/lib/data";
-import { loadRatings, saveRating } from "@/lib/ratings";
+import { TASKS, ORDER, byId, REVIEWER } from "@/lib/data";
 import Reveal from "./Reveal";
-
-const EASE = [0.23, 1, 0.32, 1];
 
 function esc(str) {
   return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -88,16 +84,6 @@ function Stage({ task, modelId }) {
 function Panel({ task, modelId, index }) {
   const m = byId[modelId];
   const meta = task.meta[modelId];
-  const [rated, setRated] = useState(null);
-  const [value, setValue] = useState(5);
-  const reduce = useReducedMotion();
-  useEffect(() => {
-    const prior = loadRatings()[task.id]?.[modelId];
-    if (prior != null) { setRated(prior); setValue(prior); }
-  }, [task.id, modelId]);
-
-  const lock = () => { saveRating(task.id, modelId, value); setRated(value); };
-  const delta = rated != null ? rated - task.scores[modelId] : 0;
 
   return (
     <Reveal
@@ -115,41 +101,17 @@ function Panel({ task, modelId, index }) {
         <span className="meta-chip">output <b>{fmtTokens(meta.tokens)} tok</b></span>
         <span className="meta-chip">steps <b>{meta.steps}</b></span>
       </div>
-      <div className="rate">
-        <div className="rate-label"><span>Your score</span><small>0 to 10</small></div>
-        <div className="rate-row">
-          <input type="range" min="0" max="10" step="0.5" value={value}
-            style={{ "--fill": `${value * 10}%` }}
-            onChange={(e) => setValue(parseFloat(e.target.value))}
-            aria-label={`Your score for ${m.name}`} />
-          <span className="val mono">{value.toFixed(1)}</span>
-          <button className="button score-button" onClick={lock}>{rated != null ? "Update" : "Reveal verdict"}</button>
+      <div className="benchmark-review">
+        <div className="benchmark-review-head">
+          <div>
+            <span className="review-label">{REVIEWER.name} score</span>
+            <div className="review-score"><strong>{task.scores[modelId].toFixed(1)}</strong><small>out of 10</small></div>
+          </div>
+          <span className="verdict">{task.verdicts[modelId]}</span>
         </div>
+        <p className="evidence">{task.evidence[modelId]}</p>
+        <span className="review-model">Reviewed with {REVIEWER.model}</span>
       </div>
-      <AnimatePresence initial={false}>
-        {rated != null ? (
-          <motion.div
-            key="reveal" className="reveal"
-            initial={reduce ? false : { height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            transition={{ duration: 0.35, ease: EASE }}
-          >
-            <div className="head">
-              <span className="score-num">{task.scores[modelId].toFixed(1)}</span>
-              <span className="out-of">out of 10 · benchmark score</span>
-              <span className="verdict">{task.verdicts[modelId]}</span>
-            </div>
-            <p className="evidence">{task.evidence[modelId]}</p>
-            <span className="delta">
-              {delta === 0
-                ? "your score matches the benchmark"
-                : `you scored it ${Math.abs(delta).toFixed(1)} ${delta > 0 ? "higher" : "lower"} than the benchmark`}
-            </span>
-          </motion.div>
-        ) : (
-          <div key="cta" className="reveal-cta">Score the artifact to reveal the benchmark result.</div>
-        )}
-      </AnimatePresence>
     </Reveal>
   );
 }
@@ -180,10 +142,10 @@ export default function TaskDetail({ taskId }) {
           <summary><span>Exact frozen prompt</span><b>Read brief +</b></summary>
           <pre>{t.prompt}</pre>
         </details>
-        <div className="case-flow" aria-label="How to judge this task">
+        <div className="case-flow" aria-label="How to read this task">
           <span><b>01</b> Inspect every original output</span>
-          <span><b>02</b> Give each model your score</span>
-          <span><b>03</b> Reveal the benchmark result</span>
+          <span><b>02</b> Compare Fable&apos;s scores</span>
+          <span><b>03</b> Read the verdict and evidence</span>
         </div>
         <div className="panels">
           {ORDER.map((mid, i) => <Panel key={mid} task={t} modelId={mid} index={i} />)}
