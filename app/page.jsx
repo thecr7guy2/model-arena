@@ -3,152 +3,126 @@ import { MODELS, TASKS } from "@/lib/data";
 import Versus from "@/components/Versus";
 import Reveal from "@/components/Reveal";
 
-/* Curated highlight moments — headlines from the bench's own results */
-const MOMENTS = [
-  {
-    taskId: "09-cpp-bug-hunt",
-    kicker: "the perfect score",
-    headline: "8 planted bugs. 8 found. Zero false alarms.",
-    modelIdx: 1,
-  },
-  {
-    taskId: "08-cpp-ring-buffer",
-    kicker: "the speed upset",
-    headline: "109M ops/s — five times its rival's ring buffer.",
-    modelIdx: 0,
-  },
-  {
-    taskId: "10-net-chat-server",
-    kicker: "the silent server",
-    headline: "A chat server that never sends a single byte.",
-    modelIdx: 0,
-  },
-];
-
-function winnerOf(t) {
-  let best = null, tie = false;
-  for (const m of MODELS) {
-    const s = t.scores[m.id];
-    if (best === null || s > t.scores[best]) { best = m.id; tie = false; }
-    else if (s === t.scores[best]) tie = true;
-  }
-  return tie ? null : best;
+function resultFor(task) {
+  const best = Math.max(...MODELS.map((model) => task.scores[model.id]));
+  const winners = MODELS.filter((model) => task.scores[model.id] === best);
+  return winners.length === 1 ? winners[0].id : null;
 }
 
 export default function Home() {
-  const avg = Object.fromEntries(
-    MODELS.map((m) => [m.id, TASKS.reduce((s, t) => s + t.scores[m.id], 0) / TASKS.length])
-  );
-  const wins = Object.fromEntries(MODELS.map((m) => [m.id, 0]));
-  const winners = TASKS.map((t) => {
-    const w = winnerOf(t);
-    if (w) wins[w]++;
-    return { t, w };
+  const averages = Object.fromEntries(MODELS.map((model) => [
+    model.id,
+    TASKS.reduce((sum, task) => sum + task.scores[model.id], 0) / TASKS.length,
+  ]));
+  const wins = Object.fromEntries(MODELS.map((model) => [model.id, 0]));
+  TASKS.forEach((task) => {
+    const winner = resultFor(task);
+    if (winner) wins[winner] += 1;
   });
-  const byId = Object.fromEntries(MODELS.map((m) => [m.id, m]));
-  const leader = MODELS.reduce((a, b) => (avg[a.id] >= avg[b.id] ? a : b));
-  const first = MODELS[0];
-  const latest = MODELS[MODELS.length - 1];
+  const ranking = [...MODELS].sort((a, b) => averages[b.id] - averages[a.id]);
+  const leader = ranking[0];
+  const lead = ranking.length > 1 ? averages[ranking[0].id] - averages[ranking[1].id] : 0;
+  const [first, latest] = MODELS;
+  const featured = [TASKS[2], TASKS[4], TASKS[11]];
 
   return (
-    <main>
+    <main className="home">
       <section className="hero">
+        <div className="wrap hero-copy">
+          <Reveal>
+            <p className="eyebrow">An evolving independent model benchmark / July 2026 edition</p>
+            <h1>MODEL<br />SHOWDOWN<span className="period">.</span></h1>
+            <div className="hero-bottom">
+              <p className="lede">Every model faces the same 12 frozen prompts with no retries or cleanup. Inspect the original work, score it yourself, and see how each new model changes the field.</p>
+              <div className="hero-actions">
+                <Link className="button button-dark" href="/tasks/">Judge the work <span aria-hidden>→</span></Link>
+                <Link className="text-link" href="#result">See the result ↓</Link>
+              </div>
+            </div>
+          </Reveal>
+        </div>
+        <div className="hero-rule" aria-hidden><span>{TASKS.length} FROZEN TASKS</span><span>{TASKS.length * MODELS.length} LIVE ARTIFACTS</span><span>{MODELS.length} CURRENT MODELS</span></div>
+      </section>
+
+      <section className="protocol-section" id="method">
         <div className="wrap">
           <Reveal>
-            <div className="pill-row" aria-label="Arena rules">
-              <span className="pill">12 frozen prompts</span>
-              <span className="pill">one shot · no retries</span>
-              <span className="pill">artifacts as generated</span>
-              <span className="pill">verified live</span>
+            <div className="section-label"><span>00</span> How the benchmark works <b>A growing field, one fixed test</b></div>
+            <div className="protocol-intro"><h2>Same test.<br />Every time.</h2><p>Model Showdown is a living benchmark, not a disposable head-to-head. The prompt suite stays frozen. When a new model arrives on the cluster, it runs the same tasks and joins the existing record.</p></div>
+            <div className="protocol-steps">
+              <article><b>01</b><h3>We freeze the brief</h3><p>Twelve visual, frontend, and systems tasks stay identical across every run.</p></article>
+              <article><b>02</b><h3>Models get one attempt</h3><p>No human cleanup, retries, or selective reruns. The generated artifact is the evidence.</p></article>
+              <article><b>03</b><h3>You inspect and score</h3><p>Judge before revealing the benchmark verdict. Your ratings stay in your browser.</p></article>
+            </div>
+            <div className="roster">
+              <div className="roster-label">Current roster <span>{MODELS.length} models tested</span></div>
+              {MODELS.map((model, index) => <div className="roster-model" key={model.id} style={{ "--ac": model.accent }}><i /><span>0{index + 1}</span><b>{model.name}</b><small>{model.eraLabel}</small><em>{model.ranOn}</em></div>)}
+              <div className="roster-next"><span>Next</span><b>Future models join here</b><small>Same prompts. Same scoring. Comparable history.</small></div>
             </div>
           </Reveal>
-          <Reveal delay={0.05}>
-            <h1>Same prompts. Every model.<br /><span className="grad">You be the judge.</span></h1>
-          </Reveal>
+        </div>
+      </section>
 
-          {/* the scoreboard — what a visitor came to find out */}
-          <Reveal delay={0.1}>
-            <div className="matchup">
-              {MODELS.map((m, i) => (
-                <div className={`side ${i > 0 ? "right" : ""}`} key={m.id} style={{ "--ac": m.accent }}>
-                  <div className="who">
-                    <span className="dot" />
-                    <div>
-                      <span className="name">{m.name}</span>
-                      <span className="era-mini">{m.era} · {m.eraLabel}</span>
-                    </div>
-                  </div>
-                  <div className="score">
-                    {avg[m.id].toFixed(1)}
-                    <small>/10</small>
-                  </div>
-                  <span className="winline">{wins[m.id]} task wins</span>
-                </div>
+      <section className="result-band" id="result">
+        <div className="wrap">
+          <Reveal>
+            <div className="section-label"><span>01</span> The current result <b>Benchmark review score</b></div>
+            <div className="scoreboard">
+              {MODELS.map((model, index) => (
+                <article className="score-side" key={model.id} style={{ "--ac": model.accent }}>
+                  <div className="model-index">MODEL {String(index + 1).padStart(2, "0")}</div>
+                  <h2>{model.name}</h2>
+                  <div className="giant-score">{averages[model.id].toFixed(1)}<small>/10</small></div>
+                  <div className="model-facts"><span>{wins[model.id]} wins</span><span>{model.totals.split(" · ")[0]}</span></div>
+                </article>
               ))}
-              <span className="vs" aria-hidden>VS</span>
-              <div className="win-strip" aria-label="Task-by-task winners">
-                {winners.map(({ t, w }) => (
-                  <Link
-                    key={t.id}
-                    href={`/task/${t.id}/`}
-                    className="cell"
-                    title={`${t.id.slice(0, 2)} — ${t.title}: ${w ? byId[w].short + " wins" : "tie"}`}
-                    style={{
-                      background: w
-                        ? byId[w].accent
-                        : `linear-gradient(135deg, ${MODELS[0].accent} 50%, ${MODELS[MODELS.length - 1].accent} 50%)`,
-                    }}
-                  />
-                ))}
-              </div>
-              <p className="matchup-note">
-                Fable&apos;s scores, task by task — <b style={{ color: leader.accent }}>{leader.short}</b> leads the bench.
-                Rate the artifacts to build your own column.
-              </p>
             </div>
-          </Reveal>
-
-          {/* the moments people talk about */}
-          <Reveal delay={0.16}>
-            <div className="moments">
-              {MOMENTS.map((mo) => {
-                const t = TASKS.find((x) => x.id === mo.taskId);
-                const m = MODELS[mo.modelIdx];
-                return (
-                  <Link className="moment" href={`/task/${t.id}/`} key={t.id} style={{ "--ac": m.accent }}>
-                    <span className="kicker">{mo.kicker}</span>
-                    <p className="line">{mo.headline}</p>
-                    <span className="meta">
-                      <span className="dot" />{m.short} · {t.title.toLowerCase()} · scored {t.scores[m.id].toFixed(1)}
-                    </span>
-                  </Link>
-                );
+            <p className="result-callout"><span>{leader.short} leads the current field</span>{ranking.length > 1 ? ` by ${lead.toFixed(1)} points` : ""}, but the aggregate hides the interesting failures.</p>
+            <div className="result-tape">
+              {TASKS.map((task, index) => {
+                const winner = resultFor(task);
+                const model = MODELS.find((item) => item.id === winner);
+                return <Link key={task.id} href={`/task/${task.id}/`} title={task.title} style={{ "--win": model?.accent || "#f2c94c" }}><b>{String(index + 1).padStart(2, "0")}</b><i /></Link>;
               })}
             </div>
           </Reveal>
+        </div>
+      </section>
 
-          {/* the evidence — see one artifact with your own eyes */}
-          <Reveal delay={0.2}>
-            <div className="proof-head">
-              <span className="crumb">exhibit 01 — &ldquo;a pelican riding a bicycle&rdquo;</span>
-              <span className="crumb dimmer">drag the seam</span>
-            </div>
+      <section className="exhibit-section">
+        <div className="wrap">
+          <Reveal>
+            <div className="section-label"><span>02</span> Baseline versus newest <b>Drag to compare</b></div>
+            <div className="exhibit-title"><h2>A pelican on a bicycle.</h2><p>The benchmark classic exposes spatial reasoning in a single glance. One bird rides. The other floats.</p></div>
             <Versus
               left={`/artifacts/${first.id}/01-pelican-svg/pelican.svg`}
               right={`/artifacts/${latest.id}/01-pelican-svg/pelican.svg`}
-              leftLabel={first.short.toUpperCase()}
-              rightLabel={latest.short.toUpperCase()}
+              leftLabel={first.short}
+              rightLabel={latest.short}
               leftAccent={first.accent}
               rightAccent={latest.accent}
             />
           </Reveal>
+        </div>
+      </section>
 
-          <Reveal delay={0.24}>
-            <div className="go-row">
-              <Link className="btn primary" href="/tasks/">judge all 12 tasks →</Link>
-              <Link className="btn" href="/telemetry/">telemetry</Link>
-              <Link className="btn" href="/standings/">standings</Link>
+      <section className="field-notes">
+        <div className="wrap">
+          <Reveal>
+            <div className="section-label"><span>03</span> What the averages miss <b>Three decisive tasks</b></div>
+            <div className="notes-grid">
+              {featured.map((task, index) => {
+                const winner = resultFor(task);
+                const model = MODELS.find((item) => item.id === winner) || MODELS[index % 2];
+                return (
+                  <Link className="note-story" href={`/task/${task.id}/`} key={task.id} style={{ "--ac": model.accent }}>
+                    <div className="story-image"><img src={`/${task.shots[model.id]}`} alt={`${task.title} by ${model.name}`} /></div>
+                    <div className="story-copy"><span>{task.cat} / {task.id.slice(0, 2)}</span><h3>{task.title}</h3><p>{task.verdicts[model.id]}</p><b>Open case →</b></div>
+                  </Link>
+                );
+              })}
             </div>
+            <div className="all-tasks-cta"><p>There are nine more cases in the dossier.</p><Link className="button button-dark" href="/tasks/">View all 12 tasks <span>→</span></Link></div>
           </Reveal>
         </div>
       </section>

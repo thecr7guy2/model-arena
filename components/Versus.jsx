@@ -61,7 +61,7 @@ export default function Versus({ left, right, leftLabel, rightLabel, leftAccent,
       <div className="pane"><img src={right} alt={rightLabel} /></div>
       <div className="pane top"><img src={left} alt={leftLabel} /></div>
       <div className="seam" style={{ left: "50%" }} />
-      <div className="knob" style={{ left: "50%" }}>&lt;&gt;</div>
+      <div className="knob" style={{ left: "50%" }} aria-hidden>↔</div>
       <span className="tag left" style={leftAccent ? { color: leftAccent } : undefined}>{leftLabel}</span>
       <span className="tag right" style={rightAccent ? { color: rightAccent } : undefined}>{rightLabel}</span>
     </div>

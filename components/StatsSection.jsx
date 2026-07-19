@@ -2,8 +2,6 @@
 import { MODELS, STATS, TASKS, ORDER } from "@/lib/data";
 import Reveal from "./Reveal";
 
-const [M1, M2] = ORDER;
-
 function fmtNum(v) {
   if (typeof v === "string") return v;
   return v >= 10000 ? Math.round(v / 1000) + "k" : String(v);
@@ -15,7 +13,7 @@ function fmtWall(s) {
 function StatTile({ row, i }) {
   return (
     <Reveal className="stat-tile" delay={Math.min(i * 0.05, 0.2)}>
-      <div className="lbl">{row.label}</div>
+      <div className="lbl"><span>{String(i + 1).padStart(2, "0")}</span>{row.label}</div>
       <div className="pair">
         {MODELS.map((m) => (
           <div className="half" key={m.id}>
@@ -30,10 +28,9 @@ function StatTile({ row, i }) {
           </div>
         ))}
       </div>
-      {(row.detail[M1] || row.detail[M2]) && (
+      {MODELS.some((model) => row.detail[model.id]) && (
         <p className="note">
-          {row.detail[M1] && <>{MODELS[0].short}: {row.detail[M1]}. </>}
-          {row.detail[M2] && <>{MODELS[1].short}: {row.detail[M2]}.</>}
+          {MODELS.map((model) => row.detail[model.id] ? <span key={model.id}>{model.short}: {row.detail[model.id]}. </span> : null)}
         </p>
       )}
     </Reveal>
@@ -80,18 +77,21 @@ export default function StatsSection() {
   return (
     <section id="telemetry">
       <div className="wrap">
+        <div className="telemetry-key" style={{ "--model-count": MODELS.length }}>
+          {MODELS.map((model, index) => <div key={model.id} style={{ "--ac": model.accent }}><span>0{index + 1}</span><i /><b>{model.name}</b><small>{model.ranOn}</small></div>)}
+        </div>
         <div className="stat-tiles">
           {STATS.rows.map((row, i) => <StatTile key={row.key} row={row} i={i} />)}
         </div>
         <GroupedBars
-          title="Wall-clock per task"
+          title="01 / Wall-clock per task"
           note="The long bars are where a model iterated against its own output."
           valueOf={(t, m) => t.meta[m].wall}
           fmt={fmtWall}
           max={maxWall}
         />
         <GroupedBars
-          title="Output tokens per task (reasoning included)"
+          title="02 / Output tokens per task"
           note="Same prompts, different appetites — reasoning tokens included."
           valueOf={(t, m) => t.meta[m].tokens}
           fmt={(v) => (v >= 1000 ? (v / 1000).toFixed(1) + "k" : v)}

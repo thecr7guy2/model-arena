@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { TASKS, ORDER, byId } from "@/lib/data";
 import { loadRatings, saveRating } from "@/lib/ratings";
 import Reveal from "./Reveal";
@@ -90,6 +90,7 @@ function Panel({ task, modelId, index }) {
   const meta = task.meta[modelId];
   const [rated, setRated] = useState(null);
   const [value, setValue] = useState(5);
+  const reduce = useReducedMotion();
   useEffect(() => {
     const prior = loadRatings()[task.id]?.[modelId];
     if (prior != null) { setRated(prior); setValue(prior); }
@@ -105,8 +106,8 @@ function Panel({ task, modelId, index }) {
       delay={index * 0.07}
     >
       <div className="panel-head">
-        <div className="who"><span className="dot" /><span className="name">{m.name}</span></div>
-        <span className="era-mini">{m.era} · {m.eraLabel}</span>
+        <div className="who"><span className="model-code">0{index + 1}</span><span className="name">{m.name}</span></div>
+        <span className="era-mini">{m.eraLabel}</span>
       </div>
       <Stage task={task} modelId={modelId} />
       <div className="meta-row">
@@ -115,13 +116,14 @@ function Panel({ task, modelId, index }) {
         <span className="meta-chip">steps <b>{meta.steps}</b></span>
       </div>
       <div className="rate">
+        <div className="rate-label"><span>Your score</span><small>0 — 10</small></div>
         <div className="rate-row">
           <input type="range" min="0" max="10" step="0.5" value={value}
             style={{ "--fill": `${value * 10}%` }}
             onChange={(e) => setValue(parseFloat(e.target.value))}
             aria-label={`Your score for ${m.name}`} />
           <span className="val mono">{value.toFixed(1)}</span>
-          <button className="btn lock" onClick={lock}>{rated != null ? "update" : "lock in"}</button>
+          <button className="button score-button" onClick={lock}>{rated != null ? "Update" : "Reveal verdict"}</button>
         </div>
       </div>
       <AnimatePresence initial={false}>
@@ -134,18 +136,18 @@ function Panel({ task, modelId, index }) {
           >
             <div className="head">
               <span className="score-num">{task.scores[modelId].toFixed(1)}</span>
-              <span className="out-of">/ 10 — Fable&apos;s score</span>
+              <span className="out-of">/ 10 — benchmark review</span>
               <span className="verdict">{task.verdicts[modelId]}</span>
             </div>
             <p className="evidence">{task.evidence[modelId]}</p>
             <span className="delta">
               {delta === 0
-                ? "you and Fable agree exactly"
-                : `you scored it ${Math.abs(delta).toFixed(1)} ${delta > 0 ? "higher" : "lower"} than Fable`}
+                ? "your score matches the benchmark review"
+                : `you scored it ${Math.abs(delta).toFixed(1)} ${delta > 0 ? "higher" : "lower"} than the benchmark review`}
             </span>
           </motion.div>
         ) : (
-          <div key="cta" className="reveal-cta">rate it to unlock Fable&apos;s verdict ↑</div>
+          <div key="cta" className="reveal-cta">Score the artifact to reveal the benchmark verdict.</div>
         )}
       </AnimatePresence>
     </Reveal>
@@ -159,25 +161,31 @@ export default function TaskDetail({ taskId }) {
   const next = idx < TASKS.length - 1 ? TASKS[idx + 1] : null;
 
   return (
-    <main>
+    <main className="task-page">
       <div className="wrap">
         <div className="back-row">
-          <Link className="btn" href="/tasks/">← all tasks</Link>
+          <Link className="back-link" href="/tasks/">← All tasks</Link>
           <div className="task-nav">
-            <Link className="btn" aria-disabled={!prev} href={prev ? `/task/${prev.id}/` : "#"}>prev</Link>
-            <Link className="btn" aria-disabled={!next} href={next ? `/task/${next.id}/` : "#"}>next</Link>
+            <Link className="nav-square" aria-label="Previous task" aria-disabled={!prev} href={prev ? `/task/${prev.id}/` : "#"}>←</Link>
+            <span>{String(idx + 1).padStart(2, "0")} / {TASKS.length}</span>
+            <Link className="nav-square" aria-label="Next task" aria-disabled={!next} href={next ? `/task/${next.id}/` : "#"}>→</Link>
           </div>
         </div>
         <div className="detail-head">
-          <span className="num mono">TASK {t.id.slice(0, 2)} / 12 — {t.cat.toUpperCase()}</span>
+          <span className="eyebrow">Case {t.id.slice(0, 2)} / {t.cat}</span>
           <h1>{t.title}</h1>
           <p className="one">{t.one}</p>
         </div>
-        <p className="task-story">{t.story}</p>
+        <div className="case-context"><span>Field note</span><p>{t.story}</p></div>
         <details className="prompt-box">
-          <summary><span className="tw">▸</span> the exact prompt both models received</summary>
+          <summary><span>Exact frozen prompt</span><b>Read brief +</b></summary>
           <pre>{t.prompt}</pre>
         </details>
+        <div className="case-flow" aria-label="How to judge this task">
+          <span><b>01</b> Inspect every original output</span>
+          <span><b>02</b> Give each model your score</span>
+          <span><b>03</b> Reveal the benchmark review</span>
+        </div>
         <div className="panels">
           {ORDER.map((mid, i) => <Panel key={mid} task={t} modelId={mid} index={i} />)}
         </div>

@@ -9,10 +9,10 @@ export default function TelemetryPage() {
   return (
     <main className="page">
       <div className="wrap">
-        <div className="page-head">
-          <p className="crumb">measured at the API, not estimated</p>
-          <h1>Telemetry</h1>
-          <p className="sub">A logging proxy recorded every request during the runs — timing, tokens, tool calls.</p>
+        <div className="page-head dossier-head">
+          <p className="eyebrow">Measured at the API / No estimates</p>
+          <h1>THE RECEIPTS<span>.</span></h1>
+          <p className="sub">Timing, tokens, and tool calls captured by a transparent logging proxy during the actual benchmark runs.</p>
         </div>
       </div>
       <StatsSection standalone />

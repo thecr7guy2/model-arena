@@ -3,9 +3,10 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const LINKS = [
-  { href: "/tasks/", label: "tasks" },
-  { href: "/telemetry/", label: "telemetry" },
-  { href: "/standings/", label: "standings" },
+  { href: "/#method", label: "How it works" },
+  { href: "/tasks/", label: "Tasks" },
+  { href: "/telemetry/", label: "Telemetry" },
+  { href: "/standings/", label: "Scorecard" },
 ];
 
 export default function NavLinks() {

@@ -1,14 +1,15 @@
 import "./globals.css";
 import Link from "next/link";
 import NavLinks from "@/components/NavLinks";
-import { Space_Grotesk, JetBrains_Mono, Inter } from "next/font/google";
+import { MODELS, TASKS } from "@/lib/data";
+import { Archivo_Black, IBM_Plex_Mono, Inter } from "next/font/google";
 
-const display = Space_Grotesk({ subsets: ["latin"], variable: "--font-display", weight: ["500", "700"] });
-const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono", weight: ["400", "700"] });
+const display = Archivo_Black({ subsets: ["latin"], variable: "--font-display", weight: "400" });
+const mono = IBM_Plex_Mono({ subsets: ["latin"], variable: "--font-mono", weight: ["400", "500", "600"] });
 const body = Inter({ subsets: ["latin"], variable: "--font-body" });
 
 export const metadata = {
-  title: "Model Arena — same prompts, every model, you judge",
+  title: "Model Showdown | 12 prompts. No second takes.",
   description:
     "Every model that serves on this cluster faces the same twelve frozen prompts, one shot each. Compare the artifacts side by side and judge them yourself.",
   icons: {
@@ -22,17 +23,19 @@ export default function RootLayout({ children }) {
       <body>
         <header className="site-header">
           <div className="wrap header-in">
-            <Link className="wordmark" href="/">
-              <span className="bolt" />MODEL ARENA
+            <Link className="wordmark" href="/" aria-label="Model Showdown home">
+              <span className="mark">MS</span>
+              <span>MODEL<br />SHOWDOWN</span>
             </Link>
             <NavLinks />
+            <Link className="header-cta" href="/tasks/">Start judging <span aria-hidden>↗</span></Link>
           </div>
         </header>
         {children}
         <footer className="site-footer">
           <div className="wrap">
-            <span>benchmarked &amp; built on the cluster it measures</span>
-            <span>prompts frozen · next model joins the same arena</span>
+            <span className="footer-brand">MODEL SHOWDOWN</span>
+            <span>{TASKS.length} frozen prompts. One attempt per model. {TASKS.length * MODELS.length} artifacts preserved in the current field.</span>
           </div>
         </footer>
       </body>
