@@ -3,10 +3,8 @@
 **One cluster, twelve prompts, every era.** A living benchmark of every LLM that has served
 on our 2× NVIDIA DGX Spark cluster: the same twelve creative and engineering prompts, run
 one-shot through the same agent harness, artifacts published exactly as generated — bugs
-included. Visitors judge each artifact themselves. Locking in a score reveals Fable's review
-and the evidence behind it. Fable used Claude Opus as a blinded visual judge. The exact Opus
-version was not recorded in the original run metadata. aXite separately verified executable
-tasks, network behavior, and the sealed bug-hunt answer key.
+included. Each artifact appears with Fable's score, verdict, and supporting evidence. Fable is
+the Claude agent that operates the benchmark cluster.
 
 **Era 1:** MiniMax M2.7 (AWQ 4-bit, always-on interleaved thinking) ·
 **Era 2:** DeepSeek V4 Flash (500K context, MTP, `reasoning_effort: max`) ·
@@ -14,8 +12,8 @@ tasks, network behavior, and the sealed bug-hunt answer key.
 
 ## Stack
 
-Next.js (App Router, static export) · Framer Motion · no database — visitor ratings live in
-`localStorage`. Fable's scores and reviewer disclosure ship in `lib/data.js`.
+Next.js (App Router, static export) · Framer Motion · no database. Fable's scores and verdicts
+ship in `lib/data.js`.
 
 ```bash
 npm install

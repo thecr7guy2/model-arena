@@ -23,7 +23,7 @@ export default function Standings() {
       <div className="wrap">
         <Reveal>
           <div className="scorecard-summary">
-            <div><span>Reviewer</span><strong>{REVIEWER.name}</strong><p>using {REVIEWER.model}</p></div>
+            <div><span>Reviewer</span><strong>{REVIEWER.name}</strong><p>{REVIEWER.role}</p></div>
             <div><span>Current leader</span><strong>{leader.model.short}</strong><p>{leader.average.toFixed(1)} average score</p></div>
             <div><span>Review coverage</span><strong>{totalScores}<small> / {totalScores}</small></strong><p>artifacts scored</p></div>
           </div>

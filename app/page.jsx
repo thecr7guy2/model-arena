@@ -51,7 +51,7 @@ export default function Home() {
             <div className="protocol-steps">
               <article><b>01</b><h3>We freeze the brief</h3><p>Twelve visual, frontend, and systems tasks stay identical across every run.</p></article>
               <article><b>02</b><h3>Models get one attempt</h3><p>No human cleanup, retries, or selective reruns. The generated artifact is the evidence.</p></article>
-              <article><b>03</b><h3>Fable scores the work</h3><p>Fable uses Claude Opus to score each artifact and record the evidence behind every verdict.</p></article>
+              <article><b>03</b><h3>Fable scores the work</h3><p>Fable, the Claude agent operating the cluster, scores each artifact and records the evidence behind every verdict.</p></article>
             </div>
             <div className="roster">
               <div className="roster-label">Models in this benchmark <span>{MODELS.length} completed runs</span></div>

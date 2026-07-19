@@ -110,7 +110,7 @@ function Panel({ task, modelId, index }) {
           <span className="verdict">{task.verdicts[modelId]}</span>
         </div>
         <p className="evidence">{task.evidence[modelId]}</p>
-        <span className="review-model">Reviewed with {REVIEWER.model}</span>
+        <span className="review-model">Reviewed by {REVIEWER.name}</span>
       </div>
     </Reveal>
   );
