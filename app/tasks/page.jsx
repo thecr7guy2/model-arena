@@ -13,7 +13,7 @@ export default function TasksPage() {
         <div className="page-head dossier-head">
           <p className="eyebrow">The complete case file / {TASKS.length * MODELS.length} preserved artifacts</p>
           <h1>The tasks<span>.</span></h1>
-          <p className="sub">Every model received the same brief and one uninterrupted attempt. Open a task, inspect each output, and score it before seeing Fable&apos;s review.</p>
+          <p className="sub">Every model received the same brief and one uninterrupted attempt. Open a task, inspect each output, and score it before seeing the benchmark result.</p>
         </div>
       </div>
       <TaskGrid standalone />

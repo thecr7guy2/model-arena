@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { MODELS, TASKS, REVIEWER } from "@/lib/data";
+import { MODELS, TASKS } from "@/lib/data";
 import Versus from "@/components/Versus";
 import Reveal from "@/components/Reveal";
 
@@ -51,16 +51,25 @@ export default function Home() {
             <div className="protocol-steps">
               <article><b>01</b><h3>We freeze the brief</h3><p>Twelve visual, frontend, and systems tasks stay identical across every run.</p></article>
               <article><b>02</b><h3>Models get one attempt</h3><p>No human cleanup, retries, or selective reruns. The generated artifact is the evidence.</p></article>
-              <article><b>03</b><h3>You inspect and score</h3><p>Score each artifact before revealing Fable&apos;s review. Your ratings stay in your browser.</p></article>
+              <article><b>03</b><h3>You inspect and score</h3><p>Score each artifact before revealing the benchmark result. Your ratings stay in your browser.</p></article>
             </div>
             <div className="roster">
-              <div className="roster-label">Current roster <span>{MODELS.length} models tested</span></div>
-              {MODELS.map((model, index) => <div className="roster-model" key={model.id} style={{ "--ac": model.accent }}><i /><span>0{index + 1}</span><b>{model.name}</b><small>{model.eraLabel}</small><em>{model.ranOn}</em></div>)}
-              <div className="roster-next"><span>Next</span><b>Future models join here</b><small>Same prompts. Same scoring. Comparable history.</small></div>
-            </div>
-            <div className="review-method">
-              <div><span>LLM JUDGE</span><h3>{REVIEWER.name}</h3><p>Powered by {REVIEWER.model}. {REVIEWER.visualMethod}</p><small>{REVIEWER.version}</small></div>
-              <div><span>OBJECTIVE VERIFICATION</span><h3>aXite Security Tools</h3><p>{REVIEWER.verificationMethod}</p></div>
+              <div className="roster-label">Models in this benchmark <span>{MODELS.length} completed runs</span></div>
+              <div className="roster-grid">
+                {MODELS.map((model, index) => (
+                  <article className="roster-model" key={model.id} style={{ "--ac": model.accent }}>
+                    <div><span>Model {String(index + 1).padStart(2, "0")}</span><small>Run complete</small></div>
+                    <h3>{model.name}</h3>
+                    <p>{TASKS.length} fixed tasks. One attempt per task.</p>
+                    <time>{model.ranOn.split(" · ")[0]}</time>
+                  </article>
+                ))}
+                <article className="roster-next">
+                  <div><span>Next model</span><small>Future entry</small></div>
+                  <h3>The field stays open.</h3>
+                  <p>Each new model runs the same tasks and joins the same scorecard.</p>
+                </article>
+              </div>
             </div>
           </Reveal>
         </div>
@@ -69,25 +78,19 @@ export default function Home() {
       <section className="result-band" id="result">
         <div className="wrap">
           <Reveal>
-            <div className="section-label"><span>01</span> The current result <b>Fable&apos;s score</b></div>
+            <div className="section-label"><span>01</span> The current result <b>Average benchmark score</b></div>
             <div className="scoreboard">
               {MODELS.map((model, index) => (
-                <article className="score-side" key={model.id} style={{ "--ac": model.accent }}>
+                <article className="score-side" key={model.id} style={{ "--ac": model.accent, "--score-ac": model.chart }}>
                   <div className="model-index">MODEL {String(index + 1).padStart(2, "0")}</div>
                   <h2>{model.name}</h2>
-                  <div className="giant-score">{averages[model.id].toFixed(1)}<small>/10</small></div>
+                  <div className="giant-score"><strong>{averages[model.id].toFixed(1)}</strong><small>out of 10</small></div>
                   <div className="model-facts"><span>{wins[model.id]} wins</span><span>{model.totals.split(" · ")[0]}</span></div>
                 </article>
               ))}
             </div>
             <p className="result-callout"><span>{leader.short} leads the current field</span>{ranking.length > 1 ? ` by ${lead.toFixed(1)} points` : ""}, but the aggregate hides the interesting failures.</p>
-            <div className="result-tape">
-              {TASKS.map((task, index) => {
-                const winner = resultFor(task);
-                const model = MODELS.find((item) => item.id === winner);
-                return <Link key={task.id} href={`/task/${task.id}/`} title={task.title} style={{ "--win": model?.accent || "#f2c94c" }}><b>{String(index + 1).padStart(2, "0")}</b><i /></Link>;
-              })}
-            </div>
+            <Link className="result-link" href="/tasks/">See all task scores <span aria-hidden>→</span></Link>
           </Reveal>
         </div>
       </section>
@@ -109,7 +112,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="home-cta"><div className="wrap"><p>Review all {TASKS.length} tasks and compare your scores with Fable.</p><Link className="button button-dark" href="/tasks/">Open the benchmark <span>→</span></Link></div></section>
+      <section className="home-cta"><div className="wrap"><p>Review all {TASKS.length} tasks and compare your scores with the benchmark.</p><Link className="button button-dark" href="/tasks/">Open the benchmark <span>→</span></Link></div></section>
     </main>
   );
 }

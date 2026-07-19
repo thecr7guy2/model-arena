@@ -2,7 +2,7 @@ import Standings from "@/components/Standings";
 
 export const metadata = {
   title: "Scorecard | Model Showdown by aXite",
-  description: "Fable's averages against yours, per model.",
+  description: "Benchmark averages against yours, per model.",
 };
 
 export default function StandingsPage() {

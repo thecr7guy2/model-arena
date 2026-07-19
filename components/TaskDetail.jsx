@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { TASKS, ORDER, byId, REVIEWER } from "@/lib/data";
+import { TASKS, ORDER, byId } from "@/lib/data";
 import { loadRatings, saveRating } from "@/lib/ratings";
 import Reveal from "./Reveal";
 
@@ -136,18 +136,18 @@ function Panel({ task, modelId, index }) {
           >
             <div className="head">
               <span className="score-num">{task.scores[modelId].toFixed(1)}</span>
-              <span className="out-of">/ 10 · {REVIEWER.name}&apos;s score</span>
+              <span className="out-of">out of 10 · benchmark score</span>
               <span className="verdict">{task.verdicts[modelId]}</span>
             </div>
             <p className="evidence">{task.evidence[modelId]}</p>
             <span className="delta">
               {delta === 0
-                ? `your score matches ${REVIEWER.name}`
-                : `you scored it ${Math.abs(delta).toFixed(1)} ${delta > 0 ? "higher" : "lower"} than ${REVIEWER.name}`}
+                ? "your score matches the benchmark"
+                : `you scored it ${Math.abs(delta).toFixed(1)} ${delta > 0 ? "higher" : "lower"} than the benchmark`}
             </span>
           </motion.div>
         ) : (
-          <div key="cta" className="reveal-cta">Score the artifact to reveal Fable&apos;s review.</div>
+          <div key="cta" className="reveal-cta">Score the artifact to reveal the benchmark result.</div>
         )}
       </AnimatePresence>
     </Reveal>
@@ -167,7 +167,7 @@ export default function TaskDetail({ taskId }) {
           <Link className="back-link" href="/tasks/">← All tasks</Link>
           <div className="task-nav">
             <Link className="nav-square" aria-label="Previous task" aria-disabled={!prev} href={prev ? `/task/${prev.id}/` : "#"}>←</Link>
-            <span>{String(idx + 1).padStart(2, "0")} / {TASKS.length}</span>
+            <span>Task {idx + 1} of {TASKS.length}</span>
             <Link className="nav-square" aria-label="Next task" aria-disabled={!next} href={next ? `/task/${next.id}/` : "#"}>→</Link>
           </div>
         </div>
@@ -183,9 +183,8 @@ export default function TaskDetail({ taskId }) {
         <div className="case-flow" aria-label="How to judge this task">
           <span><b>01</b> Inspect every original output</span>
           <span><b>02</b> Give each model your score</span>
-          <span><b>03</b> Reveal Fable&apos;s review</span>
+          <span><b>03</b> Reveal the benchmark result</span>
         </div>
-        <p className="judge-disclosure"><b>Judge:</b> {REVIEWER.name}, powered by {REVIEWER.model}. Model identities were hidden during visual review. aXite verified executable tasks independently.</p>
         <div className="panels">
           {ORDER.map((mid, i) => <Panel key={mid} task={t} modelId={mid} index={i} />)}
         </div>
