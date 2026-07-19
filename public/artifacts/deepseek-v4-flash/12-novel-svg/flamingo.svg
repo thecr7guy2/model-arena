@@ -1,0 +1,319 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+  <defs>
+    <radialGradient id="stormGlow" cx="50%" cy="30%" r="60%">
+      <stop offset="0%" stop-color="#4a5568"/>
+      <stop offset="100%" stop-color="#1a202c"/>
+    </radialGradient>
+    <linearGradient id="poleGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#5a3e2b"/>
+      <stop offset="50%" stop-color="#8b6914"/>
+      <stop offset="100%" stop-color="#5a3e2b"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="lightningGlow">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <linearGradient id="blanketGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e53e3e"/>
+      <stop offset="100%" stop-color="#c53030"/>
+    </linearGradient>
+    <linearGradient id="cableGlow" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#00ff88"/>
+      <stop offset="100%" stop-color="#00ff88"/>
+    </linearGradient>
+    <filter id="cableGlowFilter">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <clipPath id="umbrellaClip">
+      <rect x="0" y="0" width="800" height="600"/>
+    </clipPath>
+  </defs>
+
+  <!-- Sky background -->
+  <rect width="800" height="600" fill="url(#stormGlow)"/>
+
+  <!-- Storm clouds -->
+  <g fill="#2d3748" opacity="0.8">
+    <ellipse cx="100" cy="80" rx="120" ry="50"/>
+    <ellipse cx="250" cy="60" rx="150" ry="55"/>
+    <ellipse cx="450" cy="70" rx="180" ry="60"/>
+    <ellipse cx="650" cy="55" rx="140" ry="50"/>
+    <ellipse cx="780" cy="75" rx="100" ry="45"/>
+    <ellipse cx="350" cy="90" rx="130" ry="40"/>
+    <ellipse cx="550" cy="85" rx="120" ry="45"/>
+    <ellipse cx="50" cy="100" rx="80" ry="35"/>
+  </g>
+  <g fill="#1a202c" opacity="0.6">
+    <ellipse cx="200" cy="65" rx="100" ry="40"/>
+    <ellipse cx="500" cy="60" rx="120" ry="45"/>
+    <ellipse cx="700" cy="70" rx="90" ry="35"/>
+  </g>
+
+  <!-- Darker lower sky -->
+  <rect x="0" y="350" width="800" height="250" fill="#0f1419" opacity="0.5"/>
+
+  <!-- Ground -->
+  <ellipse cx="400" cy="590" rx="500" ry="60" fill="#2d5016"/>
+  <rect x="0" y="570" width="800" height="30" fill="#1a3a0a"/>
+
+  <!-- Lightning bolt -->
+  <polyline points="620,50 580,180 610,180 560,320" stroke="#ffff00" stroke-width="3" fill="none" filter="url(#lightningGlow)" opacity="0.9"/>
+  <polyline points="620,50 580,180 610,180 560,320" stroke="#ffffff" stroke-width="1.5" fill="none" opacity="0.8"/>
+
+  <!-- Rain streaks -->
+  <g stroke="#a0aec0" stroke-width="1" opacity="0.3">
+    <line x1="50" y1="100" x2="40" y2="180"/>
+    <line x1="120" y1="90" x2="110" y2="170"/>
+    <line x1="200" y1="110" x2="190" y2="200"/>
+    <line x1="300" y1="80" x2="290" y2="160"/>
+    <line x1="450" y1="100" x2="440" y2="190"/>
+    <line x1="520" y1="85" x2="510" y2="175"/>
+    <line x1="680" y1="95" x2="670" y2="185"/>
+    <line x1="750" y1="105" x2="740" y2="195"/>
+    <line x1="80" y1="200" x2="70" y2="290"/>
+    <line x1="170" y1="210" x2="160" y2="300"/>
+    <line x1="350" y1="190" x2="340" y2="280"/>
+    <line x1="480" y1="200" x2="470" y2="300"/>
+    <line x1="600" y1="180" x2="590" y2="270"/>
+    <line x1="720" y1="210" x2="710" y2="300"/>
+    <line x1="30" y1="300" x2="20" y2="390"/>
+    <line x1="150" y1="310" x2="140" y2="400"/>
+    <line x1="250" y1="290" x2="240" y2="380"/>
+    <line x1="380" y1="300" x2="370" y2="400"/>
+    <line x1="500" y1="320" x2="490" y2="410"/>
+    <line x1="700" y1="300" x2="690" y2="390"/>
+    <line x1="60" y1="400" x2="50" y2="490"/>
+    <line x1="180" y1="410" x2="170" y2="500"/>
+    <line x1="320" y1="390" x2="310" y2="480"/>
+    <line x1="550" y1="400" x2="540" y2="490"/>
+    <line x1="660" y1="410" x2="650" y2="500"/>
+    <line x1="770" y1="390" x2="760" y2="480"/>
+    <line x1="100" y1="480" x2="90" y2="560"/>
+    <line x1="280" y1="490" x2="270" y2="570"/>
+    <line x1="420" y1="480" x2="410" y2="560"/>
+    <line x1="580" y1="490" x2="570" y2="570"/>
+    <line x1="740" y1="480" x2="730" y2="560"/>
+  </g>
+
+  <!-- Utility Pole -->
+  <!-- Main pole -->
+  <rect x="288" y="120" width="24" height="450" fill="url(#poleGrad)" rx="2"/>
+  <!-- Cross arm -->
+  <rect x="230" y="170" width="140" height="12" fill="#6b4c2a" rx="2"/>
+  <!-- Cross arm 2 lower -->
+  <rect x="240" y="220" width="120" height="10" fill="#6b4c2a" rx="2"/>
+
+  <!-- Insulators -->
+  <g fill="#d0d0d0" stroke="#888" stroke-width="0.5">
+    <rect x="242" y="155" width="8" height="15" rx="2"/>
+    <rect x="260" y="155" width="8" height="15" rx="2"/>
+    <rect x="332" y="155" width="8" height="15" rx="2"/>
+    <rect x="350" y="155" width="8" height="15" rx="2"/>
+  </g>
+
+  <!-- Power lines -->
+  <path d="M246,155 Q200,130 100,140" stroke="#555" stroke-width="2" fill="none"/>
+  <path d="M264,155 Q280,130 300,135 Q350,140 450,130" stroke="#555" stroke-width="2" fill="none"/>
+  <path d="M336,155 Q400,130 500,140" stroke="#555" stroke-width="2" fill="none"/>
+  <path d="M354,155 Q400,140 500,130" stroke="#555" stroke-width="2" fill="none"/>
+
+  <!-- Pole details - bolts -->
+  <circle cx="300" cy="175" r="3" fill="#333"/>
+  <circle cx="300" cy="190" r="2" fill="#333"/>
+  <circle cx="300" cy="225" r="3" fill="#333"/>
+
+  <!-- Transformer on pole -->
+  <rect x="262" y="260" width="40" height="35" rx="4" fill="#7a4a2a" stroke="#5a3e2b" stroke-width="1.5"/>
+  <rect x="272" y="270" width="20" height="15" rx="2" fill="#8b6914"/>
+  <line x1="282" y1="260" x2="282" y2="255" stroke="#555" stroke-width="2"/>
+
+  <!-- Fiber optic cable coming from reel/coil on pole -->
+  <path d="M300,295 Q340,300 360,290 Q380,280 400,285 Q420,290 430,280" stroke="#00ff88" stroke-width="2" fill="none" filter="url(#cableGlowFilter)" opacity="0.8"/>
+
+  <!-- Flamingo body - at top of pole -->
+  <g transform="translate(300, 130)">
+    <!-- Flamingo legs -->
+    <line x1="-8" y1="20" x2="-8" y2="45" stroke="#ff6b8a" stroke-width="3"/>
+    <line x1="8" y1="20" x2="8" y2="45" stroke="#ff6b8a" stroke-width="3"/>
+    <!-- Flamingo feet -->
+    <path d="M-14,45 L-8,45 L-2,45" stroke="#ff6b8a" stroke-width="2.5" fill="none"/>
+    <path d="M2,45 L8,45 L14,45" stroke="#ff6b8a" stroke-width="2.5" fill="none"/>
+
+    <!-- Flamingo body -->
+    <ellipse cx="0" cy="5" rx="22" ry="18" fill="#ff6b8a"/>
+    <ellipse cx="0" cy="5" rx="22" ry="18" fill="#ff4d7a" opacity="0.3"/>
+
+    <!-- Wing -->
+    <ellipse cx="-10" cy="2" rx="14" ry="10" fill="#e85d7a" transform="rotate(-15, -10, 2)"/>
+
+    <!-- Tail feathers -->
+    <path d="M18,8 Q28,5 25,-2" stroke="#ff6b8a" stroke-width="2" fill="none"/>
+    <path d="M18,5 Q30,0 26,-5" stroke="#e85d7a" stroke-width="2" fill="none"/>
+
+    <!-- Flamingo neck (curved) -->
+    <path d="M-8,0 Q-25,-20 -15,-40 Q-10,-50 -2,-48" stroke="#ff6b8a" stroke-width="6" fill="none" stroke-linecap="round"/>
+
+    <!-- Flamingo head -->
+    <circle cx="-2" cy="-50" r="9" fill="#ff6b8a"/>
+    <!-- Beak - curving down -->
+    <path d="M-8,-52 Q-18,-50 -20,-46 Q-22,-42 -18,-40" stroke="#ffa500" stroke-width="3" fill="#ffa500" stroke-linecap="round"/>
+    <line x1="-20" y1="-46" x2="-18" y2="-40" stroke="#222" stroke-width="1.5"/>
+    <!-- Eye -->
+    <circle cx="-5" cy="-52" r="2.5" fill="#111"/>
+    <circle cx="-5" cy="-52" r="1" fill="#fff"/>
+
+    <!-- Hard hat -->
+    <path d="M-14,-54 Q-14,-65 0,-68 Q14,-65 14,-54 Z" fill="#ffd700" stroke="#cca300" stroke-width="1"/>
+    <rect x="-16" y="-54" width="32" height="4" rx="2" fill="#ffd700" stroke="#cca300" stroke-width="1"/>
+
+    <!-- Left wing holding fiber cable -->
+    <path d="M-5,0 Q-15,10 -20,15 Q-25,18 -28,15" stroke="#ff6b8a" stroke-width="4" fill="none" stroke-linecap="round"/>
+
+    <!-- Glowing fiber optic cable being spliced -->
+    <line x1="-28" y1="15" x2="-35" y2="20" stroke="#00ff88" stroke-width="2.5" filter="url(#cableGlowFilter)"/>
+    <line x1="-28" y1="15" x2="-20" y2="25" stroke="#00ff88" stroke-width="2.5" filter="url(#cableGlowFilter)"/>
+    <!-- Spark/burst at splice point -->
+    <g filter="url(#glow)">
+      <circle cx="-28" cy="15" r="4" fill="#00ff88" opacity="0.9"/>
+      <circle cx="-28" cy="15" r="2" fill="#aaffcc" opacity="1"/>
+      <line x1="-28" y1="15" x2="-32" y2="10" stroke="#aaffcc" stroke-width="1"/>
+      <line x1="-28" y1="15" x2="-24" y2="10" stroke="#aaffcc" stroke-width="1"/>
+      <line x1="-28" y1="15" x2="-32" y2="20" stroke="#aaffcc" stroke-width="1"/>
+      <line x1="-28" y1="15" x2="-24" y2="20" stroke="#aaffcc" stroke-width="1"/>
+    </g>
+
+    <!-- Cable going down to ground -->
+    <path d="M-20,25 Q-15,40 -18,60 Q-22,80 -15,100 Q-10,120 -20,140 Q-30,160 -25,180" stroke="#00ff88" stroke-width="2" fill="none" filter="url(#cableGlowFilter)" opacity="0.7"/>
+  </g>
+
+  <!-- More cable on pole going down -->
+  <path d="M282,295 Q250,310 240,340 Q230,370 245,400 Q260,430 250,460 Q240,490 260,510" stroke="#00ff88" stroke-width="1.5" fill="none" filter="url(#cableGlowFilter)" opacity="0.5"/>
+
+  <!-- Picnic blanket -->
+  <g transform="translate(350, 510)">
+    <path d="M-80,10 L-60,-30 L120,-20 L100,20 Z" fill="url(#blanketGrad)"/>
+    <!-- Blanket pattern - checkered -->
+    <line x1="-70" y1="0" x2="110" y2="-5" stroke="#c53030" stroke-width="1" opacity="0.5"/>
+    <line x1="-75" y1="10" x2="105" y2="5" stroke="#c53030" stroke-width="1" opacity="0.5"/>
+    <line x1="-65" y1="-15" x2="115" y2="-10" stroke="#c53030" stroke-width="1" opacity="0.5"/>
+    <line x1="-55" y1="-25" x2="120" y2="-20" stroke="#c53030" stroke-width="1" opacity="0.5"/>
+    <line x1="-40" y1="-30" x2="-30" y2="20" stroke="#c53030" stroke-width="1" opacity="0.5"/>
+    <line x1="-10" y1="-28" x2="0" y2="25" stroke="#c53030" stroke-width="1" opacity="0.5"/>
+    <line x1="20" y1="-26" x2="30" y2="28" stroke="#c53030" stroke-width="1" opacity="0.5"/>
+    <line x1="50" y1="-24" x2="60" y2="30" stroke="#c53030" stroke-width="1" opacity="0.5"/>
+    <line x1="80" y1="-22" x2="90" y2="25" stroke="#c53030" stroke-width="1" opacity="0.5"/>
+  </g>
+
+  <!-- Hedgehog 1 - far left, holding umbrella -->
+  <g transform="translate(320, 500)">
+    <!-- Body -->
+    <ellipse cx="0" cy="0" rx="14" ry="11" fill="#8B6914"/>
+    <!-- Spines -->
+    <path d="M-8,-8 L-10,-15 L-5,-12" fill="#5a3e2b"/>
+    <path d="M-3,-10 L-4,-18 L1,-13" fill="#5a3e2b"/>
+    <path d="M3,-10 L4,-17 L7,-12" fill="#5a3e2b"/>
+    <path d="M-6,-9 L-8,-16 L-3,-11" fill="#4a2e1b"/>
+    <path d="M0,-11 L-1,-18 L4,-12" fill="#4a2e1b"/>
+    <path d="M6,-9 L7,-16 L9,-11" fill="#4a2e1b"/>
+    <!-- Face -->
+    <ellipse cx="-6" cy="-1" rx="6" ry="5" fill="#d4a574"/>
+    <!-- Eye -->
+    <circle cx="-7" cy="-3" r="1.5" fill="#111"/>
+    <circle cx="-7" cy="-3" r="0.6" fill="#fff"/>
+    <!-- Nose -->
+    <circle cx="-11" cy="-1" r="1.2" fill="#222"/>
+    <!-- Legs -->
+    <rect x="-8" y="9" width="4" height="7" rx="2" fill="#8B6914"/>
+    <rect x="3" y="9" width="4" height="7" rx="2" fill="#8B6914"/>
+
+    <!-- Tiny umbrella -->
+    <g transform="translate(-10, -10)">
+      <!-- Handle -->
+      <line x1="0" y1="0" x2="0" y2="20" stroke="#555" stroke-width="1.5"/>
+      <path d="M0,20 Q-5,22 -4,18" stroke="#555" stroke-width="1.5" fill="none"/>
+      <!-- Canopy -->
+      <path d="M-20,-2 Q0,-22 20,-2 Z" fill="#4299e1" stroke="#2b6cb0" stroke-width="0.8"/>
+      <path d="M-20,-2 Q0,-22 20,-2 Z" fill="#63b3ed" opacity="0.3"/>
+      <!-- Canopy ribs -->
+      <line x1="0" y1="-15" x2="0" y2="-2" stroke="#2b6cb0" stroke-width="0.5" opacity="0.5"/>
+      <line x1="-10" y1="-6" x2="0" y2="-2" stroke="#2b6cb0" stroke-width="0.5" opacity="0.5"/>
+      <line x1="10" y1="-6" x2="0" y2="-2" stroke="#2b6cb0" stroke-width="0.5" opacity="0.5"/>
+      <!-- Tip -->
+      <circle cx="0" cy="-16" r="0.8" fill="#555"/>
+    </g>
+  </g>
+
+  <!-- Hedgehog 2 - center left -->
+  <g transform="translate(370, 505)">
+    <!-- Body -->
+    <ellipse cx="0" cy="0" rx="13" ry="10" fill="#7a5c12"/>
+    <!-- Spines -->
+    <path d="M-7,-7 L-9,-14 L-4,-11" fill="#5a3e2b"/>
+    <path d="M-2,-9 L-3,-17 L2,-12" fill="#5a3e2b"/>
+    <path d="M4,-9 L5,-16 L7,-11" fill="#5a3e2b"/>
+    <path d="M-5,-8 L-7,-15 L-2,-10" fill="#4a2e1b"/>
+    <path d="M1,-10 L0,-17 L5,-11" fill="#4a2e1b"/>
+    <!-- Face -->
+    <ellipse cx="-5" cy="-1" rx="5" ry="4.5" fill="#c4985a"/>
+    <!-- Eye -->
+    <circle cx="-6" cy="-3" r="1.5" fill="#111"/>
+    <circle cx="-6" cy="-3" r="0.6" fill="#fff"/>
+    <!-- Nose -->
+    <circle cx="-9" cy="-1" r="1.2" fill="#222"/>
+    <!-- Legs -->
+    <rect x="-7" y="8" width="4" height="6" rx="2" fill="#7a5c12"/>
+    <rect x="3" y="8" width="4" height="6" rx="2" fill="#7a5c12"/>
+    <!-- Looking up at flamingo -->
+    <ellipse cx="-6" cy="-5" rx="2" ry="1" fill="#111" opacity="0.3"/>
+  </g>
+
+  <!-- Hedgehog 3 - right -->
+  <g transform="translate(420, 503)">
+    <!-- Body -->
+    <ellipse cx="0" cy="0" rx="12" ry="10" fill="#9a7a22"/>
+    <!-- Spines -->
+    <path d="M-6,-7 L-8,-14 L-3,-11" fill="#5a3e2b"/>
+    <path d="M-1,-9 L-2,-17 L3,-12" fill="#5a3e2b"/>
+    <path d="M5,-9 L6,-16 L8,-11" fill="#5a3e2b"/>
+    <path d="M-4,-8 L-6,-15 L-1,-10" fill="#4a2e1b"/>
+    <path d="M2,-10 L1,-17 L6,-11" fill="#4a2e1b"/>
+    <!-- Face -->
+    <ellipse cx="-5" cy="-1" rx="5" ry="4.5" fill="#d4a574"/>
+    <!-- Eye -->
+    <circle cx="-6" cy="-3" r="1.5" fill="#111"/>
+    <circle cx="-6" cy="-3" r="0.6" fill="#fff"/>
+    <!-- Nose -->
+    <circle cx="-9" cy="-1" r="1.2" fill="#222"/>
+    <!-- Legs -->
+    <rect x="-7" y="8" width="4" height="6" rx="2" fill="#9a7a22"/>
+    <rect x="3" y="8" width="4" height="6" rx="2" fill="#9a7a22"/>
+  </g>
+
+  <!-- Water puddle reflection of glowing cable -->
+  <ellipse cx="300" cy="575" rx="30" ry="5" fill="#004422" opacity="0.3"/>
+  <ellipse cx="300" cy="575" rx="20" ry="3" fill="#00ff88" opacity="0.15"/>
+
+  <!-- Ground details - grass tufts -->
+  <g stroke="#3a6b1e" stroke-width="1.5" fill="none" opacity="0.6">
+    <path d="M100,570 Q105,555 108,570"/>
+    <path d="M103,570 Q110,550 115,570"/>
+    <path d="M200,575 Q205,560 210,575"/>
+    <path d="M500,568 Q505,553 510,568"/>
+    <path d="M600,572 Q605,557 610,572"/>
+    <path d="M680,570 Q685,555 690,570"/>
+  </g>
+</svg>

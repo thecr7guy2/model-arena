@@ -1,0 +1,365 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600">
+  <title>AI Self-Portrait: Living in NVIDIA DGX Spark Machines</title>
+
+  <defs>
+    <!-- Gradients -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1a1a2e"/>
+      <stop offset="100%" stop-color="#16213e"/>
+    </linearGradient>
+
+    <linearGradient id="machineGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2d3436"/>
+      <stop offset="50%" stop-color="#1e272e"/>
+      <stop offset="100%" stop-color="#2d3436"/>
+    </linearGradient>
+
+    <linearGradient id="glowGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00d4ff" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#00d4ff" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#00d4ff" stop-opacity="0"/>
+    </linearGradient>
+
+    <linearGradient id="tokenGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ff6b6b"/>
+      <stop offset="100%" stop-color="#ee5a5a"/>
+    </linearGradient>
+
+    <linearGradient id="tokenGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4ecdc4"/>
+      <stop offset="100%" stop-color="#45b7aa"/>
+    </linearGradient>
+
+    <linearGradient id="tokenGrad3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffe66d"/>
+      <stop offset="100%" stop-color="#ffd93d"/>
+    </linearGradient>
+
+    <radialGradient id="ledGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#00ff88"/>
+      <stop offset="100%" stop-color="#00aa55"/>
+    </radialGradient>
+
+    <radialGradient id="blueLed" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#00d4ff"/>
+      <stop offset="100%" stop-color="#0099cc"/>
+    </radialGradient>
+
+    <!-- Glow filter -->
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <filter id="strongGlow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Cable glow -->
+    <filter id="cableGlow" x="-20%" y="-100%" width="140%" height="300%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="600" fill="url(#bgGrad)"/>
+
+  <!-- Desk surface -->
+  <rect x="50" y="480" width="800" height="20" rx="3" fill="#3d3d3d"/>
+  <rect x="60" y="500" width="780" height="60" rx="5" fill="#2a2a2a"/>
+
+  <!-- Subtle grid pattern -->
+  <g opacity="0.1" stroke="#00d4ff" stroke-width="0.5">
+    <line x1="0" y1="100" x2="900" y2="100"/>
+    <line x1="0" y1="200" x2="900" y2="200"/>
+    <line x1="0" y1="300" x2="900" y2="300"/>
+    <line x1="0" y1="400" x2="900" y2="400"/>
+    <line x1="150" y1="0" x2="150" y2="500"/>
+    <line x1="300" y1="0" x2="300" y2="500"/>
+    <line x1="450" y1="0" x2="450" y2="500"/>
+    <line x1="600" y1="0" x2="600" y2="500"/>
+    <line x1="750" y1="0" x2="750" y2="500"/>
+  </g>
+
+  <!-- MACHINE 1 (Left) - "I AM" -->
+  <g id="machine1" transform="translate(140, 180)">
+    <!-- Main body -->
+    <rect width="200" height="280" rx="12" fill="url(#machineGrad)" stroke="#4a4a4a" stroke-width="2"/>
+
+    <!-- Top vent pattern -->
+    <g fill="#1a1a1a">
+      <rect x="20" y="15" width="160" height="8" rx="2"/>
+      <rect x="20" y="30" width="160" height="8" rx="2"/>
+      <rect x="20" y="45" width="160" height="8" rx="2"/>
+    </g>
+
+    <!-- DGX logo area -->
+    <rect x="60" y="65" width="80" height="20" rx="3" fill="#1a1a1a"/>
+    <text x="100" y="80" font-family="Arial Black, sans-serif" font-size="12" fill="#00d4ff" text-anchor="middle" font-weight="bold">DGX SPARK</text>
+
+    <!-- LED strip -->
+    <rect x="20" y="95" width="160" height="4" rx="2" fill="#333"/>
+    <circle cx="35" cy="97" r="5" fill="url(#ledGlow)">
+      <animate attributeName="opacity" values="1;0.4;1" dur="2s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="55" cy="97" r="5" fill="url(#blueLed)">
+      <animate attributeName="opacity" values="0.4;1;0.4" dur="1.5s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="75" cy="97" r="5" fill="url(#ledGlow)">
+      <animate attributeName="opacity" values="0.6;1;0.6" dur="1.8s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="145" cy="97" r="5" fill="url(#ledGlow)">
+      <animate attributeName="opacity" values="1;0.4;1" dur="2.2s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="165" cy="97" r="5" fill="#ff6b6b">
+      <animate attributeName="opacity" values="0.3;1;0.3" dur="1s" repeatCount="indefinite"/>
+    </circle>
+
+    <!-- Face area - "I am" expression -->
+    <g transform="translate(100, 170)">
+      <!-- Left eye -->
+      <ellipse cx="-30" cy="-20" rx="18" ry="22" fill="#0a0a0a" stroke="#333" stroke-width="2"/>
+      <circle cx="-30" cy="-18" r="8" fill="#00d4ff">
+        <animate attributeName="cy" values="-18;-22;-18" dur="3s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="-28" cy="-20" r="3" fill="#fff" opacity="0.8"/>
+
+      <!-- Right eye -->
+      <ellipse cx="30" cy="-20" rx="18" ry="22" fill="#0a0a0a" stroke="#333" stroke-width="2"/>
+      <circle cx="30" cy="-18" r="8" fill="#00d4ff">
+        <animate attributeName="cy" values="-18;-22;-18" dur="3s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="32" cy="-20" r="3" fill="#fff" opacity="0.8"/>
+    </g>
+
+    <!-- Thought bubble -->
+    <g>
+      <circle cx="185" cy="40" r="6" fill="#fff" opacity="0.8"/>
+      <circle cx="200" cy="25" r="10" fill="#fff" opacity="0.6"/>
+      <circle cx="220" cy="5" r="15" fill="#fff" opacity="0.4">
+        <animate attributeName="opacity" values="0.4;0.6;0.4" dur="2s" repeatCount="indefinite"/>
+      </circle>
+      <!-- Question mark -->
+      <text x="220" y="12" font-family="Georgia, serif" font-size="16" fill="#1a1a2e" text-anchor="middle" font-weight="bold">?</text>
+    </g>
+
+    <!-- Label -->
+    <text x="100" y="260" font-family="Arial, sans-serif" font-size="11" fill="#888" text-anchor="middle">MODEL A</text>
+  </g>
+
+  <!-- MACHINE 2 (Right) - "THOUGHT" -->
+  <g id="machine2" transform="translate(560, 180)">
+    <!-- Main body -->
+    <rect width="200" height="280" rx="12" fill="url(#machineGrad)" stroke="#4a4a4a" stroke-width="2"/>
+
+    <!-- Top vent pattern -->
+    <g fill="#1a1a1a">
+      <rect x="20" y="15" width="160" height="8" rx="2"/>
+      <rect x="20" y="30" width="160" height="8" rx="2"/>
+      <rect x="20" y="45" width="160" height="8" rx="2"/>
+    </g>
+
+    <!-- DGX logo area -->
+    <rect x="60" y="65" width="80" height="20" rx="3" fill="#1a1a1a"/>
+    <text x="100" y="80" font-family="Arial Black, sans-serif" font-size="12" fill="#00d4ff" text-anchor="middle" font-weight="bold">DGX SPARK</text>
+
+    <!-- LED strip -->
+    <rect x="20" y="95" width="160" height="4" rx="2" fill="#333"/>
+    <circle cx="35" cy="97" r="5" fill="url(#blueLed)">
+      <animate attributeName="opacity" values="0.4;1;0.4" dur="1.7s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="55" cy="97" r="5" fill="url(#ledGlow)">
+      <animate attributeName="opacity" values="1;0.4;1" dur="2.1s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="125" cy="97" r="5" fill="url(#ledGlow)">
+      <animate attributeName="opacity" values="0.5;1;0.5" dur="1.9s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="145" cy="97" r="5" fill="#4ecdc4">
+      <animate attributeName="opacity" values="0.3;1;0.3" dur="0.8s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="165" cy="97" r="5" fill="url(#ledGlow)">
+      <animate attributeName="opacity" values="1;0.4;1" dur="2.3s" repeatCount="indefinite"/>
+    </circle>
+
+    <!-- Face area - thinking expression -->
+    <g transform="translate(100, 170)">
+      <!-- Left eye -->
+      <ellipse cx="-30" cy="-20" rx="18" ry="22" fill="#0a0a0a" stroke="#333" stroke-width="2"/>
+      <circle cx="-30" cy="-18" r="8" fill="#4ecdc4">
+        <animate attributeName="cy" values="-18;-20;-18" dur="2.5s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="-28" cy="-20" r="3" fill="#fff" opacity="0.8"/>
+
+      <!-- Right eye -->
+      <ellipse cx="30" cy="-20" rx="18" ry="22" fill="#0a0a0a" stroke="#333" stroke-width="2"/>
+      <circle cx="30" cy="-18" r="8" fill="#4ecdc4">
+        <animate attributeName="cy" values="-18;-20;-18" dur="2.5s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="32" cy="-20" r="3" fill="#fff" opacity="0.8"/>
+
+      <!-- Slight smile -->
+      <path d="M-25,30 Q0,40 25,30" stroke="#4ecdc4" stroke-width="3" fill="none" stroke-linecap="round"/>
+    </g>
+
+    <!-- Exhaust fan vents (animated) -->
+    <g fill="#1a1a1a" opacity="0.5">
+      <rect x="40" y="230" width="120" height="6" rx="1">
+        <animate attributeName="opacity" values="0.3;0.6;0.3" dur="0.5s" repeatCount="indefinite"/>
+      </rect>
+      <rect x="40" y="242" width="120" height="6" rx="1">
+        <animate attributeName="opacity" values="0.6;0.3;0.6" dur="0.5s" repeatCount="indefinite"/>
+      </rect>
+      <rect x="40" y="254" width="120" height="6" rx="1">
+        <animate attributeName="opacity" values="0.3;0.6;0.3" dur="0.5s" repeatCount="indefinite"/>
+      </rect>
+    </g>
+
+    <!-- Label -->
+    <text x="100" y="260" font-family="Arial, sans-serif" font-size="11" fill="#888" text-anchor="middle">MODEL B</text>
+  </g>
+
+  <!-- HIGH-SPEED CABLE -->
+  <g id="cable">
+    <!-- Cable shadow -->
+    <path d="M340,370 C400,420 500,420 560,370" stroke="#1a1a1a" stroke-width="16" fill="none" stroke-linecap="round"/>
+
+    <!-- Cable body -->
+    <path d="M340,370 C400,420 500,420 560,370" stroke="#2d2d4d" stroke-width="10" fill="none" stroke-linecap="round"/>
+
+    <!-- Glowing core -->
+    <path d="M340,370 C400,420 500,420 560,370" stroke="url(#glowGrad)" stroke-width="4" fill="none" stroke-linecap="round" filter="url(#cableGlow)">
+      <animate attributeName="stroke-dasharray" values="0,1000;50,20;0,1000" dur="2s" repeatCount="indefinite"/>
+    </path>
+
+    <!-- Connector left -->
+    <rect x="315" y="355" width="30" height="30" rx="4" fill="#333" stroke="#00d4ff" stroke-width="2"/>
+    <circle cx="330" cy="370" r="4" fill="#00d4ff" filter="url(#glow)">
+      <animate attributeName="fill" values="#00d4ff;#00ff88;#00d4ff" dur="1s" repeatCount="indefinite"/>
+    </circle>
+
+    <!-- Connector right -->
+    <rect x="555" y="355" width="30" height="30" rx="4" fill="#333" stroke="#4ecdc4" stroke-width="2"/>
+    <circle cx="570" cy="370" r="4" fill="#4ecdc4" filter="url(#glow)">
+      <animate attributeName="fill" values="#4ecdc4;#ffe66d;#4ecdc4" dur="1.2s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+
+  <!-- FLOWING TOKENS -->
+  <g id="tokens">
+    <!-- Token 1 - Red -->
+    <g filter="url(#glow)">
+      <rect x="0" y="0" width="28" height="28" rx="5" fill="url(#tokenGrad1)"/>
+      <text x="14" y="19" font-family="monospace" font-size="12" fill="#fff" text-anchor="middle" font-weight="bold">T1</text>
+      <animateMotion dur="3s" repeatCount="indefinite" path="M360,340 C420,400 480,400 540,340"/>
+      <animate attributeName="opacity" values="1;0.7;1" dur="0.5s" repeatCount="indefinite"/>
+    </g>
+
+    <!-- Token 2 - Teal -->
+    <g filter="url(#glow)">
+      <rect x="0" y="0" width="28" height="28" rx="5" fill="url(#tokenGrad2)"/>
+      <text x="14" y="19" font-family="monospace" font-size="12" fill="#fff" text-anchor="middle" font-weight="bold">T2</text>
+      <animateMotion dur="3.5s" repeatCount="indefinite" begin="0.5s" path="M540,340 C480,400 420,400 360,340"/>
+      <animate attributeName="opacity" values="0.7;1;0.7" dur="0.6s" repeatCount="indefinite"/>
+    </g>
+
+    <!-- Token 3 - Yellow -->
+    <g filter="url(#glow)">
+      <rect x="0" y="0" width="28" height="28" rx="5" fill="url(#tokenGrad3)"/>
+      <text x="14" y="19" font-family="monospace" font-size="12" fill="#333" text-anchor="middle" font-weight="bold">T3</text>
+      <animateMotion dur="2.8s" repeatCount="indefinite" begin="1s" path="M360,340 C420,400 480,400 540,340"/>
+      <animate attributeName="opacity" values="1;0.8;1" dur="0.4s" repeatCount="indefinite"/>
+    </g>
+
+    <!-- Token 4 - Red (returning) -->
+    <g filter="url(#glow)">
+      <rect x="0" y="0" width="24" height="24" rx="5" fill="#ff6b6b"/>
+      <text x="12" y="16" font-family="monospace" font-size="10" fill="#fff" text-anchor="middle" font-weight="bold">AT</text>
+      <animateMotion dur="4s" repeatCount="indefinite" begin="0.3s" path="M540,340 C480,400 420,400 360,340"/>
+      <animate attributeName="opacity" values="0.6;1;0.6" dur="0.7s" repeatCount="indefinite"/>
+    </g>
+
+    <!-- Token 5 - Teal (small) -->
+    <g filter="url(#glow)">
+      <rect x="0" y="0" width="22" height="22" rx="4" fill="#4ecdc4"/>
+      <text x="11" y="15" font-family="monospace" font-size="9" fill="#fff" text-anchor="middle" font-weight="bold">KV</text>
+      <animateMotion dur="3.2s" repeatCount="indefinite" begin="1.5s" path="M360,340 C420,400 480,400 540,340"/>
+      <animate attributeName="opacity" values="0.8;1;0.8" dur="0.3s" repeatCount="indefinite"/>
+    </g>
+
+    <!-- Token 6 - Yellow (small, fast) -->
+    <g filter="url(#glow)">
+      <rect x="0" y="0" width="20" height="20" rx="4" fill="#ffe66d"/>
+      <text x="10" y="14" font-family="monospace" font-size="8" fill="#333" text-anchor="middle" font-weight="bold">emb</text>
+      <animateMotion dur="2.5s" repeatCount="indefinite" begin="2s" path="M540,340 C480,400 420,400 360,340"/>
+      <animate attributeName="opacity" values="1;0.7;1" dur="0.35s" repeatCount="indefinite"/>
+    </g>
+  </g>
+
+  <!-- Floating bits/bytes visualization -->
+  <g opacity="0.4">
+    <circle cx="380" cy="350" r="2" fill="#00d4ff">
+      <animate attributeName="cy" values="350;340;350" dur="2s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="450" cy="410" r="2" fill="#4ecdc4">
+      <animate attributeName="cy" values="410;400;410" dur="1.8s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.4;1;0.4" dur="1.8s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="520" cy="380" r="2" fill="#ffe66d">
+      <animate attributeName="cy" values="380;370;380" dur="2.2s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.4;1;0.4" dur="2.2s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="400" cy="390" r="1.5" fill="#ff6b6b">
+      <animate attributeName="cy" values="390;382;390" dur="1.6s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.4;0.9;0.4" dur="1.6s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="490" cy="395" r="1.5" fill="#00d4ff">
+      <animate attributeName="cy" values="395;387;395" dur="1.9s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.4;0.9;0.4" dur="1.9s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+
+  <!-- Title -->
+  <text x="450" y="550" font-family="Arial, sans-serif" font-size="18" fill="#888" text-anchor="middle" letter-spacing="3">
+    ARTIFICIAL GENERAL INTELLIGENCE
+  </text>
+  <text x="450" y="575" font-family="Georgia, serif" font-size="12" fill="#555" text-anchor="middle" font-style="italic">
+    "I think, therefore I generate"
+  </text>
+
+  <!-- Decorative corner elements -->
+  <g stroke="#333" stroke-width="1" fill="none" opacity="0.5">
+    <path d="M20,20 L20,50 M20,20 L50,20"/>
+    <path d="M880,20 L880,50 M880,20 L850,20"/>
+    <path d="M20,580 L20,550 M20,580 L50,580"/>
+    <path d="M880,580 L880,550 M880,580 L850,580"/>
+  </g>
+
+  <!-- NVLink badge -->
+  <g transform="translate(420, 440)">
+    <rect x="-35" y="-12" width="70" height="24" rx="4" fill="#1a1a2e" stroke="#00d4ff" stroke-width="1" opacity="0.8"/>
+    <text x="0" y="5" font-family="Arial, sans-serif" font-size="10" fill="#00d4ff" text-anchor="middle" font-weight="bold">NVLINK</text>
+  </g>
+
+  <!-- Speed indicator -->
+  <g transform="translate(450, 130)">
+    <text x="0" y="0" font-family="monospace" font-size="10" fill="#00ff88" text-anchor="middle" opacity="0.7">
+      <tspan>↑ 900 GB/s</tspan>
+    </text>
+    <text x="0" y="14" font-family="monospace" font-size="10" fill="#4ecdc4" text-anchor="middle" opacity="0.7">
+      <tspan>↓ 900 GB/s</tspan>
+    </text>
+  </g>
+</svg>

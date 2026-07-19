@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PacketPerfume — Artisanal TCP Packets</title>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+      --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+      --font-sans: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --font-mono: 'SF Mono', 'Fira Code', 'Fira Mono', ui-monospace, monospace;
+
+      --bg-primary: #faf9f7;
+      --bg-secondary: #f0eeeb;
+      --bg-tertiary: #e5e2de;
+      --text-primary: #1a1a1a;
+      --text-secondary: #5c5c5c;
+      --text-muted: #8a8a8a;
+      --accent: #2563eb;
+      --accent-hover: #1d4ed8;
+      --accent-light: #dbeafe;
+      --border: #d4d0cb;
+      --shadow: rgba(0, 0, 0, 0.08);
+      --shadow-lg: rgba(0, 0, 0, 0.12);
+    }
+
+    [data-theme="dark"] {
+      --bg-primary: #0f0f0f;
+      --bg-secondary: #1a1a1a;
+      --bg-tertiary: #262626;
+      --text-primary: #fafafa;
+      --text-secondary: #a3a3a3;
+      --text-muted: #6b6b6b;
+      --accent-light: #1e3a5f;
+      --border: #2e2e2e;
+      --shadow: rgba(0, 0, 0, 0.3);
+      --shadow-lg: rgba(0, 0, 0, 0.5);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      transition: background 300ms var(--ease-out), color 300ms var(--ease-out);
+    }
+
+    ::selection {
+      background: var(--accent);
+      color: white;
+    }
+
+    .container {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Header */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: var(--bg-primary);
+      border-bottom: 1px solid var(--border);
+      transition: background 300ms var(--ease-out), border-color 300ms var(--ease-out);
+    }
+
+    header.scrolled {
+      box-shadow: 0 2px 12px var(--shadow);
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+
+    .logo {
+      font-family: var(--font-mono);
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-primary);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      background: var(--accent);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo-icon svg {
+      width: 18px;
+      height: 18px;
+      fill: white;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+
+    nav a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 200ms var(--ease-out);
+    }
+
+    nav a:hover {
+      color: var(--text-primary);
+    }
+
+    .theme-toggle {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      transition: transform 160ms var(--ease-out), background 200ms var(--ease-out), border-color 200ms var(--ease-out);
+    }
+
+    .theme-toggle:hover {
+      background: var(--bg-tertiary);
+      color: var(--text-primary);
+    }
+
+    .theme-toggle:active {
+      transform: scale(0.97);
+    }
+
+    .theme-toggle svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    /* Hero */
+    .hero {
+      padding: 160px 0 100px;
+      text-align: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--accent-light);
+      color: var(--accent);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 24px;
+      opacity: 0;
+      transform: translateY(8px);
+      animation: fadeInUp 500ms var(--ease-out) forwards;
+    }
+
+    .hero h1 {
+      font-size: clamp(40px, 8vw, 72px);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: 24px;
+      opacity: 0;
+      transform: translateY(12px);
+      animation: fadeInUp 500ms var(--ease-out) 100ms forwards;
+    }
+
+    .hero h1 span {
+      background: linear-gradient(135deg, var(--accent) 0%, #7c3aed 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-subtitle {
+      font-size: clamp(18px, 2.5vw, 22px);
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto 40px;
+      opacity: 0;
+      transform: translateY(12px);
+      animation: fadeInUp 500ms var(--ease-out) 200ms forwards;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      opacity: 0;
+      transform: translateY(12px);
+      animation: fadeInUp 500ms var(--ease-out) 300ms forwards;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: transform 160ms var(--ease-out), background 200ms var(--ease-out), box-shadow 200ms var(--ease-out);
+    }
+
+    .btn:active {
+      transform: scale(0.97);
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-hover);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+    }
+
+    .btn-secondary {
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: var(--bg-tertiary);
+    }
+
+    /* Packet Animation */
+    .packet-animation {
+      margin-top: 80px;
+      position: relative;
+      height: 120px;
+      opacity: 0;
+      animation: fadeInUp 500ms var(--ease-out) 400ms forwards;
+    }
+
+    .packet {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      padding: 8px 16px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      white-space: nowrap;
+      animation: packetMove 8s var(--ease-in-out) infinite;
+    }
+
+    .packet::before {
+      content: 'TCP';
+      background: var(--accent);
+      color: white;
+      padding: 2px 6px;
+      border-radius: 3px;
+      margin-right: 8px;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    @keyframes packetMove {
+      0%, 100% { transform: translate(-50%, -50%) translateX(-120px); opacity: 0.3; }
+      10% { opacity: 1; }
+      50% { transform: translate(-50%, -50%) translateX(120px); opacity: 1; }
+      90% { opacity: 1; }
+    }
+
+    /* Pricing */
+    .pricing {
+      padding: 100px 0;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .section-header h2 {
+      font-size: 36px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+
+    .section-header p {
+      color: var(--text-secondary);
+      font-size: 18px;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+    }
+
+    .pricing-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      position: relative;
+      transition: transform 200ms var(--ease-out), box-shadow 200ms var(--ease-out);
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .pricing-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 32px var(--shadow-lg);
+      }
+    }
+
+    .pricing-card.featured {
+      border-color: var(--accent);
+      background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+    }
+
+    .pricing-card.featured::before {
+      content: 'Most Popular';
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--accent);
+      color: white;
+      padding: 4px 16px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .pricing-tier {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+
+    .pricing-name {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .pricing-desc {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+      min-height: 42px;
+    }
+
+    .pricing-price {
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+      margin-bottom: 24px;
+    }
+
+    .pricing-price .currency {
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .pricing-price .amount {
+      font-size: 48px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .pricing-price .period {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .pricing-features {
+      list-style: none;
+      margin-bottom: 32px;
+    }
+
+    .pricing-features li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 8px 0;
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    .pricing-features li svg {
+      width: 18px;
+      height: 18px;
+      color: var(--accent);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .pricing-card .btn {
+      width: 100%;
+      justify-content: center;
+    }
+
+    /* Testimonials */
+    .testimonials {
+      padding: 100px 0;
+      background: var(--bg-secondary);
+    }
+
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+    }
+
+    .testimonial-card {
+      background: var(--bg-primary);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px;
+      transition: transform 200ms var(--ease-out);
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .testimonial-card:hover {
+        transform: scale(1.02);
+      }
+    }
+
+    .testimonial-quote {
+      font-size: 16px;
+      line-height: 1.7;
+      color: var(--text-primary);
+      margin-bottom: 20px;
+    }
+
+    .testimonial-quote::before {
+      content: '"';
+      font-size: 48px;
+      font-weight: 800;
+      color: var(--accent);
+      line-height: 0;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .testimonial-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: var(--accent);
+      font-size: 16px;
+    }
+
+    .testimonial-info {
+      flex: 1;
+    }
+
+    .testimonial-name {
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .testimonial-role {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .testimonial-badge {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--accent);
+      background: var(--accent-light);
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+
+    /* Footer */
+    footer {
+      padding: 60px 0;
+      text-align: center;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-logo {
+      font-family: var(--font-mono);
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .footer-tagline {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 13px;
+      transition: color 200ms var(--ease-out);
+    }
+
+    .footer-links a:hover {
+      color: var(--text-primary);
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .animate-on-scroll {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 500ms var(--ease-out), transform 500ms var(--ease-out);
+    }
+
+    .animate-on-scroll.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    /* Easter egg */
+    .easter-egg {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--accent);
+      color: white;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 600;
+      opacity: 0;
+      transform: translateY(20px);
+      pointer-events: none;
+      transition: opacity 300ms var(--ease-out), transform 300ms var(--ease-out);
+      z-index: 1000;
+    }
+
+    .easter-egg.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Mobile nav */
+    @media (max-width: 640px) {
+      nav {
+        display: none;
+      }
+
+      .hero {
+        padding: 120px 0 80px;
+      }
+
+      .pricing-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header id="header">
+    <div class="container header-inner">
+      <a href="#" class="logo">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+        </div>
+        PacketPerfume
+      </a>
+      <nav>
+        <a href="#pricing">Pricing</a>
+        <a href="#testimonials">Reviews</a>
+        <a href="#about">About</a>
+      </nav>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <svg id="sunIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        <svg id="moonIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <span id="themeText">Dark</span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <div class="hero-badge">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          Hand-crafted since 2024
+        </div>
+        <h1>Artisanal TCP Packets<br><span>Delivered with Care</span></h1>
+        <p class="hero-subtitle">
+          Small-batch, hand-encapsulated network packets. Each byte lovingly checksummed.
+          No bots. No automation. Just one tired engineer in a basement, making sure your SYN-ACKs never feel lonely.
+        </p>
+        <div class="hero-cta">
+          <a href="#pricing" class="btn btn-primary">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+            Start Capturing
+          </a>
+          <a href="#about" class="btn btn-secondary">
+            Our Story
+          </a>
+        </div>
+        <div class="packet-animation">
+          <div class="packet">SEQ: 1337 ACK: 42 LEN: 1420</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="pricing" id="pricing">
+      <div class="container">
+        <div class="section-header animate-on-scroll">
+          <h2>Choose Your Bandwidth</h2>
+          <p>Whether you're a hobbyist pinging from mom’s basement or a Fortune 500 with too much CIDR space, we've got a tier for you.</p>
+        </div>
+        <div class="pricing-grid">
+          <div class="pricing-card animate-on-scroll">
+            <div class="pricing-tier">Starter</div>
+            <div class="pricing-name">Packet Sniffer</div>
+            <div class="pricing-desc">For the aspiring network archaeologist. 56Kbps max. Good enough for academic papers and领导的表扬.</div>
+            <div class="pricing-price">
+              <span class="currency">$</span>
+              <span class="amount">9</span>
+              <span class="period">/month</span>
+            </div>
+            <ul class="pricing-features">
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                Up to 56Kbps throughput
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                3 simultaneous connections
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                Basic ACK reconstruction
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                Community support
+              </li>
+            </ul>
+            <a href="#" class="btn btn-secondary">Get Started</a>
+          </div>
+
+          <div class="pricing-card featured animate-on-scroll">
+            <div class="pricing-tier">Professional</div>
+            <div class="pricing-name">Flow Artisan</div>
+            <div class="pricing-desc">For the network engineer who actually reads RFCs. Tired of your manager asking why the packet sniffer is "downloading the internet".</div>
+            <div class="pricing-price">
+              <span class="currency">$</span>
+              <span class="amount">49</span>
+              <span class="period">/month</span>
+            </div>
+            <ul class="pricing-features">
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                Up to 1Gbps throughput
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                Unlimited persistent connections
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                Full TCP state machine visualization
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                Priority support via Slack
+              </li>
+            </ul>
+            <a href="#" class="btn btn-primary">Get Started</a>
+          </div>
+
+          <div class="pricing-card animate-on-scroll">
+            <div class="pricing-tier">Enterprise</div>
+            <div class="pricing-name">Packet Sommelier</div>
+            <div class="pricing-desc">For when you need to explain to your CISO why you need a managed service for manually crafting packets. We don't judge.</div>
+            <div class="pricing-price">
+              <span class="currency">$</span>
+              <span class="amount">199</span>
+              <span class="period">/month</span>
+            </div>
+            <ul class="pricing-features">
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                10Gbps unlimited
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                Custom TCP options & extensions
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                White-glove onboarding
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                99.999% retransmission guarantee
+              </li>
+            </ul>
+            <a href="#" class="btn btn-secondary">Contact Sales</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="testimonials" id="testimonials">
+      <div class="container">
+        <div class="section-header animate-on-scroll">
+          <h2>Loved by Network Engineers</h2>
+          <p>Don't take our word for it. Ask the packets. They have feelings too.</p>
+        </div>
+        <div class="testimonials-grid">
+          <div class="testimonial-card animate-on-scroll">
+            <p class="testimonial-quote">
+              Finally, a packet service that understands my three-way handshake needs.
+              The FIN-WAIT-2 timeout handling is *chefs kiss*. My Wireshark exports have never looked better.
+            </p>
+            <div class="testimonial-author">
+              <div class="testimonial-avatar">JK</div>
+              <div class="testimonial-info">
+                <div class="testimonial-name">Jennifer Kim</div>
+                <div class="testimonial-role">Senior Network Engineer, Cloudflare</div>
+              </div>
+              <span class="testimonial-badge">Verified Packet</span>
+            </div>
+          </div>
+
+          <div class="testimonial-card animate-on-scroll">
+            <p class="testimonial-quote">
+              I was sending manually crafted UDP packets with netcat. Yes, I know.
+              PacketPerfume fixed my life. My RFC 3550 implementation finally feels professional.
+            </p>
+            <div class="testimonial-author">
+              <div class="testimonial-avatar">MT</div>
+              <div class="testimonial-info">
+                <div class="testimonial-name">Marcus Thompson</div>
+                <div class="testimonial-role">Protocol Developer, Janestreet</div>
+              </div>
+              <span class="testimonial-badge">Verified Packet</span>
+            </div>
+          </div>
+
+          <div class="testimonial-card animate-on-scroll">
+            <p class="testimonial-quote">
+              The small-batch approach really does make a difference.
+              You can taste the hand-crafted MTU. My latency graphs have never been more artisanal.
+            </p>
+            <div class="testimonial-author">
+              <div class="testimonial-avatar">SL</div>
+              <div class="testimonial-info">
+                <div class="testimonial-name">Sarah Lin</div>
+                <div class="testimonial-role">SRE, Stripe</div>
+              </div>
+              <span class="testimonial-badge">Verified Packet</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-logo">PacketPerfume</div>
+      <p class="footer-tagline">Artisanal TCP packets, lovingly encapsulated in small batches.</p>
+      <div class="footer-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Cookie Preferences</a>
+        <a href="#">Status</a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="easter-egg" id="easterEgg">
+    🎮 Konami Code Detected! FREE FLAG: {p4ck3t_m4st3r_2024}
+  </div>
+
+  <script>
+    (function() {
+      // Theme toggle
+      const themeToggle = document.getElementById('themeToggle');
+      const sunIcon = document.getElementById('sunIcon');
+      const moonIcon = document.getElementById('moonIcon');
+      const themeText = document.getElementById('themeText');
+
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      updateThemeUI(savedTheme);
+
+      themeToggle.addEventListener('click', () => {
+        const current = document.documentElement.getAttribute('data-theme');
+        const next = current === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', next);
+        localStorage.setItem('theme', next);
+        updateThemeUI(next);
+      });
+
+      function updateThemeUI(theme) {
+        if (theme === 'dark') {
+          sunIcon.style.display = 'none';
+          moonIcon.style.display = 'block';
+          themeText.textContent = 'Light';
+        } else {
+          sunIcon.style.display = 'block';
+          moonIcon.style.display = 'none';
+          themeText.textContent = 'Dark';
+        }
+      }
+
+      // Scroll animations
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry, index) => {
+          if (entry.isIntersecting) {
+            entry.target.style.transitionDelay = `${index * 80}ms`;
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
+
+      // Header scroll effect
+      const header = document.getElementById('header');
+      let lastScroll = 0;
+
+      window.addEventListener('scroll', () => {
+        const currentScroll = window.scrollY;
+        if (currentScroll > 10) {
+          header.classList.add('scrolled');
+        } else {
+          header.classList.remove('scrolled');
+        }
+        lastScroll = currentScroll;
+      }, { passive: true });
+
+      // Easter egg: Konami Code
+      const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+      let konamiIndex = 0;
+      const easterEgg = document.getElementById('easterEgg');
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === konamiCode[konamiIndex]) {
+          konamiIndex++;
+          if (konamiIndex === konamiCode.length) {
+            easterEgg.classList.add('show');
+            setTimeout(() => {
+              easterEgg.classList.remove('show');
+            }, 4000);
+            konamiIndex = 0;
+          }
+        } else {
+          konamiIndex = 0;
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>horizon</title>
+<style>
+*{margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;background:#000}
+canvas{display:block;width:100%;height:100%}
+#overlay{
+  position:fixed;inset:0;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  background:#000;color:#666;cursor:pointer;z-index:10;user-select:none;
+  font:11px monospace;letter-spacing:3px;text-transform:uppercase;
+  transition:opacity 1.5s ease-out
+}
+#overlay.hidden{opacity:0;pointer-events:none}
+#overlay span{margin-top:8px;font-size:9px;letter-spacing:2px;color:#333}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="overlay">click to begin<span>a flyover at sunset</span></div>
+<script>
+(function(){
+"use strict";
+
+var canvas=document.getElementById('c');
+var gl=canvas.getContext('webgl',{antialias:true,alpha:false});
+if(!gl)return void(document.getElementById('overlay').innerHTML='WebGL needed');
+
+function resize(){
+  var dpr=Math.min(window.devicePixelRatio||1,2);
+  var w=window.innerWidth,h=window.innerHeight;
+  canvas.width=w*dpr;canvas.height=h*dpr;
+  canvas.style.width=w+'px';canvas.style.height=h+'px';
+  gl.viewport(0,0,canvas.width,canvas.height);
+}
+window.addEventListener('resize',resize);resize();
+
+function shader(src,type){
+  var s=gl.createShader(type);
+  gl.shaderSource(s,src);gl.compileShader(s);
+  if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))throw gl.getShaderInfoLog(s);
+  return s;
+}
+function program(vs,fs){
+  var p=gl.createProgram();
+  gl.attachShader(p,shader(vs,gl.VERTEX_SHADER));
+  gl.attachShader(p,shader(fs,gl.FRAGMENT_SHADER));
+  gl.linkProgram(p);
+  if(!gl.getProgramParameter(p,gl.LINK_STATUS))throw gl.getProgramInfoLog(p);
+  return p;
+}
+
+// ============================================================
+// SHADERS
+// ============================================================
+var terrainVS=[
+'attribute vec3 pos;',
+'uniform float uTime;',
+'uniform float uHScale;',
+'uniform float uNScale;',
+'uniform float uScroll;',
+'uniform vec3 uCam;',
+'uniform vec3 uSDir;',
+'uniform vec3 uSCol;',
+'uniform vec3 uAmb;',
+'uniform vec3 uFog;',
+'uniform float uFogD;',
+'uniform mat4 uView;',
+'uniform mat4 uProj;',
+'varying vec4 vCol;',
+'float h2(vec2 p){',
+  'vec3 p3=fract(vec3(p.xyx)*.1031);',
+  'p3+=dot(p3,p3.yzx+33.33);',
+  'return fract((p3.x+p3.y)*p3.z);',
+'}',
+'float nz(vec2 p){',
+  'vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);',
+  'return mix(mix(h2(i),h2(i+vec2(1,0)),f.x),mix(h2(i+vec2(0,1)),h2(i+vec2(1,1)),f.x),f.y);',
+'}',
+'float fbm(vec2 p){',
+  'float v=0.,a=1.,f=1.,mx=0.;',
+  'for(int i=0;i<6;i++){v+=a*nz(p*f);mx+=a;a*=.5;f*=2.1;}',
+  'return v/mx;',
+'}',
+'float rdg(vec2 p){return 1.-abs(fbm(p)-.5)*2.;}',
+'void main(){',
+  'float wz=pos.z+uTime*uScroll;',
+  'vec2 uv=vec2(pos.x,wz)*uNScale;',
+  'float h=fbm(uv)*uHScale;',
+  'h+=rdg(uv*2.3+100.)*.5;',
+  'vec3 wp=vec3(pos.x,h,wz);',
+  'float ep=.005;',
+  'float hx1=fbm(uv+vec2(ep,0));',
+  'float hx2=fbm(uv-vec2(ep,0));',
+  'float hz1=fbm(uv+vec2(0,ep));',
+  'float hz2=fbm(uv-vec2(0,ep));',
+  'float dx=(hx1-hx2)/(2.*ep);',
+  'float dz=(hz1-hz2)/(2.*ep);',
+  'vec3 n=normalize(vec3(-dx*uHScale,1.,-dz*uHScale));',
+  'float hn=clamp((h+3.)/14.,0.,1.);',
+  'vec3 c0=vec3(.06,.03,.08);',
+  'vec3 c1=vec3(.25,.14,.08);',
+  'vec3 c2=vec3(.45,.29,.13);',
+  'vec3 c3=vec3(.65,.45,.24);',
+  'vec3 c4=vec3(.85,.68,.45);',
+  'vec3 bc;',
+  'if(hn<.2){float t=hn/.2;bc=mix(c0,c1,t);}',
+  'else if(hn<.45){float t=(hn-.2)/.25;bc=mix(c1,c2,t);}',
+  'else if(hn<.7){float t=(hn-.45)/.25;bc=mix(c2,c3,t);}',
+  'else{float t=(hn-.7)/.3;bc=mix(c3,c4,t);}',
+  'bc+=(fbm(uv*3.+50.)-.5)*.08;',
+  'float ndl=max(0.,dot(n,uSDir));',
+  'vec3 lc=bc*(uAmb+uSCol*ndl);',
+  'float rim=pow(1.-max(dot(n,-uSDir),0.),4.);',
+  'lc+=vec3(1.,.6,.2)*rim*.2;',
+  'float dist=length(wp-uCam);',
+  'float fog=1.-exp(-uFogD*dist*dist);',
+  'vCol=vec4(mix(lc,uFog,fog),1.);',
+  'gl_Position=uProj*uView*vec4(wp,1.);',
+'}'
+].join('\n');
+
+var terrainFS='precision highp float;\n'+'varying vec4 vCol;\n'+'void main(){gl_FragColor=vCol;}';
+
+var skyVS='attribute vec2 pos;varying vec2 uv;void main(){gl_Position=vec4(pos,1.,1.);uv=pos*.5+.5;}';
+
+var skyFS=[
+'precision highp float;',
+'varying vec2 uv;',
+'uniform float uSunY;',
+'uniform float uSunX;',
+'uniform float uTime;',
+'uniform float uDark;',
+'float h2(vec2 p){',
+  'vec3 p3=fract(vec3(p.xyx)*.1031);',
+  'p3+=dot(p3,p3.yzx+33.33);',
+  'return fract((p3.x+p3.y)*p3.z);',
+'}',
+'float star(vec2 p,float t){',
+  'vec2 c=floor(p*280.);',
+  'vec2 l=fract(p*280.)-.5;',
+  'float s=dot(c,vec2(127.1,311.7));',
+  'vec2 sp=vec2(h2(vec2(s)),h2(vec2(s+1.)))-.5;',
+  'float d=length(l-sp);',
+  'float sz=.012+h2(vec2(s+7.))*.028;',
+  'float b=1.-smoothstep(0.,sz,d);',
+  'float tw=sin(t*(1.5+h2(vec2(s+13.))*4.)+s*12.);',
+  'return b*(.55+.45*tw);',
+'}',
+'float nz2(vec2 p){',
+  'vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);',
+  'return mix(mix(h2(i),h2(i+vec2(1,0)),f.x),mix(h2(i+vec2(0,1)),h2(i+vec2(1,1)),f.x),f.y);',
+'}',
+'float cloud(vec2 p){',
+  'float c=0.,a=1.,f=1.;',
+  'for(int i=0;i<3;i++){c+=a*nz2(p*f);a*=.5;f*=1.9;}',
+  'return c;',
+'}',
+'void main(){',
+  'float y=uv.y;',
+  'vec3 hc=mix(vec3(1.,.5,.1),vec3(1.,.72,.28),y);',
+  'vec3 mc=mix(vec3(.82,.22,.12),vec3(.5,.1,.2),smoothstep(.15,.5,y));',
+  'vec3 tc=mix(vec3(.2,.06,.22),vec3(.015,.005,.04),smoothstep(.35,1.,y));',
+  'vec3 sky;',
+  'if(y<.18){float t=y/.18;sky=mix(hc,mc,t);}',
+  'else if(y<.5){float t=(y-.18)/.32;sky=mix(mc,tc,t);}',
+  'else sky=tc;',
+  'sky=mix(sky,vec3(0),uDark*smoothstep(.05,.5,y));',
+  'float sd=distance(uv,vec2(uSunX,uSunY));',
+  'float sglow=exp(-sd*sd*15.);',
+  'float score=exp(-sd*sd*350.);',
+  'vec3 sCol=mix(vec3(1.,.85,.55),vec3(1.,.5,.15),smoothstep(.1,.4,y));',
+  'sky+=sCol*(score*2.5+sglow*.5);',
+  'float yr=y*.8+.2;',
+  'float sf=yr*smoothstep(.15,.45,y)*smoothstep(.15,.5,1.-abs(uv.x-.5)*2.);',
+  'float st=0.;',
+  'if(y>.15){',
+    'st=star(uv,uTime);',
+    'st*=smoothstep(.1,.35,y);',
+    'st*=smoothstep(.2,.7,uDark);',
+  '}',
+  'sky+=vec3(.9,.92,1.)*st*.5*sf;',
+  'if(y<.35){',
+    'vec2 cp=vec2(uv.x*4.+uTime*.003,uv.y*8.);',
+    'float cl=cloud(cp);',
+    'cl=smoothstep(.25,.6,cl);',
+    'cl*=smoothstep(.28,0.,y);',
+    'cl*=1.-abs(uv.x-.5)*1.2;',
+    'sky=mix(sky,vec3(1.,.65,.3),cl*.12);',
+  '}',
+  'gl_FragColor=vec4(sky,1.);',
+'}'
+].join('\n');
+
+var spriteVS=[
+'attribute vec3 pos;',
+'attribute vec2 uv;',
+'uniform vec3 uSunPos;',
+'uniform float uSize;',
+'uniform mat4 uView;',
+'uniform mat4 uProj;',
+'varying vec2 vUv;',
+'void main(){',
+  'vec3 f=normalize(-uView[2].xyz);',
+  'vec3 u=normalize(uView[1].xyz);',
+  'vec3 r=normalize(uView[0].xyz);',
+  'vec3 w=uSunPos+(r*pos.x+u*pos.y)*uSize;',
+  'gl_Position=uProj*uView*vec4(w,1.);',
+  'vUv=uv;',
+'}'
+].join('\n');
+
+var spriteFS=[
+'precision highp float;',
+'varying vec2 vUv;',
+'uniform vec3 uCol;',
+'void main(){',
+  'vec2 c=vUv-.5;float d=length(c);',
+  'if(d>.5)discard;',
+  'float a=exp(-d*d*12.)*.65+exp(-d*d*45.)*.35;',
+  'gl_FragColor=vec4(uCol,a);',
+'}'
+].join('\n');
+
+// ============================================================
+// COMPILE
+// ============================================================
+var tProg=program(terrainVS,terrainFS);
+var tU={};
+['uTime','uHScale','uNScale','uScroll','uCam','uSDir','uSCol','uAmb','uFog','uFogD','uView','uProj'].forEach(function(n){tU[n]=gl.getUniformLocation(tProg,n);});
+var tPos=gl.getAttribLocation(tProg,'pos');
+
+var sProg=program(skyVS,skyFS);
+var sU={};
+['uSunY','uSunX','uTime','uDark'].forEach(function(n){sU[n]=gl.getUniformLocation(sProg,n);});
+var sPos=gl.getAttribLocation(sProg,'pos');
+
+var spProg=program(spriteVS,spriteFS);
+var spU={};
+['uSunPos','uSize','uView','uProj','uCol'].forEach(function(n){spU[n]=gl.getUniformLocation(spProg,n);});
+var spPos=gl.getAttribLocation(spProg,'pos');
+var spUv=gl.getAttribLocation(spProg,'uv');
+
+// ============================================================
+// GEOMETRY
+// ============================================================
+
+// terrain grid: 160x160, step 0.6
+var TW=160,TD=160,TS=0.6;
+var TOT=TW*TD;
+var p=new Float32Array(TOT*3);
+var idxs=[],ii=0;
+for(var iz=0;iz<TD;iz++){
+  var z=-5+iz*TS;
+  for(var ix=0;ix<TW;ix++){
+    var x=(ix/(TW-1)-.5)*TW*TS;
+    var i=(iz*TW+ix)*3;
+    p[i]=x;p[i+1]=0;p[i+2]=z;
+  }
+}
+for(var iz=0;iz<TD-1;iz++)
+  for(var ix=0;ix<TW-1;ix++){
+    var a=iz*TW+ix,b=a+1,c=(iz+1)*TW+ix,d=c+1;
+    idxs.push(a,b,c,b,d,c);
+  }
+var iA=new Uint16Array(idxs);
+var iC=iA.length;
+
+var tB=gl.createBuffer();
+gl.bindBuffer(gl.ARRAY_BUFFER,tB);
+gl.bufferData(gl.ARRAY_BUFFER,p,gl.STATIC_DRAW);
+var iB=gl.createBuffer();
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,iB);
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,iA,gl.STATIC_DRAW);
+
+// fullscreen quad
+var sqB=gl.createBuffer();
+gl.bindBuffer(gl.ARRAY_BUFFER,sqB);
+gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+
+// sun sprite quad
+var spB=gl.createBuffer();
+gl.bindBuffer(gl.ARRAY_BUFFER,spB);
+gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,0,0,1,-1,1,0,-1,1,0,1,1,1,1,1]),gl.STATIC_DRAW);
+
+// ============================================================
+// STATE
+// ============================================================
+var time=0,lastT=0,started=false;
+var JOURNEY=55;
+
+gl.enable(gl.DEPTH_TEST);
+gl.depthFunc(gl.LESS);
+gl.enable(gl.BLEND);
+gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);
+gl.clearColor(0,0,0,1);
+
+// ============================================================
+// MATH
+// ============================================================
+function norm(v){var l=Math.sqrt(v[0]*v[0]+v[1]*v[1]+v[2]*v[2]);return l>0?[v[0]/l,v[1]/l,v[2]/l]:[0,0,0];}
+function cross(a,b){return [a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]];}
+function dot(a,b){return a[0]*b[0]+a[1]*b[1]+a[2]*b[2];}
+function sub(a,b){return [a[0]-b[0],a[1]-b[1],a[2]-b[2]];}
+function add(a,b){return [a[0]+b[0],a[1]+b[1],a[2]+b[2]];}
+function scale(v,s){return [v[0]*s,v[1]*s,v[2]*s];}
+function lerp(a,b,t){return a+(b-a)*t;}
+function clamp(v,mn,mx){return Math.max(mn,Math.min(mx,v));}
+function sstep(a,b,t){var x=clamp((t-a)/(b-a),0,1);return x*x*(3-2*x);}
+
+function lookat(ex,ey,ez,tx,ty,tz,ux,uy,uz){
+  var f=norm(sub([tx,ty,tz],[ex,ey,ez]));
+  var s=norm(cross(f,[ux,uy,uz]));
+  var u=cross(s,f);
+  var e=new Float32Array(16);
+  e[0]=s[0];e[1]=u[0];e[2]=-f[0];e[3]=0;
+  e[4]=s[1];e[5]=u[1];e[6]=-f[1];e[7]=0;
+  e[8]=s[2];e[9]=u[2];e[10]=-f[2];e[11]=0;
+  e[12]=-dot(s,[ex,ey,ez]);e[13]=-dot(u,[ex,ey,ez]);e[14]=dot(f,[ex,ey,ez]);e[15]=1;
+  return e;
+}
+
+function persp(fov,asp,near,far){
+  var f=1/Math.tan(fov/2);
+  var nf=1/(near-far);
+  var e=new Float32Array(16);
+  e[0]=f/asp;e[1]=0;e[2]=0;e[3]=0;
+  e[4]=0;e[5]=f;e[6]=0;e[7]=0;
+  e[8]=0;e[9]=0;e[10]=(far+near)*nf;e[11]=-1;
+  e[12]=0;e[13]=0;e[14]=2*far*near*nf;e[15]=0;
+  return e;
+}
+
+// ============================================================
+// AUDIO
+// ============================================================
+var actx=null,oscs=[],nGain=null,nFilt=null;
+var audOk=false;
+
+function initAudio(){
+  if(audOk)return;
+  try{actx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){return}
+  var m=actx.createGain();m.gain.value=.18;m.connect(actx.destination);
+  var fs=[32.7,33,49,49.4,65.4,66,98,98.8];
+  oscs=[];
+  for(var i=0;i<fs.length;i++){
+    var o=actx.createOscillator();
+    o.type=i<4?'sine':'triangle';
+    o.frequency.value=fs[i];
+    var g=actx.createGain();g.gain.value=i<4?.012:.006;
+    o.connect(g);g.connect(m);o.start();
+    oscs.push({o:o,g:g,f:fs[i]});
+  }
+  var sz=actx.sampleRate*3;
+  var b=actx.createBuffer(1,sz,actx.sampleRate);
+  var d=b.getChannelData(0);
+  for(var i=0;i<sz;i++){
+    d[i]=Math.random()*2-1;
+    if(i>0)d[i]=(d[i]+d[i-1])*.5;
+  }
+  var nn=actx.createBufferSource();
+  nn.buffer=b;nn.loop=true;
+  nFilt=actx.createBiquadFilter();
+  nFilt.type='lowpass';nFilt.frequency.value=900;nFilt.Q.value=.5;
+  nGain=actx.createGain();nGain.gain.value=0;
+  nn.connect(nFilt);nFilt.connect(nGain);nGain.connect(m);
+  nn.start();
+  audOk=true;
+}
+
+function updAudio(pr){
+  if(!audOk||!oscs.length)return;
+  var d=sstep(0,1,pr);
+  for(var i=0;i<oscs.length;i++){
+    oscs[i].o.frequency.value=oscs[i].f+Math.sin(time*.05+i*1.5)*.15;
+    oscs[i].g.gain.value=(i<4?.012:.006)*(1-d*.35);
+  }
+  if(nFilt&&nGain){
+    nFilt.frequency.value=900-d*700;
+    nGain.gain.value=.006+d*.012;
+  }
+}
+
+// ============================================================
+// RENDER
+// ============================================================
+function render(t,dt){
+  var pr=Math.min(t/JOURNEY,1);
+  var spd=.4;
+  var cz=t*spd;
+  var cy=5.5+Math.sin(t*.35)*.12+Math.sin(t*.17)*.08;
+  var lz=cz+22;
+
+  var view=lookat(0,cy,cz, 0,cy*.7,lz, 0,1,0);
+  var asp=canvas.width/canvas.height;
+  var proj=persp(50*Math.PI/180,asp,.1,300);
+
+  // sun world position
+  var sunY=Math.max(.35-pr*.45,-.15);
+  var sunA=.15+pr*.02;
+  var sDist=200;
+  var ss=Math.sin(sunA),sc=Math.cos(sunA);
+  var sunPos=[ss*sDist,sunY*sDist+cy,sc*sDist+cz-15];
+
+  var sDir=norm(sub(sunPos,[0,cy,cz]));
+  var dark=sstep(.15,.75,pr);
+  var sBrt=sstep(-.05,.12,sunY);
+
+  var sCol=[1*sBrt,.5*sBrt,.12*sBrt];
+  var amb=[.05*(1-dark)+.01*dark,.025*(1-dark)+.005*dark,.07*(1-dark)+.015*dark];
+  var fog=[.82*(1-dark)+.08*dark,.45*(1-dark)+.04*dark,.18*(1-dark)+.06*dark];
+
+  gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
+
+  // --- SKY ---
+  gl.useProgram(sProg);
+  gl.bindBuffer(gl.ARRAY_BUFFER,sqB);
+  gl.enableVertexAttribArray(sPos);
+  gl.vertexAttribPointer(sPos,2,gl.FLOAT,false,0,0);
+  gl.uniform1f(sU.uSunY,sunY*.45+.5);
+  gl.uniform1f(sU.uSunX,.5+ss*.12);
+  gl.uniform1f(sU.uTime,t);
+  gl.uniform1f(sU.uDark,dark);
+  gl.disable(gl.DEPTH_TEST);
+  gl.depthMask(false);
+  gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+
+  // --- SUN SPRITE ---
+  if(sBrt>.01){
+    gl.useProgram(spProg);
+    gl.bindBuffer(gl.ARRAY_BUFFER,spB);
+    gl.enableVertexAttribArray(spPos);
+    gl.enableVertexAttribArray(spUv);
+    gl.vertexAttribPointer(spPos,2,gl.FLOAT,false,16,0);
+    gl.vertexAttribPointer(spUv,2,gl.FLOAT,false,16,8);
+    gl.uniform3fv(spU.uSunPos,sunPos);
+    gl.uniform1f(spU.uSize,4.5);
+    gl.uniformMatrix4fv(spU.uView,false,view);
+    gl.uniformMatrix4fv(spU.uProj,false,proj);
+    gl.uniform3f(spU.uCol,1,.78,.35);
+    gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+  }
+
+  // --- TERRAIN ---
+  gl.useProgram(tProg);
+  gl.bindBuffer(gl.ARRAY_BUFFER,tB);
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,iB);
+  gl.enableVertexAttribArray(tPos);
+  gl.vertexAttribPointer(tPos,3,gl.FLOAT,false,0,0);
+  gl.uniform1f(tU.uTime,t);
+  gl.uniform1f(tU.uHScale,6);
+  gl.uniform1f(tU.uNScale,.008);
+  gl.uniform1f(tU.uScroll,spd);
+  gl.uniform3f(tU.uCam,0,cy,cz);
+  gl.uniform3fv(tU.uSDir,sDir);
+  gl.uniform3fv(tU.uSCol,sCol);
+  gl.uniform3fv(tU.uAmb,amb);
+  gl.uniform3fv(tU.uFog,fog);
+  gl.uniform1f(tU.uFogD,.0005);
+  gl.uniformMatrix4fv(tU.uView,false,view);
+  gl.uniformMatrix4fv(tU.uProj,false,proj);
+  gl.enable(gl.DEPTH_TEST);
+  gl.depthMask(true);
+  gl.disable(gl.BLEND);
+  gl.drawElements(gl.TRIANGLES,iC,gl.UNSIGNED_SHORT,0);
+
+  updAudio(pr);
+}
+
+// ============================================================
+// LOOP
+// ============================================================
+function loop(ts){
+  var dt=lastT?(ts-lastT)/1e3:.016;
+  lastT=ts;time+=dt;
+  if(time>JOURNEY+15)time=0;
+  render(time,dt);
+  requestAnimationFrame(loop);
+}
+
+// ============================================================
+// START
+// ============================================================
+document.getElementById('overlay').addEventListener('click',function(){
+  this.classList.add('hidden');
+  if(!audOk)initAudio();
+  if(!started){started=true;requestAnimationFrame(loop);}
+});
+
+})();
+</script>
+</body>
+</html>
