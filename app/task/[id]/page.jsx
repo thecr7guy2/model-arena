@@ -8,7 +8,7 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }) {
   const { id } = await params;
   const t = TASKS.find((x) => x.id === id);
-  return t ? { title: `${t.title} — Spark Showdown`, description: t.one } : {};
+  return t ? { title: `${t.title} — Model Arena`, description: t.one } : {};
 }
 
 export default async function TaskPage({ params }) {

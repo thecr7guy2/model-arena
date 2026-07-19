@@ -21,17 +21,13 @@ export default function TaskGrid() {
     <section id="tasks">
       <div className="wrap">
         <div className="section-head">
-          <h2>The twelve tasks</h2>
+          <h2>Tasks</h2>
           <span className="count mono">
-            {ratedTotal === 0 ? "24 artifacts await your judgment"
-              : ratedTotal === 24 ? "all 24 rated — the bench is yours"
-              : `${ratedTotal} of 24 artifacts rated`}
+            {ratedTotal === 0 ? `${TASKS.length * ORDER.length} artifacts · unrated`
+              : ratedTotal === TASKS.length * ORDER.length ? `all ${ratedTotal} rated`
+              : `${ratedTotal} / ${TASKS.length * ORDER.length} rated`}
           </span>
         </div>
-        <p className="section-sub">
-          Four visual briefs, four systems-programming briefs, four that live in between. Every artifact below
-          is live — the games play, the SVGs animate, the C++ ships with the evidence we gathered running it.
-        </p>
         <div className="grid-holder">
           <div className="grid">
             {TASKS.map((t, i) => {

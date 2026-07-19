@@ -1,4 +1,4 @@
-# Spark Showdown
+# Model Arena
 
 **One cluster, twelve prompts, every era.** A living benchmark of every LLM that has served
 on our 2× NVIDIA DGX Spark cluster: the same twelve creative and engineering prompts, run

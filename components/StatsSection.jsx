@@ -81,27 +81,22 @@ export default function StatsSection() {
     <section id="telemetry">
       <div className="wrap">
         <div className="section-head">
-          <h2>The telemetry</h2>
+          <h2>Telemetry</h2>
           <span className="count mono">measured at the API, not estimated</span>
         </div>
-        <p className="section-sub">
-          A transparent logging proxy sat between the agent harness and vLLM for both runs, recording every
-          request&apos;s timing, token usage and tool calls. These are the numbers behind the temperaments:
-          the fast model that barely thinks out loud, and the slow one whose output is almost entirely thought.
-        </p>
         <div className="stat-tiles">
           {STATS.rows.map((row, i) => <StatTile key={row.key} row={row} i={i} />)}
         </div>
         <GroupedBars
           title="Wall-clock per task"
-          note="DeepSeek's long bars are where it iterated against its own output — the CSS art, the demoscene, the quine. MiniMax's one long bar (the quine) is the exception that proves its temperament."
+          note="The long bars are where a model iterated against its own output."
           valueOf={(t, m) => t.meta[m].wall}
           fmt={fmtWall}
           max={maxWall}
         />
         <GroupedBars
           title="Output tokens per task (reasoning included)"
-          note="Same prompts, wildly different appetites: DeepSeek at reasoning_effort max out-thinks MiniMax roughly 3:1 on the tasks it decided deserved suspicion."
+          note="Same prompts, different appetites — reasoning tokens included."
           valueOf={(t, m) => t.meta[m].tokens}
           fmt={(v) => (v >= 1000 ? (v / 1000).toFixed(1) + "k" : v)}
           max={maxTok}

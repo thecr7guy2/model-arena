@@ -46,27 +46,6 @@ export default function Standings() {
             );
           })}
         </div>
-        <Reveal className="story">
-          <p>
-            The pattern behind the numbers: <strong>MiniMax is fast and never looks back.</strong> It finished
-            the whole bench in a third of the tokens and a bit over half the time, and its two worst failures —
-            a chat server that never sends a byte, a demo behind an eternally black screen — are both
-            &ldquo;wrote it, never ran it&rdquo; bugs. One netcat session, one glance at a shader log, and both
-            would have been caught.
-          </p>
-          <p>
-            <strong>DeepSeek is slow and suspicious of itself.</strong> It spent its extra ninety minutes
-            compiling its own binaries, probing its own servers and re-reading its own diffs — and every task
-            on this bench with an objective pass/fail went its way. Its one bad loss, the quine, is the
-            exception that defines the rule: the single function it wrote and never called was the single
-            thing it couldn&apos;t see without opening a browser.
-          </p>
-          <p>
-            Same prompts, same hardware, same harness. Different temperaments. That&apos;s what this bench
-            actually measures — and why every future model that serves on this cluster will face these twelve
-            prompts, unchanged.
-          </p>
-        </Reveal>
       </div>
     </section>
   );

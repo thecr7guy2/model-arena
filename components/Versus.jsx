@@ -3,7 +3,7 @@ import { useEffect, useRef } from "react";
 import { useReducedMotion } from "framer-motion";
 
 /** The signature: a draggable clip-path seam between two eras' renders of the same prompt. */
-export default function Versus({ left, right, leftLabel, rightLabel }) {
+export default function Versus({ left, right, leftLabel, rightLabel, leftAccent, rightAccent }) {
   const ref = useRef(null);
   const reduce = useReducedMotion();
 
@@ -62,8 +62,8 @@ export default function Versus({ left, right, leftLabel, rightLabel }) {
       <div className="pane top"><img src={left} alt={leftLabel} /></div>
       <div className="seam" style={{ left: "50%" }} />
       <div className="knob" style={{ left: "50%" }}>&lt;&gt;</div>
-      <span className="tag left">{leftLabel}</span>
-      <span className="tag right">{rightLabel}</span>
+      <span className="tag left" style={leftAccent ? { color: leftAccent } : undefined}>{leftLabel}</span>
+      <span className="tag right" style={rightAccent ? { color: rightAccent } : undefined}>{rightLabel}</span>
     </div>
   );
 }
