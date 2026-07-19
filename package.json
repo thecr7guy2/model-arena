@@ -1,16 +1,39 @@
 {
-  "name": "spark-showdown",
+  "name": "model-showdown",
   "version": "1.0.0",
   "private": true,
+  "description": "A living LLM benchmark from aXite Security Tools with frozen tasks, original artifacts, Fable scores, and measured telemetry.",
+  "author": "aXite Security Tools",
+  "license": "UNLICENSED",
+  "homepage": "https://model-arena-rho.vercel.app",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thecr7guy2/model-arena.git"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "keywords": [
+    "llm-benchmark",
+    "model-evaluation",
+    "nextjs",
+    "vllm"
+  ],
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "npx serve out"
   },
   "dependencies": {
+    "framer-motion": "^12.0.0",
     "next": "^15.3.0",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "framer-motion": "^12.0.0"
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "serve": "^14.2.6"
+  },
+  "overrides": {
+    "postcss": "8.5.10"
   }
 }
