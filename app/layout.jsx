@@ -2,8 +2,10 @@ import "./globals.css";
 import Link from "next/link";
 import NavLinks from "@/components/NavLinks";
 import { MODELS, TASKS } from "@/lib/data";
-import { Inter } from "next/font/google";
+import { Archivo_Black, IBM_Plex_Mono, Inter } from "next/font/google";
 
+const display = Archivo_Black({ subsets: ["latin"], variable: "--font-display", weight: "400" });
+const mono = IBM_Plex_Mono({ subsets: ["latin"], variable: "--font-mono", weight: ["400", "500", "600"] });
 const body = Inter({ subsets: ["latin"], variable: "--font-body", weight: ["400", "500", "600", "700"] });
 
 export const metadata = {
@@ -17,7 +19,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={body.variable}>
+    <html lang="en" className={`${display.variable} ${mono.variable} ${body.variable}`}>
       <body>
         <header className="site-header">
           <div className="wrap header-in">
