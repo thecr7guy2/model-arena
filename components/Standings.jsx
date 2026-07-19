@@ -24,7 +24,6 @@ export default function Standings() {
   return (
     <section className="standings" id="standings">
       <div className="wrap">
-        <div className="section-head"><h2>Standings</h2></div>
         <div className="stand-grid">
           {MODELS.map((m) => {
             const fable = TASKS.reduce((s, t) => s + t.scores[m.id], 0) / TASKS.length;

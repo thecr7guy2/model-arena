@@ -20,8 +20,7 @@ export default function TaskGrid() {
   return (
     <section id="tasks">
       <div className="wrap">
-        <div className="section-head">
-          <h2>Tasks</h2>
+        <div className="grid-bar">
           <span className="count mono">
             {ratedTotal === 0 ? `${TASKS.length * ORDER.length} artifacts · unrated`
               : ratedTotal === TASKS.length * ORDER.length ? `all ${ratedTotal} rated`

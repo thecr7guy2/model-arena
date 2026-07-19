@@ -1,9 +1,28 @@
-import { MODELS } from "@/lib/data";
+import Link from "next/link";
+import { MODELS, TASKS } from "@/lib/data";
 import Versus from "@/components/Versus";
 import Reveal from "@/components/Reveal";
-import StatsSection from "@/components/StatsSection";
-import TaskGrid from "@/components/TaskGrid";
-import Standings from "@/components/Standings";
+
+const EXPLORE = [
+  {
+    href: "/tasks/",
+    title: "Tasks",
+    line: "Open each brief, compare the two artifacts, rate them.",
+    stat: (models, tasks) => `${tasks.length} tasks · ${tasks.length * models.length} artifacts`,
+  },
+  {
+    href: "/telemetry/",
+    title: "Telemetry",
+    line: "Speed, tokens and wall-clock per task, measured at the API.",
+    stat: () => "measured, not estimated",
+  },
+  {
+    href: "/standings/",
+    title: "Standings",
+    line: "Fable's averages against yours. Your ratings unlock the verdicts.",
+    stat: (models) => `${models.length} models on the board`,
+  },
+];
 
 export default function Home() {
   // the slider compares the first era against the latest one
@@ -54,12 +73,22 @@ export default function Home() {
               ))}
             </div>
           </Reveal>
+          <div className="explore">
+            {EXPLORE.map((e, i) => (
+              <Reveal key={e.href} delay={0.22 + i * 0.05}>
+                <Link className="explore-card" href={e.href}>
+                  <span className="crumb">{e.stat(MODELS, TASKS)}</span>
+                  <span className="title-row">
+                    <h2>{e.title}</h2>
+                    <span className="arrow" aria-hidden>→</span>
+                  </span>
+                  <p>{e.line}</p>
+                </Link>
+              </Reveal>
+            ))}
+          </div>
         </div>
       </section>
-
-      <TaskGrid />
-      <StatsSection />
-      <Standings />
     </main>
   );
 }

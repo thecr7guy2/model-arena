@@ -162,7 +162,7 @@ export default function TaskDetail({ taskId }) {
     <main>
       <div className="wrap">
         <div className="back-row">
-          <Link className="btn" href="/#tasks">← all tasks</Link>
+          <Link className="btn" href="/tasks/">← all tasks</Link>
           <div className="task-nav">
             <Link className="btn" aria-disabled={!prev} href={prev ? `/task/${prev.id}/` : "#"}>prev</Link>
             <Link className="btn" aria-disabled={!next} href={next ? `/task/${next.id}/` : "#"}>next</Link>

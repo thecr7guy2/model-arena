@@ -1,5 +1,6 @@
 import "./globals.css";
 import Link from "next/link";
+import NavLinks from "@/components/NavLinks";
 import { Space_Grotesk, JetBrains_Mono, Inter } from "next/font/google";
 
 const display = Space_Grotesk({ subsets: ["latin"], variable: "--font-display", weight: ["500", "700"] });
@@ -24,11 +25,7 @@ export default function RootLayout({ children }) {
             <Link className="wordmark" href="/">
               <span className="bolt" />MODEL ARENA
             </Link>
-            <nav>
-              <Link href="/#tasks">tasks</Link>
-              <Link href="/#telemetry">telemetry</Link>
-              <Link href="/#standings">standings</Link>
-            </nav>
+            <NavLinks />
           </div>
         </header>
         {children}

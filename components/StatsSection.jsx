@@ -80,10 +80,6 @@ export default function StatsSection() {
   return (
     <section id="telemetry">
       <div className="wrap">
-        <div className="section-head">
-          <h2>Telemetry</h2>
-          <span className="count mono">measured at the API, not estimated</span>
-        </div>
         <div className="stat-tiles">
           {STATS.rows.map((row, i) => <StatTile key={row.key} row={row} i={i} />)}
         </div>
