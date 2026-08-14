@@ -22,7 +22,8 @@ export default function Home() {
   const ranking = [...MODELS].sort((a, b) => averages[b.id] - averages[a.id]);
   const leader = ranking[0];
   const lead = ranking.length > 1 ? averages[ranking[0].id] - averages[ranking[1].id] : 0;
-  const [first, latest] = MODELS;
+  const first = MODELS[0];
+  const latest = MODELS[MODELS.length - 1];
 
   return (
     <main className="home">
@@ -32,7 +33,7 @@ export default function Home() {
             <p className="eyebrow">AXITE SECURITY TOOLS / INDEPENDENT MODEL BENCHMARK</p>
             <h1>Model<br />Showdown<span className="period">.</span></h1>
             <div className="hero-bottom">
-              <p className="lede">Every model faces the same 12 frozen prompts with no retries or cleanup. Inspect the original work, see Fable&apos;s scores, and track how each new model changes the field.</p>
+              <p className="lede">Every model faces the same 12 frozen prompts with no retries or cleanup. Inspect the original work, see Opus&apos;s scores, and track how each new model changes the field.</p>
               <div className="hero-actions">
                 <Link className="button button-dark" href="/tasks/">Explore the tasks <span aria-hidden>→</span></Link>
                 <Link className="text-link" href="#result">See the result ↓</Link>
@@ -51,7 +52,7 @@ export default function Home() {
             <div className="protocol-steps">
               <article><b>01</b><h3>We freeze the brief</h3><p>Twelve visual, frontend, and systems tasks stay identical across every run.</p></article>
               <article><b>02</b><h3>Models get one attempt</h3><p>No human cleanup, retries, or selective reruns. The generated artifact is the evidence.</p></article>
-              <article><b>03</b><h3>Fable scores the work</h3><p>Fable, the Claude agent operating the cluster, scores each artifact and records the evidence behind every verdict.</p></article>
+              <article><b>03</b><h3>Opus scores the work</h3><p>Opus (claude-opus-5) scores each artifact and records the evidence behind every verdict.</p></article>
             </div>
             <div className="roster">
               <div className="roster-label">Models in this benchmark <span>{MODELS.length} completed runs</span></div>
@@ -78,7 +79,7 @@ export default function Home() {
       <section className="result-band" id="result">
         <div className="wrap">
           <Reveal>
-            <div className="section-label"><span>01</span> The current result <b>Fable&apos;s average score</b></div>
+            <div className="section-label"><span>01</span> The current result <b>Opus&apos;s average score</b></div>
             <div className="scoreboard">
               {MODELS.map((model, index) => (
                 <article className="score-side" key={model.id} style={{ "--ac": model.accent, "--score-ac": model.chart }}>
@@ -99,7 +100,7 @@ export default function Home() {
         <div className="wrap">
           <Reveal>
             <div className="section-label"><span>02</span> Baseline versus newest <b>Drag to compare</b></div>
-            <div className="exhibit-title"><h2>A pelican on a bicycle.</h2><p>The benchmark classic exposes spatial reasoning in a single glance. One bird rides. The other floats.</p></div>
+            <div className="exhibit-title"><h2>A pelican on a bicycle.</h2><p>The benchmark classic exposes spatial reasoning in a single glance. Both birds ride — only one grew a pelican&apos;s beak.</p></div>
             <Versus
               left={`/artifacts/${first.id}/01-pelican-svg/pelican.svg`}
               right={`/artifacts/${latest.id}/01-pelican-svg/pelican.svg`}
@@ -112,7 +113,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="home-cta"><div className="wrap"><p>Review all {TASKS.length} tasks with Fable&apos;s scores and written verdicts.</p><Link className="button button-dark" href="/tasks/">Open the benchmark <span>→</span></Link></div></section>
+      <section className="home-cta"><div className="wrap"><p>Review all {TASKS.length} tasks with Opus&apos;s scores and written verdicts.</p><Link className="button button-dark" href="/tasks/">Open the benchmark <span>→</span></Link></div></section>
     </main>
   );
 }
