@@ -1,0 +1,213 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#23263e"/>
+      <stop offset="0.55" stop-color="#453d63"/>
+      <stop offset="1" stop-color="#6b5578"/>
+    </linearGradient>
+    <radialGradient id="spliceGlow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#eafffb" stop-opacity="0.95"/>
+      <stop offset="0.35" stop-color="#5fe6ef" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#5fe6ef" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="flashGlow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#fff6c4" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#fff6c4" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="wood" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#5b3a26"/>
+      <stop offset="0.5" stop-color="#7b4f33"/>
+      <stop offset="1" stop-color="#4a2e1d"/>
+    </linearGradient>
+    <pattern id="checks" width="36" height="36" patternUnits="userSpaceOnUse" patternTransform="rotate(7)">
+      <rect width="36" height="36" fill="#d9433b"/>
+      <rect width="18" height="18" fill="#f6efe9"/>
+      <rect x="18" y="18" width="18" height="18" fill="#f6efe9"/>
+    </pattern>
+    <filter id="soft" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="3.2"/>
+    </filter>
+    <filter id="softer" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="6"/>
+    </filter>
+    <g id="hedgehog">
+      <ellipse cx="-6" cy="12" rx="5" ry="3" fill="#b98762"/>
+      <ellipse cx="7" cy="12" rx="5" ry="3" fill="#b98762"/>
+      <ellipse cx="0" cy="0" rx="16" ry="12" fill="#dfb088"/>
+      <path d="M -2,-13 L 4,-22 L 8,-13 L 15,-19 L 16,-11 L 23,-12 L 18,-5 L 24,0 L 17,3 L 21,9 L 12,8 L 13,13 L 5,11 Z" fill="#5d4037"/>
+      <path d="M -2,-13 L 4,-22 L 8,-13 L 15,-19 L 16,-11 L 23,-12 L 18,-5 L 24,0 L 17,3 L 21,9 L 12,8 L 13,13 L 5,11 Z" fill="#7b5e4b" opacity="0.35" transform="scale(0.82)"/>
+      <circle cx="-13" cy="-2" r="7.5" fill="#efd0a8"/>
+      <circle cx="-20" cy="-3" r="2.4" fill="#3e2723"/>
+      <circle cx="-14.5" cy="-4" r="1.6" fill="#212121"/>
+      <circle cx="-15" cy="-4.6" r="0.6" fill="#ffffff"/>
+      <path d="M -19,1.5 q 2,2 4,1" fill="none" stroke="#8a5c3b" stroke-width="1" stroke-linecap="round"/>
+    </g>
+  </defs>
+
+  <!-- sky -->
+  <rect width="800" height="600" fill="url(#sky)"/>
+
+  <!-- lightning flashes -->
+  <circle cx="130" cy="70" r="80" fill="url(#flashGlow)"/>
+  <polygon points="118,4 90,86 113,80 74,168 106,158 60,246" fill="#ffe37a" filter="url(#soft)"/>
+  <polygon points="118,4 90,86 113,80 74,168 106,158 60,246" fill="#fff4b8"/>
+  <polygon points="700,2 678,58 694,54 666,122" fill="#ffe37a" opacity="0.9" filter="url(#soft)"/>
+
+  <!-- storm clouds -->
+  <g fill="#3c4658">
+    <ellipse cx="60" cy="40" rx="150" ry="55"/>
+    <ellipse cx="250" cy="28" rx="160" ry="50"/>
+    <ellipse cx="450" cy="42" rx="170" ry="52"/>
+    <ellipse cx="650" cy="30" rx="165" ry="50"/>
+    <ellipse cx="780" cy="55" rx="140" ry="55"/>
+  </g>
+  <g fill="#4c576e">
+    <ellipse cx="140" cy="22" rx="90" ry="30"/>
+    <ellipse cx="360" cy="16" rx="110" ry="28"/>
+    <ellipse cx="560" cy="22" rx="100" ry="30"/>
+    <ellipse cx="740" cy="18" rx="90" ry="26"/>
+  </g>
+
+  <!-- ground -->
+  <rect y="520" width="800" height="80" fill="#3f7d3f"/>
+  <rect y="520" width="800" height="8" fill="#356d36"/>
+  <g stroke="#2f5f30" stroke-width="2.5" stroke-linecap="round">
+    <path d="M60,560 q4,-14 -2,-20"/><path d="M120,572 q5,-12 -1,-20"/><path d="M340,566 q4,-13 -2,-20"/>
+    <path d="M420,580 q5,-12 -1,-19"/><path d="M740,570 q4,-13 -2,-20"/><path d="M300,592 q5,-12 -1,-19"/>
+    <path d="M660,594 q4,-12 -2,-19"/><path d="M175,548 q4,-12 -2,-18"/>
+  </g>
+  <ellipse cx="310" cy="555" rx="42" ry="8" fill="#7fd8e8" opacity="0.22"/>
+
+  <!-- picnic blanket -->
+  <polygon points="480,520 700,545 672,585 452,562" fill="url(#checks)" stroke="#c03630" stroke-width="2"/>
+  <ellipse cx="572" cy="552" rx="86" ry="18" fill="#000000" opacity="0.10"/>
+
+  <!-- hedgehog 1 -->
+  <use href="#hedgehog" transform="translate(536,520)"/>
+  <!-- hedgehog 2 (facing right) -->
+  <use href="#hedgehog" transform="translate(592,528) scale(-1,0.95)"/>
+  <!-- hedgehog 3 with umbrella -->
+  <line x1="639" y1="497" x2="646" y2="520" stroke="#8d6e63" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M610,497 Q640,464 670,497 Q663,489 656,497 Q648,488 640,497 Q632,488 624,497 Q617,489 610,497 Z"
+        fill="#4fc3f7" stroke="#2e9cc9" stroke-width="1.5"/>
+  <circle cx="640" cy="464" r="2.4" fill="#2e9cc9"/>
+  <path d="M616,486 Q640,466 664,486" fill="none" stroke="#ffffff" stroke-width="1.6" opacity="0.55"/>
+  <use href="#hedgehog" transform="translate(650,536) scale(0.9)"/>
+  <circle cx="646" cy="521" r="2.6" fill="#efd0a8"/>
+
+  <!-- rain (background layer) -->
+  <g stroke="#9ecfff" stroke-width="2" stroke-linecap="round">
+    <line x1="30" y1="120" x2="18" y2="154" opacity="0.4"/><line x1="95" y1="200" x2="83" y2="234" opacity="0.3"/>
+    <line x1="160" y1="90" x2="148" y2="124" opacity="0.45"/><line x1="210" y1="250" x2="198" y2="284" opacity="0.3"/>
+    <line x1="20" y1="300" x2="8" y2="334" opacity="0.35"/><line x1="130" y1="330" x2="118" y2="364" opacity="0.25"/>
+    <line x1="370" y1="140" x2="358" y2="174" opacity="0.4"/><line x1="420" y1="260" x2="408" y2="294" opacity="0.3"/>
+    <line x1="470" y1="90" x2="458" y2="124" opacity="0.45"/><line x1="520" y1="200" x2="508" y2="234" opacity="0.35"/>
+    <line x1="560" y1="320" x2="548" y2="354" opacity="0.3"/><line x1="610" y1="150" x2="598" y2="184" opacity="0.45"/>
+    <line x1="660" y1="260" x2="648" y2="294" opacity="0.3"/><line x1="720" y1="180" x2="708" y2="214" opacity="0.4"/>
+    <line x1="760" y1="330" x2="748" y2="364" opacity="0.25"/><line x1="60" y1="420" x2="48" y2="454" opacity="0.3"/>
+    <line x1="180" y1="430" x2="168" y2="464" opacity="0.25"/><line x1="430" y1="420" x2="418" y2="454" opacity="0.3"/>
+    <line x1="560" y1="430" x2="548" y2="464" opacity="0.25"/><line x1="700" y1="430" x2="688" y2="464" opacity="0.3"/>
+    <line x1="770" y1="120" x2="758" y2="154" opacity="0.35"/><line x1="330" y1="330" x2="318" y2="364" opacity="0.25"/>
+  </g>
+
+  <!-- utility pole -->
+  <rect x="240" y="150" width="22" height="415" fill="url(#wood)"/>
+  <rect x="244" y="170" width="3" height="380" fill="#3c2415" opacity="0.5"/>
+  <rect x="255" y="200" width="2.5" height="350" fill="#3c2415" opacity="0.35"/>
+  <ellipse cx="251" cy="150" rx="12" ry="3.5" fill="#8a5a3b"/>
+  <!-- crossarms -->
+  <rect x="168" y="186" width="166" height="10" rx="3" fill="#5f3d27"/>
+  <rect x="196" y="228" width="110" height="9" rx="3" fill="#5f3d27"/>
+  <line x1="250" y1="196" x2="222" y2="224" stroke="#4a2e1d" stroke-width="4"/>
+  <line x1="252" y1="196" x2="280" y2="224" stroke="#4a2e1d" stroke-width="4"/>
+  <!-- insulators + sagging wires -->
+  <g fill="#8fb8c9">
+    <rect x="183" y="176" width="9" height="11" rx="3"/><rect x="246" y="176" width="9" height="11" rx="3"/>
+    <rect x="309" y="176" width="9" height="11" rx="3"/><rect x="216" y="219" width="8" height="10" rx="3"/>
+    <rect x="278" y="219" width="8" height="10" rx="3"/>
+  </g>
+  <g fill="none" stroke="#c9d6de" stroke-width="2" opacity="0.85">
+    <path d="M -10,120 Q 90,192 187,177"/>
+    <path d="M 318,177 Q 500,200 640,150 T 810,110"/>
+    <path d="M -10,170 Q 120,238 220,229"/>
+    <path d="M 286,229 Q 420,252 560,196 T 810,150"/>
+  </g>
+  <!-- transformer -->
+  <rect x="204" y="272" width="30" height="56" rx="5" fill="#6e7b87"/>
+  <rect x="209" y="280" width="20" height="4" rx="2" fill="#55626e"/>
+  <rect x="209" y="290" width="20" height="4" rx="2" fill="#55626e"/>
+  <rect x="209" y="300" width="20" height="4" rx="2" fill="#55626e"/>
+  <circle cx="219" cy="316" r="3.5" fill="#3f4a55"/>
+  <line x1="234" y1="288" x2="240" y2="288" stroke="#3f4a55" stroke-width="4"/>
+  <!-- cable clamp -->
+  <rect x="286" y="356" width="12" height="8" rx="2" fill="#3f4a55"/>
+
+  <!-- fiber-optic cable -->
+  <path d="M 276,562 C 284,430 262,330 298,180 C 306,150 320,102 332,74"
+        fill="none" stroke="#20c4d6" stroke-width="4" stroke-linecap="round"/>
+  <path d="M 276,562 C 284,430 262,330 298,180 C 306,150 320,102 332,74"
+        fill="none" stroke="#aef3f8" stroke-width="1.4" stroke-dasharray="6 8" stroke-linecap="round"/>
+  <path d="M 338,72 C 390,58 432,84 480,74 C 550,60 620,98 810,86"
+        fill="none" stroke="#20c4d6" stroke-width="3.5" stroke-linecap="round"/>
+  <path d="M 338,72 C 390,58 432,84 480,74 C 550,60 620,98 810,86"
+        fill="none" stroke="#aef3f8" stroke-width="1.2" stroke-dasharray="6 8"/>
+
+  <!-- flamingo lineman -->
+  <g>
+    <!-- legs -->
+    <path d="M 250,116 L 250,146" stroke="#e0618b" stroke-width="4" stroke-linecap="round" fill="none"/>
+    <path d="M 256,114 L 270,126 L 264,144" stroke="#e0618b" stroke-width="4" stroke-linecap="round" fill="none"/>
+    <path d="M 244,149 h 12" stroke="#c94f79" stroke-width="3" stroke-linecap="round"/>
+    <path d="M 259,147 h 11" stroke="#c94f79" stroke-width="3" stroke-linecap="round"/>
+    <!-- tail feathers -->
+    <path d="M 208,84 q -18,2 -26,14 M 210,92 q -16,6 -22,18 M 214,99 q -13,9 -17,20"
+          stroke="#ee7fae" stroke-width="5" stroke-linecap="round" fill="none"/>
+    <!-- body -->
+    <ellipse cx="244" cy="92" rx="40" ry="27" fill="#f48fb1" transform="rotate(-12 244 92)"/>
+    <!-- wing -->
+    <ellipse cx="240" cy="95" rx="23" ry="14" fill="#ee7fae" transform="rotate(-14 240 95)"/>
+    <path d="M 226,101 q 14,8 27,2 M 222,94 q 15,9 30,1" stroke="#d9557f" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+    <!-- neck -->
+    <path d="M 272,88 C 300,82 304,74 306,56" stroke="#f48fb1" stroke-width="10" stroke-linecap="round" fill="none"/>
+    <!-- head -->
+    <circle cx="307" cy="50" r="9" fill="#f48fb1"/>
+    <!-- beak reaching the splice -->
+    <path d="M 313,50 L 332,63 L 334,68 L 316,58 Z" fill="#37474f"/>
+    <path d="M 313,50 L 322,56 L 318,59 Z" fill="#f7a4c0"/>
+    <!-- eye -->
+    <circle cx="309" cy="47" r="1.8" fill="#212121"/>
+    <circle cx="308.4" cy="46.3" r="0.6" fill="#ffffff"/>
+    <!-- hard hat -->
+    <path d="M 297,46 Q 307,28 319,44 Z" fill="#ffc42b"/>
+    <path d="M 307,31 v 12" stroke="#f5a623" stroke-width="3" stroke-linecap="round"/>
+    <rect x="292" y="43" width="31" height="5.5" rx="2.7" fill="#f5a623"/>
+  </g>
+
+  <!-- glowing splice point -->
+  <g>
+    <circle cx="334" cy="71" r="26" fill="url(#spliceGlow)" filter="url(#softer)"/>
+    <circle cx="334" cy="71" r="16" fill="url(#spliceGlow)"/>
+    <g stroke="#aefcff" stroke-width="1.6" stroke-linecap="round">
+      <line x1="334" y1="71" x2="334" y2="52"/>
+      <line x1="334" y1="71" x2="351" y2="64"/>
+      <line x1="334" y1="71" x2="348" y2="86"/>
+      <line x1="334" y1="71" x2="320" y2="86"/>
+      <line x1="334" y1="71" x2="318" y2="58"/>
+    </g>
+    <circle cx="334" cy="71" r="5" fill="#ffffff"/>
+    <path d="M 316,52 l 2,4 4,2 -4,2 -2,4 -2,-4 -4,-2 4,-2 Z" fill="#eafffb"/>
+    <path d="M 355,84 l 1.5,3 3,1.5 -3,1.5 -1.5,3 -1.5,-3 -3,-1.5 3,-1.5 Z" fill="#c9fbff" opacity="0.9"/>
+    <path d="M 352,50 l 1,2.4 2.4,1 -2.4,1 -1,2.4 -1,-2.4 -2.4,-1 2.4,-1 Z" fill="#eafffb" opacity="0.85"/>
+    <circle cx="323" cy="90" r="1.6" fill="#aefcff"/>
+    <circle cx="349" cy="94" r="1.2" fill="#aefcff" opacity="0.8"/>
+  </g>
+
+  <!-- rain (foreground layer) -->
+  <g stroke="#cde9ff" stroke-width="2.4" stroke-linecap="round" opacity="0.35">
+    <line x1="100" y1="260" x2="84" y2="306"/><line x1="290" y1="300" x2="274" y2="346"/>
+    <line x1="500" y1="250" x2="484" y2="296"/><line x1="640" y1="360" x2="624" y2="406"/>
+    <line x1="180" y1="180" x2="164" y2="226"/><line x1="720" y1="250" x2="704" y2="296"/>
+    <line x1="400" y1="380" x2="384" y2="426"/><line x1="60" y1="480" x2="44" y2="520"/>
+    <line x1="560" y1="480" x2="544" y2="520"/><line x1="750" y1="470" x2="734" y2="516"/>
+  </g>
+</svg>

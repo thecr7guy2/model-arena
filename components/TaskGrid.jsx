@@ -53,7 +53,7 @@ export default function TaskGrid() {
                   <div className="task-media">
                     {visual ? <img src={`/${task.shots[winnerId || ORDER[0]]}`} alt={`${task.title} benchmark artifact`} loading="lazy" /> : <div className="code-preview"><span>CPP</span><b>&lt;/&gt;</b></div>}
                     <span className="task-number">{task.id.slice(0, 2)}</span>
-                    <span className="rating-state complete">Opus scored</span>
+                    <span className="rating-state complete">{REVIEWER.name} scored</span>
                   </div>
                   <div className="task-card-copy">
                     <div className="task-type">{task.cat}</div>
