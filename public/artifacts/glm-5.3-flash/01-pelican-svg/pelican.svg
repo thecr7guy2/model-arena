@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 600">
+  <rect width="720" height="600" fill="#f2f9ff"/>
+  <ellipse cx="375" cy="536" rx="250" ry="9" fill="#1a1a1a" opacity="0.10"/>
+  <line x1="30" y1="532" x2="700" y2="532" stroke="#93a7b4" stroke-width="5" stroke-linecap="round"/>
+
+  <g stroke="#a9c3d6" stroke-width="7" stroke-linecap="round">
+    <line x1="54" y1="282" x2="106" y2="282"/>
+    <line x1="72" y1="314" x2="122" y2="314"/>
+    <line x1="50" y1="346" x2="96" y2="346"/>
+  </g>
+
+  <line x1="340" y1="455" x2="318" y2="420" stroke="#565c63" stroke-width="7" stroke-linecap="round"/>
+  <rect x="292" y="418" width="46" height="8" rx="3" fill="#3a3f45"/>
+  <path d="M300,417 L330,417 L334,421 L297,421 Z" fill="#d98a2f" stroke="#b9731f" stroke-width="1.5"/>
+  <polyline points="348,290 322,372 318,417" fill="none" stroke="#d98a2f" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <g>
+    <circle cx="210" cy="450" r="75" fill="none" stroke="#3a3f45" stroke-width="13"/>
+    <circle cx="210" cy="450" r="58" fill="none" stroke="#aab4bd" stroke-width="4"/>
+    <g stroke="#aab4bd" stroke-width="3">
+      <line x1="210" y1="392" x2="210" y2="508"/>
+      <line x1="210" y1="392" x2="210" y2="508" transform="rotate(30 210 450)"/>
+      <line x1="210" y1="392" x2="210" y2="508" transform="rotate(60 210 450)"/>
+      <line x1="210" y1="392" x2="210" y2="508" transform="rotate(90 210 450)"/>
+      <line x1="210" y1="392" x2="210" y2="508" transform="rotate(120 210 450)"/>
+      <line x1="210" y1="392" x2="210" y2="508" transform="rotate(150 210 450)"/>
+    </g>
+    <circle cx="210" cy="450" r="9" fill="#3a3f45"/>
+  </g>
+  <g>
+    <circle cx="550" cy="450" r="75" fill="none" stroke="#3a3f45" stroke-width="13"/>
+    <circle cx="550" cy="450" r="58" fill="none" stroke="#aab4bd" stroke-width="4"/>
+    <g stroke="#aab4bd" stroke-width="3" transform="rotate(15 550 450)">
+      <line x1="550" y1="392" x2="550" y2="508"/>
+      <line x1="550" y1="392" x2="550" y2="508" transform="rotate(30 550 450)"/>
+      <line x1="550" y1="392" x2="550" y2="508" transform="rotate(60 550 450)"/>
+      <line x1="550" y1="392" x2="550" y2="508" transform="rotate(90 550 450)"/>
+      <line x1="550" y1="392" x2="550" y2="508" transform="rotate(120 550 450)"/>
+      <line x1="550" y1="392" x2="550" y2="508" transform="rotate(150 550 450)"/>
+    </g>
+    <circle cx="550" cy="450" r="9" fill="#3a3f45"/>
+  </g>
+
+  <circle cx="210" cy="450" r="11" fill="#565c63"/>
+  <line x1="210" y1="439" x2="340" y2="436" stroke="#4a4f54" stroke-width="3.5" stroke-dasharray="6 4"/>
+  <line x1="210" y1="461" x2="340" y2="474" stroke="#4a4f54" stroke-width="3.5" stroke-dasharray="6 4"/>
+  <circle cx="340" cy="455" r="20" fill="none" stroke="#565c63" stroke-width="5"/>
+  <circle cx="340" cy="455" r="8" fill="#3a3f45"/>
+
+  <g fill="none" stroke="#d94f3d" stroke-width="9" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="210,450 318,320"/>
+    <polyline points="210,450 340,455"/>
+    <polyline points="340,455 318,320"/>
+    <polyline points="318,320 505,300"/>
+    <polyline points="340,455 525,345"/>
+    <polyline points="505,300 525,345 550,450"/>
+  </g>
+  <line x1="318" y1="320" x2="313" y2="303" stroke="#3a3f45" stroke-width="6"/>
+  <rect x="287" y="294" width="64" height="12" rx="6" fill="#3a3f45"/>
+  <path d="M505,300 L498,281 C496,273 488,271 479,275 L470,279" fill="none" stroke="#3a3f45" stroke-width="8" stroke-linecap="round"/>
+
+  <line x1="340" y1="455" x2="365" y2="490" stroke="#565c63" stroke-width="7" stroke-linecap="round"/>
+  <rect x="346" y="486" width="44" height="8" rx="3" fill="#3a3f45"/>
+
+  <polyline points="355,288 398,372 367,485" fill="none" stroke="#f0a24a" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M352,486 L380,486 L388,491 L348,491 Z" fill="#f0a24a" stroke="#b9731f" stroke-width="1.5"/>
+
+  <path d="M245,295 L298,260 L314,288 Z" fill="#fdfcf7" stroke="#6b7280" stroke-width="2.5" stroke-linejoin="round"/>
+  <path d="M372,244 C408,232 436,206 446,168 L466,174 C452,212 430,238 402,258 Z" fill="#fdfcf7" stroke="#6b7280" stroke-width="2.5" stroke-linejoin="round"/>
+  <ellipse cx="335" cy="252" rx="88" ry="56" transform="rotate(-15 335 252)" fill="#fdfcf7" stroke="#6b7280" stroke-width="2.5"/>
+  <circle cx="455" cy="150" r="32" fill="#fdfcf7" stroke="#6b7280" stroke-width="2.5"/>
+  <path d="M434,126 C428,111 413,105 403,111 C412,112 420,118 424,129 Z" fill="#fdfcf7" stroke="#6b7280" stroke-width="2"/>
+  <path d="M480,152 C490,190 540,201 588,166 L480,152 Z" fill="#ec8f2f" stroke="#b26a1e" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M478,134 L594,156 Q600,161 595,166 L480,157 Z" fill="#f2b04a" stroke="#b26a1e" stroke-width="2" stroke-linejoin="round"/>
+  <circle cx="462" cy="139" r="4.2" fill="#2f2a26"/>
+  <circle cx="463.5" cy="137.5" r="1.4" fill="#ffffff"/>
+  <path d="M358,214 C400,208 442,236 466,282 L452,286 Q445,268 428,258 L426,272 Q412,257 398,251 L396,265 Q380,253 366,249 Z" fill="#e9e9e1" stroke="#6b7280" stroke-width="2.5" stroke-linejoin="round"/>
+</svg>

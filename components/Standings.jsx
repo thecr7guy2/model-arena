@@ -30,7 +30,7 @@ export default function Standings() {
         </Reveal>
 
         <div className="standing-table">
-          <div className="standing-row standing-header"><span>Contender</span><span>Fable average</span><span>Task wins</span><span>Coverage</span></div>
+          <div className="standing-row standing-header"><span>Contender</span><span>{REVIEWER.name} average</span><span>Task wins</span><span>Coverage</span></div>
           {rows.map(({ model, average, wins: taskWins }) => (
             <Reveal className="standing-row" key={model.id} style={{ "--ac": model.accent }}>
               <div className="standing-model"><i /><div><b>{model.name}</b><small>{model.style}</small></div></div>
@@ -41,7 +41,7 @@ export default function Standings() {
           ))}
         </div>
 
-        <div className="score-matrix-head"><span>Case-by-case score sheet</span><div className="matrix-legend">{MODELS.map((model) => <span key={model.id}><i style={{ background: model.accent }} />{model.short}</span>)}<b>Fable score</b></div></div>
+        <div className="score-matrix-head"><span>Case-by-case score sheet</span><div className="matrix-legend">{MODELS.map((model) => <span key={model.id}><i style={{ background: model.accent }} />{model.short}</span>)}<b>{REVIEWER.name} score</b></div></div>
         <div className="score-matrix">
           {TASKS.map((task) => (
             <Link href={`/task/${task.id}/`} className="matrix-row" key={task.id} style={{ "--model-count": MODELS.length }}>

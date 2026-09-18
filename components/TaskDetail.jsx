@@ -144,7 +144,7 @@ export default function TaskDetail({ taskId }) {
         </details>
         <div className="case-flow" aria-label="How to read this task">
           <span><b>01</b> Inspect every original output</span>
-          <span><b>02</b> Compare Fable&apos;s scores</span>
+          <span><b>02</b> Compare {REVIEWER.name}&apos;s scores</span>
           <span><b>03</b> Read the verdict and evidence</span>
         </div>
         <div className="panels">

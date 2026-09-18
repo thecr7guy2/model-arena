@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amsterdam — rain on the canal</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-inout: cubic-bezier(0.77, 0, 0.175, 1);
+  --s: min(100vw / 1600, 100vh / 900);
+}
+
+html, body { height: 100%; }
+
+body {
+  background: #04060d;
+  overflow: hidden;
+  font-family: Georgia, 'Times New Roman', serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.canvas {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 1600px;
+  height: 900px;
+  margin-left: -800px;
+  margin-top: -450px;
+  transform: scale(var(--s));
+  transform-origin: center center;
+  background: linear-gradient(180deg, #050814 0%, #0a1026 34%, #131f3e 58%, #0d1526 64%, #0a0f1c 100%);
+  overflow: hidden;
+}
+
+.scene { position: absolute; inset: 0; }
+
+/* ---------------------------------------------------------------- sky */
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.45; }
+  50% { opacity: 1; }
+}
+
+.moon-halo {
+  position: absolute;
+  left: 120px; top: 40px;
+  width: 420px; height: 420px;
+  background: radial-gradient(circle, rgba(180, 200, 255, 0.10) 0%, rgba(150, 175, 235, 0.05) 40%, transparent 68%);
+  filter: blur(6px);
+}
+.moon {
+  position: absolute;
+  left: 205px; top: 92px;
+  width: 96px; height: 96px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 34% 30%, #f2f5ff 0%, #cfd8f2 55%, #aab6dc 100%);
+  box-shadow:
+    0 0 28px 12px rgba(205, 220, 255, 0.35),
+    0 0 90px 40px rgba(160, 185, 245, 0.18);
+  opacity: 0.92;
+}
+.moon::before, .moon::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, rgba(150, 160, 195, 0.45), rgba(150, 160, 195, 0.05) 70%);
+}
+.moon::before { width: 22px; height: 22px; left: 22px; top: 30px; }
+.moon::after  { width: 14px; height: 14px; left: 58px; top: 54px; }
+
+.clouds {
+  position: absolute;
+  left: 0; top: 60px;
+  width: 1700px; height: 200px;
+  background:
+    radial-gradient(220px 60px at 18% 55%, rgba(28, 40, 70, 0.85), transparent 70%),
+    radial-gradient(340px 80px at 42% 70%, rgba(22, 32, 60, 0.9), transparent 70%),
+    radial-gradient(260px 70px at 62% 40%, rgba(26, 38, 68, 0.85), transparent 70%),
+    radial-gradient(300px 80px at 86% 62%, rgba(20, 30, 56, 0.9), transparent 70%),
+    radial-gradient(200px 55px at 100% 35%, rgba(28, 40, 72, 0.8), transparent 70%);
+  filter: blur(24px);
+  opacity: 0.9;
+  animation: cloudDrift 48s ease-in-out infinite alternate;
+}
+@keyframes cloudDrift {
+  from { transform: translateX(-60px); }
+  to   { transform: translateX(90px); }
+}
+
+/* ---------------------------------------------------------------- houses */
+
+.houses { position: absolute; inset: 0; z-index: 4; }
+
+.house { position: absolute; bottom: 380px; }
+.facade { position: absolute; inset: 0; overflow: visible; }
+
+.house > .g  { position: absolute; left: 0; right: 0; box-shadow: inset 0 -8px 18px rgba(0,0,0,0.55); }
+
+.gstep1  { clip-path: polygon(0 100%, 0 9%, 13% 9%, 13% 0, 27% 0, 27% 21%, 41% 21%, 41% 3%, 59% 3%, 59% 21%, 73% 21%, 73% 0, 87% 0, 87% 9%, 100% 9%, 100% 100%); }
+.gstep2  { clip-path: polygon(0 100%, 0 8%, 14% 8%, 14% 0, 36% 0, 36% 20%, 50% 20%, 64% 20%, 64% 0, 86% 0, 86% 8%, 100% 8%, 100% 100%); }
+.gpoint  { clip-path: polygon(0 100%, 0 18%, 50% 0, 100% 18%, 100% 100%); }
+.gbell   { clip-path: polygon(0 100%, 0 28%, 3% 26%, 11% 16%, 21% 8%, 31% 2.5%, 50% 0, 69% 2.5%, 79% 8%, 89% 16%, 97% 26%, 100% 28%, 100% 100%); }
+.gdouble { clip-path: polygon(0 100%, 0 8%, 12% 8%, 12% 0, 24% 0, 24% 22%, 40% 22%, 40% 0, 60% 0, 60% 22%, 76% 22%, 76% 0, 88% 0, 88% 8%, 100% 8%, 100% 100%); }
+
+.house::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  box-shadow: -14px 0 26px -16px rgba(0,0,0,0.85), inset 0 0 60px rgba(0,0,0,0.35);
+}
+.facade::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 38px, rgba(0,0,0,0.14) 38px 41px),
+    repeating-linear-gradient(0deg, transparent 0 36px, rgba(0,0,0,0.10) 36px 39px);
+  mix-blend-mode: multiply;
+}
+
+/* window */
+.w {
+  position: absolute;
+  width: 34px; height: 48px;
+  border-radius: 2px;
+  border: 3px solid #0d0a07;
+  box-shadow: inset 0 2px 5px rgba(0,0,0,0.6);
+}
+.w::before {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.16), transparent 42%, rgba(255,255,255,0.05));
+  border-radius: 1px;
+}
+.w::after {
+  content: ""; position: absolute; inset: 0;
+  background:
+    linear-gradient(90deg, transparent 0 47%, rgba(20,12,6,0.55) 47% 53%, transparent 53%),
+    linear-gradient(180deg, transparent 0 43%, rgba(20,12,6,0.5) 43% 49%, transparent 49% 72%, rgba(20,12,6,0.5) 72% 78%, transparent 78%);
+}
+.wlit {
+  background: linear-gradient(180deg, #ffe1a0 0%, #f6b45c 55%, #df8b33 100%);
+  box-shadow:
+    0 0 6px 1px rgba(255, 192, 92, 0.8),
+    0 0 26px 12px rgba(255, 162, 58, 0.34);
+}
+.wdim {
+  background: linear-gradient(180deg, #d4ab72, #a0763f);
+  box-shadow: 0 0 10px 4px rgba(196, 144, 62, 0.26);
+}
+.wdark {
+  background: radial-gradient(130% 130% at 30% 22%, #332923, #15100c 62%);
+  box-shadow: inset 0 0 7px rgba(0,0,0,0.7);
+}
+.wt { height: 66px; }
+.wa { width: 24px; height: 30px; }
+.wa::after {
+  background:
+    linear-gradient(90deg, transparent 0 46%, rgba(20,12,6,0.5) 46% 54%, transparent 54%),
+    linear-gradient(180deg, transparent 55%, rgba(20,12,6,0.5) 55% 60%, transparent 60%);
+}
+.wp { width: 60px; height: 54px; }
+
+.flick  { animation: flick 6s var(--ease-inout) infinite; }
+.flick2 { animation: flick 9s var(--ease-inout) 3s infinite; }
+.flick3 { animation: flick 5.5s var(--ease-inout) 1s infinite; }
+@keyframes flick {
+  0%, 100% { opacity: 1; }
+  6%  { opacity: 0.55; }
+  8%  { opacity: 0.9; }
+  30% { opacity: 1; }
+  37% { opacity: 0.72; }
+  41% { opacity: 1; }
+  68% { opacity: 0.9; }
+  71% { opacity: 0.6; }
+  75% { opacity: 1; }
+}
+
+.door {
+  position: absolute;
+  background: linear-gradient(90deg, #241304, #120801 55%, #1c0f04);
+  border-radius: 3px 3px 0 0;
+  border-left: 4px solid #0c0703;
+  border-right: 4px solid #0c0703;
+}
+.door::before {
+  content: "";
+  position: absolute;
+  left: 6px; right: 6px; top: 5px;
+  height: 17px;
+  background: linear-gradient(180deg, #ffe0a0, #efab54);
+  border-radius: 4px 4px 9px 9px;
+  box-shadow: 0 0 14px 5px rgba(255, 172, 76, 0.5);
+}
+.door::after {
+  content: "";
+  position: absolute;
+  left: 50%; top: 5px; bottom: 5px;
+  width: 1px;
+  background: #170d04;
+}
+
+.hook {
+  position: absolute;
+  left: 50%;
+  width: 9px; height: 30px;
+  margin-left: -4px;
+  background: linear-gradient(90deg, #07070b, #23232d 50%, #07070b);
+  border-radius: 3px;
+  z-index: 2;
+}
+.hook::after {
+  content: "";
+  position: absolute;
+  left: -5px; top: -5px;
+  width: 15px; height: 15px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 32%, #5a5963, #14141a 68%);
+  box-shadow: 0 2px 3px rgba(0,0,0,0.6);
+}
+
+/* individual houses — colour */
+.h1 { left: 20px;  width: 150px; height: 330px; }
+.h1 .g  { top: -96px;  height: 96px; }
+.h2 { left: 176px; width: 138px; height: 268px; }
+.h2 .g  { top: -110px; height: 110px; }
+.h3 { left: 320px; width: 160px; height: 350px; }
+.h3 .g  { top: -120px; height: 120px; }
+.h4 { left: 486px; width: 148px; height: 296px; }
+.h4 .g  { top: -90px;  height: 90px; }
+.h5 { left: 640px; width: 150px; height: 264px; }
+.h5 .g  { top: -105px; height: 105px; }
+.h6 { left: 796px; width: 164px; height: 352px; }
+.h6 .g  { top: -120px; height: 120px; }
+.h7 { left: 966px; width: 150px; height: 298px; }
+.h7 .g  { top: -110px; height: 110px; }
+.h8 { left: 1122px; width: 162px; height: 324px; }
+.h8 .g  { top: -105px; height: 105px; }
+
+.h1 .g  { background: linear-gradient(180deg, #3a2326, #241318); }
+.h1 .facade { background: linear-gradient(180deg, #3c2624 0%, #2c1a19 40%, #221312 100%); }
+.h2 .g  { background: linear-gradient(180deg, #2d1720, #1b0d13); }
+.h2 .facade { background: linear-gradient(180deg, #2e1a22 0%, #23131a 46%, #180d12 100%); }
+.h3 .g  { background: linear-gradient(180deg, #3a2b1e, #26190f); }
+.h3 .facade { background: linear-gradient(180deg, #3a2b22 0%, #2a1c16 44%, #1d130e 100%); }
+.h4 .g  { background: linear-gradient(180deg, #332134, #1e1420); }
+.h4 .facade { background: linear-gradient(180deg, #37242f 0%, #251720 46%, #191018 100%); }
+.h5 .g  { background: linear-gradient(180deg, #3b2120, #241211); }
+.h5 .facade { background: linear-gradient(180deg, #392521 0%, #281816 44%, #1b100f 100%); }
+.h6 .g  { background: linear-gradient(180deg, #34233d, #1c1220); }
+.h6 .facade { background: linear-gradient(180deg, #352536 0%, #271925 46%, #1a1119 100%); }
+.h7 .g  { background: linear-gradient(180deg, #3a2b1e, #251910); }
+.h7 .facade { background: linear-gradient(180deg, #3c2c24 0%, #2b1e17 44%, #1e1510 100%); }
+.h8 .g  { background: linear-gradient(180deg, #2d1f26, #1b1217); }
+.h8 .facade { background: linear-gradient(180deg, #35232a 0%, #251822 46%, #191118 100%); }
+
+/* ---------------------------------------------------------------- water */
+
+.water {
+  position: absolute;
+  left: 0; top: 520px; right: 0; bottom: 0;
+  background: linear-gradient(180deg,
+    #1c2a4c 0%,
+    #16223f 9%,
+    #101a33 30%,
+    #0b1326 58%,
+    #070d1c 82%,
+    #050911 100%);
+  z-index: 3;
+}
+
+.rf { position: absolute; top: 0; transform: scaleY(-1); filter: blur(1px); }
+.rf::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 90px;
+  background: linear-gradient(180deg, transparent 0%, rgba(255,174,82,0.30) 55%, rgba(255,150,56,0.42) 100%);
+}
+
+.rwall {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(9,12,24,0) 0%, rgba(22,30,54,0.42) 30%, rgba(30,40,68,0.55) 78%, rgba(36,48,80,0.6) 100%);
+}
+.rwall::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(90deg, transparent 0 38px, rgba(0,0,0,0.18) 38px 41px);
+}
+
+.rwin {
+  position: absolute;
+  bottom: 4px;
+  width: 46px;
+  height: 150px;
+  background: linear-gradient(180deg, rgba(255,190,100,0.08) 0%, rgba(255,175,80,0.85) 38%, rgba(255,150,55,1) 100%);
+  filter: blur(3px);
+  transform-origin: center bottom;
+  animation: rshine 4s ease-in-out infinite alternate;
+}
+.rwin.rtall { height: 210px; }
+.rwin.rshort { height: 90px; }
+.rglow {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 34px;
+  background: linear-gradient(180deg, transparent 0%, rgba(255,176,86,0.6) 55%, rgba(255,158,64,0.5) 100%);
+  filter: blur(2px);
+}
+@keyframes rshine {
+  from { transform: translateX(-3px) rotate(0deg); opacity: 0.75; }
+  to   { transform: translateX(4px) rotate(1.2deg); opacity: 1; }
+}
+
+.refl-tint {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(255,220,160,0.06), transparent 12%, transparent 60%, rgba(2,4,10,0.55) 100%);
+  z-index: 5;
+  pointer-events: none;
+}
+
+.sheen {
+  position: absolute; inset: 0;
+  background: linear-gradient(115deg, transparent 30%, rgba(130,175,255,0.05) 46%, rgba(200,235,255,0.09) 50%, rgba(130,175,255,0.05) 54%, transparent 70%);
+  mix-blend-mode: screen;
+  filter: blur(3px);
+  z-index: 6;
+  animation: sheenMove 9s var(--ease-inout) infinite alternate;
+  pointer-events: none;
+}
+@keyframes sheenMove {
+  from { transform: translateX(-70px) translateY(-4px); }
+  to   { transform: translateX(70px) translateY(4px); }
+}
+
+.shimmer {
+  position: absolute; inset: 0;
+  background:
+    repeating-linear-gradient(0deg, transparent 0 22px, rgba(190, 220, 255, 0.05) 22px 24px, transparent 24px 46px),
+    repeating-linear-gradient(0deg, transparent 0 52px, rgba(255, 235, 205, 0.035) 52px 55px, transparent 55px 96px);
+  mix-blend-mode: screen;
+  z-index: 7;
+  animation: shimmerMove 2.6s linear infinite;
+  pointer-events: none;
+}
+@keyframes shimmerMove { from { transform: translateY(0); } to { transform: translateY(26px); } }
+
+.rip {
+  position: absolute;
+  width: 190px; height: 16px;
+  border: 1px solid rgba(185, 215, 255, 0.16);
+  border-radius: 50%;
+  bottom: 0;
+  filter: blur(1px);
+  animation: ripple 6s var(--ease-out) infinite;
+  pointer-events: none;
+}
+@keyframes ripple {
+  0%   { transform: scaleX(0.4) scaleY(1); opacity: 0; }
+  30%  { opacity: 1; }
+  100% { transform: scaleX(1.6) scaleY(1.6); opacity: 0; }
+}
+
+.lamp-pool {
+  position: absolute;
+  left: 1110px; top: 0;
+  width: 480px; height: 84px;
+  background: radial-gradient(50% 100% at 50% 0%, rgba(255, 186, 92, 0.4), transparent 72%);
+  filter: blur(7px);
+  z-index: 8;
+  animation: poolPulse 5s var(--ease-inout) infinite;
+  pointer-events: none;
+}
+@keyframes poolPulse {
+  0%, 100% { opacity: 0.75; }
+  50% { opacity: 1; }
+}
+
+/* ---------------------------------------------------------------- distance / quay */
+
+.quay {
+  position: absolute;
+  left: 1290px; right: 0; top: 520px; bottom: 0;
+  z-index: 6;
+}
+.quay-wall {
+  position: absolute;
+  left: 0; right: 0; top: 0; bottom: 0;
+  background: linear-gradient(180deg, #14141b 0%, #0d0e14 55%, #07080c 100%);
+}
+.quay-wall::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(0deg, transparent 0 26px, rgba(0,0,0,0.4) 26px 28px);
+}
+.quay-wet {
+  position: absolute;
+  left: 0; right: 0; top: 0; height: 9px;
+  background: linear-gradient(180deg, #3a4a6e 0%, rgba(58,74,110,0.1) 100%);
+  filter: blur(1px);
+}
+.quay-glow {
+  position: absolute;
+  left: 70px; right: 0; top: 0; height: 120px;
+  background: radial-gradient(62% 100% at 58% 0%, rgba(255, 180, 90, 0.3), transparent 72%);
+  filter: blur(6px);
+}
+
+.railing { position: absolute; left: 0; right: 0; top: 0; bottom: 0; z-index: 3; }
+.rail-post {
+  position: absolute;
+  bottom: 0;
+  width: 8px;
+  height: 148px;
+  background: linear-gradient(270deg, #0b0b10, #1c1d26 60%, #0b0b10);
+  transform: translateX(-3px);
+}
+.rail-top, .rail-mid {
+  position: absolute;
+  left: 0; right: 0;
+  height: 9px;
+  background: linear-gradient(180deg, #22242e, #0b0c11);
+  border-radius: 4px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.5);
+}
+.rail-top { top: -148px; }
+.rail-mid { top: -76px; height: 6px; }
+
+/* ---------------------------------------------------------------- bicycle */
+
+.bike {
+  position: absolute;
+  left: 1290px; top: 408px;
+  width: 224px; height: 124px;
+  transform: rotate(6deg);
+  transform-origin: 28px 120px;
+  z-index: 7;
+  filter: drop-shadow(0 3px 4px rgba(0,0,0,0.6))
+          drop-shadow(-4px 0 8px rgba(255,180,110,0.38))
+          drop-shadow(-8px 4px 16px rgba(255,150,60,0.16));
+}
+.bike .inner {
+  position: absolute;
+  left: 0; top: 0;
+  width: 224px; height: 124px;
+  transform: scale(1.32);
+  transform-origin: 22px 118px;
+}
+.bike > i, .bike > b, .bike > .sdl { position: absolute; background: #0b0c12; border-radius: 2px; }
+.bike i {
+  height: 4px;
+  box-shadow: 0 1px 1px rgba(255, 255, 255, 0.05);
+}
+.wheel {
+  position: absolute;
+  width: 52px; height: 52px;
+  border: 4px solid #12141c;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 2px #07080d, 0 0 2px rgba(255, 190, 120, 0.18);
+}
+.wheel::before, .wheel::after {
+  content: "";
+  position: absolute;
+  left: 50%; top: 50%;
+  background: #12141c;
+}
+.wheel::before { width: 2px; height: 38px; margin: -19px 0 0 -1px; }
+.wheel::after  { width: 38px; height: 2px; margin: -1px 0 0 -19px; }
+.hub { position: absolute; width: 5px; height: 5px; background: #1a1b22; border-radius: 50%; }
+.sdl { width: 30px; height: 7px; border-radius: 5px; background: linear-gradient(180deg, #181922, #0a0b10); }
+
+/* ---------------------------------------------------------------- lamp */
+
+.lamp { position: absolute; left: 1260px; top: 252px; width: 34px; height: 268px; z-index: 8; }
+.lamp-pole {
+  position: absolute;
+  left: 11px; top: 0;
+  width: 11px; height: 268px;
+  background: linear-gradient(90deg, #0c0d13, #262832 48%, #0c0d13);
+  border-radius: 3px;
+}
+.lamp-base {
+  position: absolute; left: 4px; bottom: 0;
+  width: 26px; height: 8px;
+  background: linear-gradient(90deg, #0a0b10, #1c1d26 50%, #0a0b10);
+  border-radius: 3px;
+}
+.lamp-arm {
+  position: absolute;
+  left: 10px; top: 24px;
+  width: 44px; height: 6px;
+  background: linear-gradient(180deg, #23252f, #0b0c11);
+  transform: rotate(-6deg);
+}
+.lamp-head { position: absolute; left: 34px; top: 0; width: 58px; height: 58px; }
+.lamp-cap {
+  position: absolute;
+  left: -4px; top: 0;
+  width: 66px; height: 18px;
+  background: linear-gradient(180deg, #171820, #0b0c11);
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+}
+.lamp-glass {
+  position: absolute;
+  left: 2px; top: 16px;
+  width: 54px; height: 40px;
+  border-radius: 4px 4px 6px 6px;
+  background: radial-gradient(70% 75% at 50% 38%, #fff3cf 0%, #ffd47e 40%, #f0a03c 100%);
+  box-shadow:
+    0 0 12px 4px rgba(255, 200, 110, 0.85),
+    0 0 46px 20px rgba(255, 170, 70, 0.42),
+    0 0 120px 60px rgba(255, 160, 60, 0.15);
+  animation: lampGlow 4.5s var(--ease-inout) infinite;
+}
+@keyframes lampGlow {
+  0%, 100% { opacity: 1; }
+  46% { opacity: 0.92; }
+  49% { opacity: 1; }
+  50% { opacity: 0.9; }
+  53% { opacity: 1; }
+}
+.lamp-cone {
+  position: absolute;
+  left: -98px; top: 48px;
+  width: 330px; height: 250px;
+  background: linear-gradient(180deg, rgba(255, 196, 110, 0.18), rgba(255, 170, 70, 0.05) 55%, transparent 78%);
+  clip-path: polygon(52% 0, 100% 100%, 4% 100%);
+  filter: blur(3px);
+  mix-blend-mode: screen;
+  z-index: -1;
+}
+
+/* ---------------------------------------------------------------- mist */
+
+.mist {
+  position: absolute;
+  left: 0; right: 0; top: 452px;
+  height: 110px;
+  background:
+    linear-gradient(180deg, transparent 0%, rgba(130, 155, 200, 0.10) 45%, rgba(120, 145, 190, 0.06) 60%, transparent 100%);
+  filter: blur(16px);
+  z-index: 5;
+  pointer-events: none;
+  animation: mistMove 16s var(--ease-inout) infinite alternate;
+}
+@keyframes mistMove {
+  from { transform: translateX(-34px) scaleX(1); }
+  to   { transform: translateX(40px) scaleX(1.03); }
+}
+
+/* ---------------------------------------------------------------- rain */
+
+.rain { position: absolute; inset: 0; z-index: 11; pointer-events: none; }
+.rain .rot { position: absolute; inset: 0; transform: rotate(-8deg); }
+.rain .layer { position: absolute; width: 2px; height: 2px; }
+.rain .far  { animation: rainFall 1.35s linear infinite; }
+.rain .mid  { animation: rainFall 0.85s linear infinite; }
+.rain .near {
+  animation: rainFall 0.55s linear infinite;
+  filter: blur(1.8px);
+}
+@keyframes rainFall {
+  from { transform: translateY(-900px); }
+  to   { transform: translateY(900px); }
+}
+
+.far  .sh  { box-shadow: 463px -592px 0 0 rgba(190,215,255,0.16), -52px 781px 0 0 rgba(190,215,255,0.16), 548px 293px 0 0 rgba(190,215,255,0.16), -124px -724px 0 0 rgba(190,215,255,0.16), -57px -408px 0 0 rgba(190,215,255,0.16), -79px 793px 0 0 rgba(190,215,255,0.16), 257px 391px 0 0 rgba(190,215,255,0.16), 981px 299px 0 0 rgba(190,215,255,0.16), 252px -805px 0 0 rgba(190,215,255,0.16), 393px -42px 0 0 rgba(190,215,255,0.16), 969px -269px 0 0 rgba(190,215,255,0.16), 11px 291px 0 0 rgba(190,215,255,0.16), 562px -701px 0 0 rgba(190,215,255,0.16), 955px -778px 0 0 rgba(190,215,255,0.16), 816px 493px 0 0 rgba(190,215,255,0.16), 1391px -257px 0 0 rgba(190,215,255,0.16), 540px -287px 0 0 rgba(190,215,255,0.16), 1231px 697px 0 0 rgba(190,215,255,0.16), 976px -286px 0 0 rgba(190,215,255,0.16), 1592px -197px 0 0 rgba(190,215,255,0.16), 389px 347px 0 0 rgba(190,215,255,0.16), 848px -44px 0 0 rgba(190,215,255,0.16), 111px 101px 0 0 rgba(190,215,255,0.16), 1168px -742px 0 0 rgba(190,215,255,0.16), 496px 523px 0 0 rgba(190,215,255,0.16), 987px 732px 0 0 rgba(190,215,255,0.16), 1520px -709px 0 0 rgba(190,215,255,0.16), 770px 527px 0 0 rgba(190,215,255,0.16), -76px 597px 0 0 rgba(190,215,255,0.16), 1125px 283px 0 0 rgba(190,215,255,0.16); }
+.mid  .sh  { box-shadow: 382px 567px 0 0 rgba(205,225,255,0.32), -154px 45px 0 0 rgba(205,225,255,0.32), 1051px -661px 0 0 rgba(205,225,255,0.32), 246px 673px 0 0 rgba(205,225,255,0.32), 1312px -393px 0 0 rgba(205,225,255,0.32), 1677px 884px 0 0 rgba(205,225,255,0.32), 140px 19px 0 0 rgba(205,225,255,0.32), 1609px -620px 0 0 rgba(205,225,255,0.32), 1246px -50px 0 0 rgba(205,225,255,0.32), 272px -591px 0 0 rgba(205,225,255,0.32), 109px -425px 0 0 rgba(205,225,255,0.32), 793px 802px 0 0 rgba(205,225,255,0.32), 338px -323px 0 0 rgba(205,225,255,0.32), 658px 194px 0 0 rgba(205,225,255,0.32), 57px 514px 0 0 rgba(205,225,255,0.32), 735px 883px 0 0 rgba(205,225,255,0.32), 615px -83px 0 0 rgba(205,225,255,0.32), 786px 399px 0 0 rgba(205,225,255,0.32), 190px -763px 0 0 rgba(205,225,255,0.32), 132px -675px 0 0 rgba(205,225,255,0.32), 9px -900px 0 0 rgba(205,225,255,0.32), 898px -693px 0 0 rgba(205,225,255,0.32), -56px 890px 0 0 rgba(205,225,255,0.32), 104px 399px 0 0 rgba(205,225,255,0.32), 1033px -155px 0 0 rgba(205,225,255,0.32), 36px 838px 0 0 rgba(205,225,255,0.32), 783px 90px 0 0 rgba(205,225,255,0.32), 95px -691px 0 0 rgba(205,225,255,0.32), 780px 797px 0 0 rgba(205,225,255,0.32), 220px 181px 0 0 rgba(205,225,255,0.32), 1213px 212px 0 0 rgba(205,225,255,0.32), 1116px 868px 0 0 rgba(205,225,255,0.32), 861px -149px 0 0 rgba(205,225,255,0.32), 1380px -444px 0 0 rgba(205,225,255,0.32); }
+.near .sh { box-shadow: 1103px -444px 1px 0 rgba(215,235,255,0.40), 1450px -410px 1px 0 rgba(215,235,255,0.40), 1315px 745px 1px 0 rgba(215,235,255,0.40), 860px 109px 1px 0 rgba(215,235,255,0.40), -143px 718px 1px 0 rgba(215,235,255,0.40), 330px -504px 1px 0 rgba(215,235,255,0.40), 715px 755px 1px 0 rgba(215,235,255,0.40), 546px -736px 1px 0 rgba(215,235,255,0.40), 264px 62px 1px 0 rgba(215,235,255,0.40), 218px 88px 1px 0 rgba(215,235,255,0.40), 781px 437px 1px 0 rgba(215,235,255,0.40), 1509px 452px 1px 0 rgba(215,235,255,0.40), 1402px 557px 1px 0 rgba(215,235,255,0.40), 779px -535px 1px 0 rgba(215,235,255,0.40); }
+
+.starfield { position: absolute; inset: 0 0 340px 0; animation: twinkle 11s var(--ease-inout) 3s infinite; box-shadow: 177px 379px 0 0 rgba(200,225,255,0.55), 810px 247px 0 0 rgba(200,225,255,0.55), 822px 53px 0 0 rgba(200,225,255,0.55), 1484px 91px 0 0 rgba(200,225,255,0.55), 348px 75px 0 0 rgba(200,225,255,0.55), 56px 87px 0 0 rgba(200,225,255,0.55), 1209px 248px 0 0 rgba(200,225,255,0.55), 1343px 84px 0 0 rgba(200,225,255,0.55), 1252px 315px 0 0 rgba(200,225,255,0.55), 971px 346px 0 0 rgba(200,225,255,0.55), 717px 89px 0 0 rgba(200,225,255,0.55), 1123px 290px 0 0 rgba(200,225,255,0.55), 268px 20px 0 0 rgba(200,225,255,0.55), 29px 342px 0 0 rgba(200,225,255,0.55), 210px 279px 0 0 rgba(200,225,255,0.55), 1534px 81px 0 0 rgba(200,225,255,0.55), 888px 109px 0 0 rgba(200,225,255,0.55), 432px 24px 0 0 rgba(200,225,255,0.55), 515px 118px 0 0 rgba(200,225,255,0.55), 599px 266px 0 0 rgba(200,225,255,0.55), 492px 310px 0 0 rgba(200,225,255,0.55), 667px 142px 0 0 rgba(200,225,255,0.55), 1114px 224px 0 0 rgba(200,225,255,0.55), 268px 41px 0 0 rgba(200,225,255,0.55), 1515px 191px 0 0 rgba(200,225,255,0.55), 938px 349px 0 0 rgba(200,225,255,0.55), 1194px 274px 0 0 rgba(200,225,255,0.55), 861px 266px 0 0 rgba(200,225,255,0.55), 267px 282px 0 0 rgba(200,225,255,0.55), 310px 278px 0 0 rgba(200,225,255,0.55), 1045px 19px 0 0 rgba(200,225,255,0.55), 901px 103px 0 0 rgba(200,225,255,0.55), 1246px 12px 0 0 rgba(200,225,255,0.55), 306px 98px 0 0 rgba(200,225,255,0.55), 289px 252px 0 0 rgba(200,225,255,0.55), 1267px 71px 0 0 rgba(200,225,255,0.55), 1139px 41px 0 0 rgba(200,225,255,0.55), 667px 359px 0 0 rgba(200,225,255,0.55), 1061px 281px 0 0 rgba(200,225,255,0.55), 1137px 257px 0 0 rgba(200,225,255,0.55), 217px 296px 0 0 rgba(200,225,255,0.55), 116px 137px 0 0 rgba(200,225,255,0.55), 391px 151px 0 0 rgba(200,225,255,0.55), 86px 60px 0 0 rgba(200,225,255,0.55), 1039px 241px 0 0 rgba(200,225,255,0.55), 1150px 24px 0 0 rgba(200,225,255,0.55); }
+
+/* ---------------------------------------------------------------- vignette */
+
+.vignette {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(120% 100% at 50% 45%, transparent 55%, rgba(2, 4, 10, 0.5) 100%);
+  z-index: 12;
+  pointer-events: none;
+}
+
+.scene::before {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(6, 10, 24, 0.35), transparent 18%);
+  z-index: 13;
+  pointer-events: none;
+}
+
+/* ---------------------------------------------------------------- reduced motion */
+
+@media (prefers-reduced-motion: reduce) {
+  .rain .layer { animation: none !important; opacity: 0.35 !important; }
+  .shimmer, .sheen, .mist, .clouds, .starfield,
+  .lamp-pool, .rwin, .rip, .flick, .flick2, .flick3, .lamp-glass {
+    animation: none !important;
+  }
+  .rwin { opacity: 0.7; }
+}
+</style>
+</head>
+<body>
+<div class="canvas">
+  <div class="scene">
+
+    <div class="starfield"></div>
+    <div class="moon-halo"></div>
+    <div class="moon"></div>
+    <div class="clouds"></div>
+
+    <div class="houses">
+
+      <div class="house h1">
+        <div class="g gstep1"></div>
+        <div class="hook" style="top:-118px;"></div>
+        <div class="facade">
+          <div class="w wa wdim"  style="left:58px; top:4px;"></div>
+          <div class="w wlit flick"   style="left:24px; top:120px;"></div>
+          <div class="w wlit"         style="left:92px; top:120px;"></div>
+          <div class="w wlit"         style="left:24px; top:196px;"></div>
+          <div class="w wdark"        style="left:92px; top:196px;"></div>
+          <div class="door" style="left:22px; top:264px; width:48px; height:66px;"></div>
+          <div class="w wt wdim"      style="left:96px; top:262px;"></div>
+        </div>
+      </div>
+
+      <div class="house h2">
+        <div class="g gpoint"></div>
+        <div class="hook" style="top:-132px;"></div>
+        <div class="facade">
+          <div class="w wa wlit flick2" style="left:57px; top:10px;"></div>
+          <div class="w wlit"        style="left:20px; top:100px;"></div>
+          <div class="w wdim"        style="left:84px; top:100px;"></div>
+          <div class="w wlit"        style="left:20px; top:164px;"></div>
+          <div class="w wlit flick"  style="left:84px; top:164px;"></div>
+          <div class="door" style="left:18px; top:206px; width:44px; height:62px;"></div>
+          <div class="w wt wdim"     style="left:78px; top:202px;"></div>
+        </div>
+      </div>
+
+      <div class="house h3">
+        <div class="g gstep2"></div>
+        <div class="hook" style="top:-142px;"></div>
+        <div class="facade">
+          <div class="w wa wlit"     style="left:68px; top:6px;"></div>
+          <div class="w wlit"        style="left:30px; top:120px;"></div>
+          <div class="w wlit"        style="left:96px; top:120px;"></div>
+          <div class="w wlit flick"  style="left:30px; top:196px;"></div>
+          <div class="w wdim"        style="left:96px; top:196px;"></div>
+          <div class="w wp wlit"     style="left:24px; top:288px;"></div>
+          <div class="door" style="left:100px; top:284px; width:46px; height:66px;"></div>
+        </div>
+      </div>
+
+      <div class="house h4">
+        <div class="g gbell"></div>
+        <div class="hook" style="top:-112px;"></div>
+        <div class="facade">
+          <div class="w wa wdim"      style="left:62px; top:8px;"></div>
+          <div class="w wlit"         style="left:26px; top:116px;"></div>
+          <div class="w wlit"         style="left:92px; top:116px;"></div>
+          <div class="w wdim"         style="left:26px; top:190px;"></div>
+          <div class="w wlit flick3"  style="left:92px; top:190px;"></div>
+          <div class="door" style="left:30px; top:234px; width:48px; height:62px;"></div>
+          <div class="w wt wlit"      style="left:92px; top:232px;"></div>
+        </div>
+      </div>
+
+      <div class="house h5">
+        <div class="g gpoint"></div>
+        <div class="facade">
+          <div class="w wa wlit flick2" style="left:63px; top:6px;"></div>
+          <div class="w wlit"         style="left:22px; top:100px;"></div>
+          <div class="w wlit"         style="left:94px; top:100px;"></div>
+          <div class="w wdim"         style="left:22px; top:172px;"></div>
+          <div class="w wlit"         style="left:94px; top:172px;"></div>
+          <div class="door" style="left:24px; top:202px; width:46px; height:62px;"></div>
+          <div class="w wt wdim"      style="left:94px; top:200px;"></div>
+        </div>
+      </div>
+
+      <div class="house h6">
+        <div class="g gstep1"></div>
+        <div class="hook" style="top:-142px;"></div>
+        <div class="facade">
+          <div class="w wa wlit"       style="left:70px; top:6px;"></div>
+          <div class="w wlit"          style="left:30px; top:128px;"></div>
+          <div class="w wdim"          style="left:100px; top:128px;"></div>
+          <div class="w wlit flick"    style="left:30px; top:204px;"></div>
+          <div class="w wlit"          style="left:100px; top:204px;"></div>
+          <div class="w wp wlit"       style="left:30px; top:290px;"></div>
+          <div class="door" style="left:106px; top:284px; width:44px; height:68px;"></div>
+        </div>
+      </div>
+
+      <div class="house h7">
+        <div class="g gdouble"></div>
+        <div class="hook" style="top:-132px;"></div>
+        <div class="facade">
+          <div class="w wa wlit"       style="left:63px; top:8px;"></div>
+          <div class="w wlit"          style="left:16px; top:106px;"></div>
+          <div class="w wlit"          style="left:58px; top:106px;"></div>
+          <div class="w wdim"          style="left:100px; top:106px;"></div>
+          <div class="w wlit flick3"   style="left:16px; top:176px;"></div>
+          <div class="w wdim"          style="left:58px; top:176px;"></div>
+          <div class="w wlit"          style="left:100px; top:176px;"></div>
+          <div class="door" style="left:30px; top:236px; width:48px; height:62px;"></div>
+          <div class="w wt wlit"       style="left:94px; top:234px;"></div>
+        </div>
+      </div>
+
+      <div class="house h8">
+        <div class="g gbell"></div>
+        <div class="facade">
+          <div class="w wa wlit"       style="left:69px; top:6px;"></div>
+          <div class="w wlit"          style="left:26px; top:120px;"></div>
+          <div class="w wlit"          style="left:102px; top:120px;"></div>
+          <div class="w wlit flick"    style="left:26px; top:192px;"></div>
+          <div class="w wdim"          style="left:102px; top:192px;"></div>
+          <div class="door" style="left:34px; top:258px; width:54px; height:66px;"></div>
+          <div class="w wp wdim"       style="left:104px; top:260px;"></div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="water">
+
+      <div class="rf" style="left:20px;  width:150px; height:210px;">
+        <div class="rwall"></div>
+        <div class="rglow"></div>
+        <div class="rwin" style="left:16px;"></div>
+        <div class="rwin rtall" style="left:88px; animation-duration:3.2s;"></div>
+      </div>
+      <div class="rf" style="left:176px; width:138px; height:180px;">
+        <div class="rwall"></div>
+        <div class="rglow"></div>
+        <div class="rwin" style="left:12px; animation-duration:3.6s;"></div>
+        <div class="rwin" style="left:78px;"></div>
+      </div>
+      <div class="rf" style="left:320px; width:160px; height:230px;">
+        <div class="rwall"></div>
+        <div class="rglow"></div>
+        <div class="rwin rtall" style="left:20px;"></div>
+        <div class="rwin" style="left:92px; animation-duration:3.4s;"></div>
+      </div>
+      <div class="rf" style="left:486px; width:148px; height:195px;">
+        <div class="rwall"></div>
+        <div class="rglow"></div>
+        <div class="rwin" style="left:20px; animation-duration:3.8s;"></div>
+        <div class="rwin rtall" style="left:88px;"></div>
+      </div>
+      <div class="rf" style="left:640px; width:150px; height:175px;">
+        <div class="rwall"></div>
+        <div class="rglow"></div>
+        <div class="rwin" style="left:14px;"></div>
+        <div class="rwin" style="left:86px; animation-duration:3.3s;"></div>
+      </div>
+      <div class="rf" style="left:796px; width:164px; height:235px;">
+        <div class="rwall"></div>
+        <div class="rglow"></div>
+        <div class="rwin rtall" style="left:24px;"></div>
+        <div class="rwin" style="left:96px; animation-duration:3.5s;"></div>
+      </div>
+      <div class="rf" style="left:966px; width:150px; height:200px;">
+        <div class="rwall"></div>
+        <div class="rglow"></div>
+        <div class="rwin" style="left:10px; animation-duration:3.7s;"></div>
+        <div class="rwin" style="left:52px;"></div>
+        <div class="rwin rshort" style="left:96px; animation-duration:3.1s;"></div>
+      </div>
+      <div class="rf" style="left:1122px; width:162px; height:215px;">
+        <div class="rwall"></div>
+        <div class="rglow"></div>
+        <div class="rwin" style="left:20px;"></div>
+        <div class="rwin rtall" style="left:98px; animation-duration:3.9s;"></div>
+      </div>
+
+      <div class="lamp-pool"></div>
+
+      <div class="rip" style="left:200px;  bottom:120px;"></div>
+      <div class="rip" style="left:480px;  bottom:200px; animation-delay:1.2s;"></div>
+      <div class="rip" style="left:760px;  bottom:90px;  animation-delay:2.4s;"></div>
+      <div class="rip" style="left:1020px; bottom:170px; animation-delay:3.1s;"></div>
+      <div class="rip" style="left:1280px; bottom:60px;  animation-delay:0.8s;"></div>
+
+      <div class="refl-tint"></div>
+      <div class="sheen"></div>
+      <div class="shimmer"></div>
+    </div>
+
+    <div class="quay">
+      <div class="quay-wall"></div>
+      <div class="quay-wet"></div>
+      <div class="quay-glow"></div>
+      <div class="railing">
+        <div class="rail-top"></div>
+        <div class="rail-mid"></div>
+        <div class="rail-post" style="left:40px;"></div>
+        <div class="rail-post" style="left:84px;"></div>
+        <div class="rail-post" style="left:128px;"></div>
+        <div class="rail-post" style="left:172px;"></div>
+        <div class="rail-post" style="left:216px;"></div>
+        <div class="rail-post" style="left:260px;"></div>
+      </div>
+    </div>
+
+    <div class="bike">
+      <div class="inner">
+        <i style="left:28px;  top:8px;   width:30px; height:7px; border-radius:5px;"></i>
+        <i style="left:64px;  top:34px;  width:92px; height:5px;  transform: rotate(-2.5deg);"></i>
+        <i style="left:76px;  top:72px;  width:80px; height:5px;  transform: rotate(27deg);"></i>
+        <i style="left:92px;  top:70px;  width:70px; height:5px;  transform: rotate(-111deg);"></i>
+        <i style="left:28px;  top:68px;  width:66px; height:5px;  transform: rotate(16deg);"></i>
+        <i style="left:28px;  top:46px;  width:54px; height:5px;  transform: rotate(126deg);"></i>
+        <i style="left:22px;  top:32px;  width:34px; height:5px;  transform: rotate(122deg);"></i>
+        <i style="left:152px; top:68px;  width:24px; height:5px;  transform: rotate(56deg);"></i>
+        <div class="wheel" style="left:4px;  top:64px;"></div>
+        <div class="wheel" style="left:152px; top:64px;"></div>
+        <div class="hub" style="left:29px; top:89px; width:6px; height:6px;"></div>
+        <div class="hub" style="left:177px; top:89px; width:6px; height:6px;"></div>
+      </div>
+    </div>
+
+    <div class="lamp">
+      <div class="lamp-cone"></div>
+      <div class="lamp-pole"></div>
+      <div class="lamp-base"></div>
+      <div class="lamp-arm"></div>
+      <div class="lamp-head">
+        <div class="lamp-cap"></div>
+        <div class="lamp-glass"></div>
+      </div>
+    </div>
+
+    <div class="mist"></div>
+
+    <div class="rain">
+      <div class="rot">
+        <div class="layer far"><div class="sh"></div></div>
+        <div class="layer mid"><div class="sh"></div></div>
+        <div class="layer near"><div class="sh"></div></div>
+      </div>
+    </div>
+
+    <div class="vignette"></div>
+  </div>
+</div>
+</body>
+</html>

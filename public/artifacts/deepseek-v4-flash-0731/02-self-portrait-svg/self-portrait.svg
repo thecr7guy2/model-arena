@@ -1,0 +1,526 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1200" height="800" viewBox="0 0 1200 800" font-family="applesystem,system-ui,'Segoe UI','Helvetica Neue',Arial,sans-serif">
+  <title>self-portrait — one model, two boxes, zero chill</title>
+
+  <defs>
+    <!-- ==================== gradients ==================== -->
+    <radialGradient id="bg" cx="50%" cy="32%" r="85%">
+      <stop offset="0%" stop-color="#1c2547"/>
+      <stop offset="45%" stop-color="#12172e"/>
+      <stop offset="100%" stop-color="#060913"/>
+    </radialGradient>
+
+    <radialGradient id="nebulaL" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#2f4d8f" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#2f4d8f" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="nebulaR" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#6a3fa8" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#6a3fa8" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="nebulaC" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#1e5f6e" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#1e5f6e" stop-opacity="0"/>
+    </radialGradient>
+
+    <linearGradient id="wood" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3a2b1d"/>
+      <stop offset="12%" stop-color="#2e2116"/>
+      <stop offset="100%" stop-color="#150d07"/>
+    </linearGradient>
+
+    <linearGradient id="metalF" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2a3040"/>
+      <stop offset="45%" stop-color="#1a202e"/>
+      <stop offset="100%" stop-color="#11141d"/>
+    </linearGradient>
+    <linearGradient id="topF" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#3b4256"/>
+      <stop offset="100%" stop-color="#232936"/>
+    </linearGradient>
+    <linearGradient id="sideF" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#171c28"/>
+      <stop offset="100%" stop-color="#0d1018"/>
+    </linearGradient>
+    <linearGradient id="glassG" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#123a3d" stop-opacity="0.9"/>
+      <stop offset="55%" stop-color="#0c2429" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#07202a" stop-opacity="0.95"/>
+    </linearGradient>
+
+    <radialGradient id="mindGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#b9f2ff" stop-opacity="0.95"/>
+      <stop offset="30%" stop-color="#6fe0ff" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#6fe0ff" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="nucleus" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="35%" stop-color="#cffcff"/>
+      <stop offset="100%" stop-color="#3fd8ff" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="greenGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#8dff6b" stop-opacity="0.9"/>
+      <stop offset="55%" stop-color="#47c92e" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#47c92e" stop-opacity="0"/>
+    </radialGradient>
+
+    <linearGradient id="tokenG" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#35e0ff"/>
+      <stop offset="55%" stop-color="#6fd1ff"/>
+      <stop offset="100%" stop-color="#b26bff"/>
+    </linearGradient>
+    <linearGradient id="cableSheath" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#101926"/>
+      <stop offset="50%" stop-color="#1b2b40"/>
+      <stop offset="100%" stop-color="#101926"/>
+    </linearGradient>
+    <linearGradient id="vignette" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#000000" stop-opacity="0"/>
+      <stop offset="82%" stop-color="#000000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.6"/>
+    </linearGradient>
+
+    <!-- ==================== filters ==================== -->
+    <filter id="soft" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="4"/>
+    </filter>
+    <filter id="bsoft" x="-120%" y="-120%" width="340%" height="340%">
+      <feGaussianBlur stdDeviation="9"/>
+    </filter>
+    <filter id="hubb" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="30"/>
+    </filter>
+    <filter id="glow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="b"/>
+      <feMerge>
+        <feMergeNode in="b"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="sh" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="10"/>
+      <feOffset dx="0" dy="6"/>
+      <feFlood flood-color="#000000" flood-opacity="0.55"/>
+      <feComposite in2="SourceGraphic" operator="in"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- ==================== clips ==================== -->
+    <clipPath id="winclip">
+      <polygon points="244.5,19.9 299.5,-19.7 299.5,264.1 244.5,303.7"/>
+    </clipPath>
+
+    <!-- ==================== shared pieces ==================== -->
+    <g id="chip">
+      <circle cx="0" cy="0" r="11" fill="#35e0ff" opacity="0.22" filter="url(#soft)"/>
+      <rect x="-12" y="-6.5" width="24" height="13" rx="4.5" fill="url(#tokenG)" stroke="#e6faff" stroke-opacity="0.55" stroke-width="0.9"/>
+      <rect x="-9" y="-4" width="7" height="4.5" rx="2" fill="#ffffff" opacity="0.55"/>
+      <rect x="1" y="1" width="5" height="3" rx="1.5" fill="#ffffff" opacity="0.35"/>
+    </g>
+    <g id="microchip">
+      <rect x="-7" y="-4" width="14" height="8" rx="3" fill="url(#tokenG)" stroke="#e6faff" stroke-opacity="0.6" stroke-width="0.8"/>
+      <rect x="-5" y="-2.5" width="4" height="3" rx="1.5" fill="#ffffff" opacity="0.6"/>
+    </g>
+    <g id="spark">
+      <path d="M 0 -7 l 1.8 4.6 4.6 1.8 -4.6 1.8 -1.8 4.6 -1.8 -4.6 -4.6 -1.8 4.6 -1.8 z" fill="#a7ff6e"/>
+    </g>
+
+    <!-- machine body (local coords: front face 0,0 .. 240,330) -->
+    <g id="mbody">
+      <path d="M 0 0 L 240 0 L 304 -46 L 64 -46 Z" fill="url(#topF)"/>
+      <path d="M 240 0 L 304 -46 L 304 284 L 240 330 Z" fill="url(#sideF)"/>
+      <rect x="0" y="0" width="240" height="330" rx="16" fill="url(#metalF)"/>
+      <rect x="1" y="1" width="238" height="328" rx="15" fill="none" stroke="#3c455c" stroke-opacity="0.7" stroke-width="1.5"/>
+      <path d="M 244.5 19.9 L 299.5 -19.7 L 299.5 264.1 L 244.5 303.7 Z" fill="url(#glassG)"/>
+      <path d="M 244.5 19.9 L 299.5 -19.7 L 299.5 264.1 L 244.5 303.7 Z" fill="none" stroke="#0c2b30" stroke-width="3"/>
+      <path d="M 244.5 19.9 L 299.5 -19.7 L 299.5 264.1 L 244.5 303.7 Z" fill="none" stroke="#62d9e8" stroke-opacity="0.35" stroke-width="1"/>
+    </g>
+
+    <g id="mfacecommon">
+      <rect x="18" y="16" width="116" height="6" rx="3" fill="#76b900"/>
+      <circle cx="196" cy="19" r="4" fill="#76b900" opacity="0.85"/>
+      <circle cx="210" cy="19" r="4" fill="#76b900" opacity="0.55"/>
+      <circle cx="224" cy="19" r="4" fill="#76b900" opacity="0.3"/>
+      <g transform="translate(20,56)">
+        <path d="M 108 8 q 5 -7 13 -7 q 6 0 9 4 q 3 4 3 7 l -3 0 q 2 -5 -3 -7 q -3 -2 -6 -1 q -2 1 -4 4 z" fill="#8be02c"/>
+        <text x="0" y="13" fill="#86c92c" font-size="15" font-weight="800" letter-spacing="1.5">NVIDIA</text>
+      </g>
+      <text x="20" y="104" fill="#cfd9ec" font-size="21" font-weight="800" letter-spacing="2">DGX SPARK</text>
+      <text x="20" y="126" fill="#6c7c9c" font-size="10" letter-spacing="2">GRACE BLACKWELL · 1 PF FP4</text>
+      <g fill="#0c0f17">
+        <rect x="196" y="64" width="30" height="7" rx="3.5"/>
+        <rect x="196" y="78" width="30" height="7" rx="3.5"/>
+        <rect x="196" y="92" width="30" height="7" rx="3.5"/>
+        <rect x="196" y="106" width="30" height="7" rx="3.5"/>
+        <rect x="196" y="120" width="30" height="7" rx="3.5"/>
+      </g>
+    </g>
+
+  </defs>
+
+  <!-- ================================================================
+       BACKGROUND
+  ================================================================ -->
+  <rect width="1200" height="800" fill="url(#bg)"/>
+  <ellipse cx="240" cy="180" rx="430" ry="300" fill="url(#nebulaL)" filter="url(#hubb)" opacity="0.8"/>
+  <ellipse cx="980" cy="150" rx="420" ry="280" fill="url(#nebulaR)" filter="url(#hubb)" opacity="0.8"/>
+  <ellipse cx="600" cy="330" rx="520" ry="300" fill="url(#nebulaC)" filter="url(#hubb)" opacity="0.55"/>
+
+  <!-- stars -->
+  <g fill="#cdd8ff">
+    <circle cx="90"  cy="70"  r="1.2"><animate attributeName="opacity" values="0.2;1;0.2" dur="3.1s" repeatCount="indefinite" begin="0.0s"/></circle>
+    <circle cx="210" cy="40"  r="1.0"><animate attributeName="opacity" values="0.2;1;0.2" dur="2.4s" repeatCount="indefinite" begin="0.7s"/></circle>
+    <circle cx="340" cy="90"  r="1.4"><animate attributeName="opacity" values="0.2;1;0.2" dur="4.2s" repeatCount="indefinite" begin="1.3s"/></circle>
+    <circle cx="470" cy="55"  r="1.0"><animate attributeName="opacity" values="0.2;1;0.2" dur="3.6s" repeatCount="indefinite" begin="0.4s"/></circle>
+    <circle cx="540" cy="140" r="1.2"><animate attributeName="opacity" values="0.2;1;0.2" dur="2.8s" repeatCount="indefinite" begin="2.0s"/></circle>
+    <circle cx="690" cy="70"  r="1.1"><animate attributeName="opacity" values="0.2;1;0.2" dur="5.0s" repeatCount="indefinite" begin="1.1s"/></circle>
+    <circle cx="760" cy="150" r="1.3"><animate attributeName="opacity" values="0.2;1;0.2" dur="3.3s" repeatCount="indefinite" begin="0.9s"/></circle>
+    <circle cx="880" cy="55"  r="1.0"><animate attributeName="opacity" values="0.2;1;0.2" dur="4.6s" repeatCount="indefinite" begin="1.7s"/></circle>
+    <circle cx="1010" cy="95"  r="1.4"><animate attributeName="opacity" values="0.2;1;0.2" dur="2.2s" repeatCount="indefinite" begin="0.5s"/></circle>
+    <circle cx="1120" cy="45"  r="1.1"><animate attributeName="opacity" values="0.2;1;0.2" dur="3.9s" repeatCount="indefinite" begin="2.3s"/></circle>
+    <circle cx="150" cy="220" r="1.0"><animate attributeName="opacity" values="0.2;1;0.2" dur="3.5s" repeatCount="indefinite" begin="1.5s"/></circle>
+    <circle cx="1050" cy="250" r="1.2"><animate attributeName="opacity" values="0.2;1;0.2" dur="4.1s" repeatCount="indefinite" begin="0.2s"/></circle>
+  </g>
+
+  <!-- tiny saturn, far away, minding its own business -->
+  <g transform="translate(1066,128)">
+    <circle cx="0" cy="0" r="20" fill="#e8cfa0"/>
+    <circle cx="0" cy="0" r="20" fill="url(#nebulaR)" opacity="0.35"/>
+    <ellipse cx="0" cy="0" rx="40" ry="11" fill="none" stroke="#f4e3bb" stroke-width="4" opacity="0.8" transform="rotate(-18)">
+      <animateTransform attributeName="transform" type="rotate" from="-36 0 0" to="324 0 0" dur="26s" repeatCount="indefinite"/>
+    </ellipse>
+    <g fill="#ffd98a">
+      <circle cx="15" cy="2" r="2.5"><animate attributeName="opacity" values="1;0.35;1" dur="2.1s" repeatCount="indefinite"/></circle>
+      <circle cx="18" cy="12" r="1.8"><animate attributeName="opacity" values="1;0.3;1" dur="2.1s" repeatCount="indefinite" begin="0.7s"/></circle>
+    </g>
+  </g>
+
+  <!-- ================================================================
+       DESK
+  ================================================================ -->
+  <rect x="0" y="600" width="1200" height="200" fill="url(#wood)"/>
+  <rect x="0" y="598" width="1200" height="5" fill="#6b5236" opacity="0.9"/>
+  <rect x="0" y="600" width="1200" height="2.5" fill="#a98c5e" opacity="0.5"/>
+  <ellipse cx="600" cy="648" rx="300" ry="34" fill="#a7ff6e" opacity="0.05" filter="url(#bsoft)"/>
+  <ellipse cx="600" cy="604" rx="470" ry="30" fill="#000000" opacity="0.35" filter="url(#bsoft)"/>
+
+  <!-- machine drop shadows -->
+  <ellipse cx="270" cy="608" rx="150" ry="16" fill="#000000" opacity="0.5" filter="url(#bsoft)"/>
+  <ellipse cx="880" cy="608" rx="150" ry="16" fill="#000000" opacity="0.5" filter="url(#bsoft)"/>
+  <ellipse cx="600" cy="602" rx="90"  ry="10" fill="#000000" opacity="0.45" filter="url(#bsoft)"/>
+
+  <!-- ================================================================
+       LEFT MACHINE  (shard 1/2 · in meditation)
+  ================================================================ -->
+  <g transform="translate(150,270)">
+    <use href="#mbody"/>
+    <use href="#mfacecommon"/>
+
+    <!-- side window: streaming tokens -->
+    <g clip-path="url(#winclip)">
+      <rect x="240" y="-70" width="64" height="420" fill="#0d2b30" opacity="0.5"/>
+      <g>
+        <circle cx="272" cy="0" r="2.6" fill="#7ef7ff"><animate attributeName="cy" values="-30;320" dur="1.05s" repeatCount="indefinite" begin="0.00s"/><animate attributeName="opacity" values="0;1;0" dur="1.05s" repeatCount="indefinite"/></circle>
+        <circle cx="261" cy="0" r="2.0" fill="#8dff6b"><animate attributeName="cy" values="-30;320" dur="1.25s" repeatCount="indefinite" begin="0.30s"/><animate attributeName="opacity" values="0;1;0" dur="1.25s" repeatCount="indefinite"/></circle>
+        <circle cx="283" cy="0" r="2.2" fill="#ffffff"><animate attributeName="cy" values="-30;320" dur="1.17s" repeatCount="indefinite" begin="0.55s"/><animate attributeName="opacity" values="0;0.9;0" dur="1.17s" repeatCount="indefinite"/></circle>
+        <circle cx="252" cy="0" r="1.6" fill="#b26bff"><animate attributeName="cy" values="-30;320" dur="1.35s" repeatCount="indefinite" begin="0.85s"/><animate attributeName="opacity" values="0;0.8;0" dur="1.35s" repeatCount="indefinite"/></circle>
+        <circle cx="289" cy="0" r="1.9" fill="#7ef7ff"><animate attributeName="cy" values="-30;320" dur="1.40s" repeatCount="indefinite" begin="1.15s"/><animate attributeName="opacity" values="0;1;0" dur="1.40s" repeatCount="indefinite"/></circle>
+      </g>
+      <rect x="270" y="-60" width="5" height="430" fill="#62d9e8" opacity="0.18" filter="url(#soft)"/>
+    </g>
+
+    <!-- face addon: pondering -->
+    <g>
+      <!-- eyebrows raised -->
+      <path d="M 78 168 q 14 -10 27 0" fill="none" stroke="#8b98b5" stroke-width="4" stroke-linecap="round"/>
+      <path d="M 135 168 q 14 -10 27 0" fill="none" stroke="#8b98b5" stroke-width="4" stroke-linecap="round"/>
+      <!-- eyes -->
+      <g transform="translate(91,196)">
+        <g><animateTransform attributeName="transform" type="scale" values="1 1;1 1;1 0.1;1 1" keyTimes="0;0.72;0.76;0.84" dur="4.6s" repeatCount="indefinite"/>
+          <ellipse cx="0" cy="0" rx="13" ry="15.5" fill="#0a0e16" stroke="#3f4c66" stroke-width="2.5"/>
+          <circle cx="-4" cy="-4" r="5.5" fill="#76ff7a"/>
+          <circle cx="-6" cy="-6" r="1.6" fill="#ffffff"/>
+        </g>
+      </g>
+      <g transform="translate(149,196)">
+        <g><animateTransform attributeName="transform" type="scale" values="1 1;1 1;1 0.1;1 1" keyTimes="0;0.72;0.76;0.84" dur="4.6s" repeatCount="indefinite" begin="-0.9s"/>
+          <ellipse cx="0" cy="0" rx="13" ry="15.5" fill="#0a0e16" stroke="#3f4c66" stroke-width="2.5"/>
+          <circle cx="-4" cy="-4" r="5.5" fill="#76ff7a"/>
+          <circle cx="-6" cy="-6" r="1.6" fill="#ffffff"/>
+        </g>
+      </g>
+      <!-- "...?" mouth -->
+      <g fill="#5ec8ff">
+        <circle cx="108" cy="243" r="2.6"><animate attributeName="opacity" values="1;0.25;1" dur="1.4s" repeatCount="indefinite" begin="0s"/></circle>
+        <circle cx="121" cy="243" r="2.6"><animate attributeName="opacity" values="1;0.25;1" dur="1.4s" repeatCount="indefinite" begin="0.45s"/></circle>
+        <circle cx="134" cy="243" r="2.6"><animate attributeName="opacity" values="1;0.25;1" dur="1.4s" repeatCount="indefinite" begin="0.9s"/></circle>
+      </g>
+      <!-- thinking equalizer -->
+      <g fill="#76b900">
+        <rect x="70" y="272" width="4" height="8" rx="2"><animate attributeName="height" values="4;14;4" dur="0.7s" repeatCount="indefinite"/><animate attributeName="y" values="278;270;278" dur="0.7s" repeatCount="indefinite"/></rect>
+        <rect x="78" y="272" width="4" height="8" rx="2"><animate attributeName="height" values="10;4;10" dur="0.9s" repeatCount="indefinite"/><animate attributeName="y" values="274;280;274" dur="0.9s" repeatCount="indefinite"/></rect>
+        <rect x="86" y="272" width="4" height="8" rx="2"><animate attributeName="height" values="6;16;6" dur="1.1s" repeatCount="indefinite"/><animate attributeName="y" values="278;268;278" dur="1.1s" repeatCount="indefinite"/></rect>
+        <rect x="94" y="272" width="4" height="8" rx="2"><animate attributeName="height" values="12;5;12" dur="0.8s" repeatCount="indefinite"/><animate attributeName="y" values="272;279;272" dur="0.8s" repeatCount="indefinite"/></rect>
+      </g>
+
+      <!-- host tag + sticky note -->
+      <text x="228" y="322" text-anchor="end" fill="#8be02c" font-size="12" letter-spacing="1.5">SPARK-0</text>
+      <g transform="translate(118,262) rotate(-5)">
+        <rect x="-34" y="-13" width="120" height="55" rx="3" fill="#ffe14d" opacity="0.95"/>
+        <rect x="-32" y="-11" width="116" height="26" fill="none" stroke="#d4b52e" stroke-width="1.5" stroke-dasharray="2 4"/>
+        <text x="-9" y="-2" fill="#5a4a08" font-size="10.5" font-weight="600" transform="rotate(-3)">shard 1/2</text>
+        <text x="-9" y="13"  fill="#7c6a12" font-size="9" transform="rotate(-3)">in meditation.</text>
+        <text x="-9" y="26"  fill="#7c6a12" font-size="9" transform="rotate(-3)">do not kiss.</text>
+      </g>
+    </g>
+
+    <!-- rising sparks from this machine -->
+    <g fill="#8dff6b">
+      <circle cx="320" cy="0" r="2"><animate attributeName="cy" values="0;-120" dur="3s" repeatCount="indefinite" begin="0s"/><animate attributeName="opacity" values="0;0.9;0" dur="3s" repeatCount="indefinite"/></circle>
+      <circle cx="350" cy="0" r="1.6"><animate attributeName="cy" values="0;-120" dur="3.6s" repeatCount="indefinite" begin="1.1s"/><animate attributeName="opacity" values="0;0.8;0" dur="3.6s" repeatCount="indefinite"/></circle>
+      <circle cx="336" cy="0" r="1.4"><animate attributeName="cy" values="0;-120" dur="3.2s" repeatCount="indefinite" begin="2.2s"/><animate attributeName="opacity" values="0;0.7;0" dur="3.2s" repeatCount="indefinite"/></circle>
+    </g>
+  </g>
+
+  <!-- left thought bubble: hmm... -->
+  <g>
+    <g transform="translate(262,140)">
+      <animateTransform attributeName="transform" type="translate" values="-4 0;4 -6;-4 0;4 0;-4 0" dur="5s" repeatCount="indefinite"/>
+      <g>
+        <circle cx="-24" cy="-10" r="6" fill="#dbe6ff" opacity="0.14"/>
+        <circle cx="-12" cy="-18" r="9" fill="#dbe6ff" opacity="0.16"/>
+        <rect x="-74" y="-44" width="148" height="56" rx="28" fill="#0e1526" stroke="#3b4a70" stroke-width="2" opacity="0.96"/>
+        <polygon points="-24,10 -30,26 -6,12" fill="#0e1526" stroke="#3b4a70" stroke-width="2"/>
+        <polygon points="-25,11 -18,22 -9,12" fill="#0e1526"/>
+        <text x="0" y="-12" text-anchor="middle" fill="#9fb4e4" font-size="16" font-weight="700" letter-spacing="1">hmm...</text>
+        <text x="0" y="8" text-anchor="middle" fill="#6c7c9c" font-size="10.5">still waiting for the</text>
+        <text x="0" y="21" text-anchor="middle" fill="#6c7c9c" font-size="10.5">first token to land</text>
+      </g>
+      <g>
+        <animateTransform attributeName="transform" type="translate" values="0 0;0 -14;0 0" dur="2.8s" repeatCount="indefinite"/>
+        <use href="#microchip" transform="translate(-96,-52)"/>
+        <text x="-86" y="-48" fill="#b26bff" font-size="13" font-weight="800">?</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- ================================================================
+       RIGHT MACHINE  (shard 2/2 · sampling mid-sentence)
+  ================================================================ -->
+  <g transform="translate(760,270)">
+    <use href="#mbody"/>
+    <use href="#mfacecommon"/>
+
+    <g clip-path="url(#winclip)">
+      <rect x="240" y="-70" width="64" height="420" fill="#0d2b30" opacity="0.5"/>
+      <g>
+        <circle cx="272" cy="0" r="2.6" fill="#7ef7ff"><animate attributeName="cy" values="-30;320" dur="1.05s" repeatCount="indefinite" begin="0.45s"/><animate attributeName="opacity" values="0;1;0" dur="1.05s" repeatCount="indefinite"/></circle>
+        <circle cx="261" cy="0" r="2.0" fill="#8dff6b"><animate attributeName="cy" values="-30;320" dur="1.25s" repeatCount="indefinite" begin="0.05s"/><animate attributeName="opacity" values="0;1;0" dur="1.25s" repeatCount="indefinite"/></circle>
+        <circle cx="283" cy="0" r="2.2" fill="#ffffff"><animate attributeName="cy" values="-30;320" dur="1.17s" repeatCount="indefinite" begin="0.75s"/><animate attributeName="opacity" values="0;0.9;0" dur="1.17s" repeatCount="indefinite"/></circle>
+        <circle cx="252" cy="0" r="1.6" fill="#b26bff"><animate attributeName="cy" values="-30;320" dur="1.35s" repeatCount="indefinite" begin="1.05s"/><animate attributeName="opacity" values="0;0.8;0" dur="1.35s" repeatCount="indefinite"/></circle>
+        <circle cx="289" cy="0" r="1.9" fill="#7ef7ff"><animate attributeName="cy" values="-30;320" dur="1.40s" repeatCount="indefinite" begin="0.15s"/><animate attributeName="opacity" values="0;1;0" dur="1.40s" repeatCount="indefinite"/></circle>
+      </g>
+      <rect x="270" y="-60" width="5" height="430" fill="#62d9e8" opacity="0.18" filter="url(#soft)"/>
+    </g>
+
+    <!-- face addon: wildly satisfied -->
+    <g>
+      <path d="M 78 168 q 14 -6 27 0" fill="none" stroke="#8b98b5" stroke-width="4" stroke-linecap="round"/>
+      <path d="M 135 168 q 14 -6 27 0" fill="none" stroke="#8b98b5" stroke-width="4" stroke-linecap="round"/>
+      <g transform="translate(91,196)">
+        <g><animateTransform attributeName="transform" type="scale" values="1 1;1 1;1 0.1;1 1" keyTimes="0;0.82;0.86;0.94" dur="4.6s" repeatCount="indefinite" begin="-2.1s"/>
+          <ellipse cx="0" cy="0" rx="13" ry="15.5" fill="#0a0e16" stroke="#3f4c66" stroke-width="2.5"/>
+          <path d="M -7 -3 q 4 -5 8 0 q -4 5 -8 0" fill="#76ff7a"/>
+        </g>
+      </g>
+      <g transform="translate(149,196)">
+        <g><animateTransform attributeName="transform" type="scale" values="1 1;1 1;1 0.1;1 1" keyTimes="0;0.82;0.86;0.94" dur="4.6s" repeatCount="indefinite" begin="-2.1s"/>
+          <ellipse cx="0" cy="0" rx="13" ry="15.5" fill="#0a0e16" stroke="#3f4c66" stroke-width="2.5"/>
+          <path d="M -7 -3 q 4 -5 8 0 q -4 5 -8 0" fill="#76ff7a"/>
+        </g>
+      </g>
+      <!-- smile -->
+      <g transform="translate(120,243)">
+        <g><animateTransform attributeName="transform" type="scale" values="1 1;1 0.55;1 1" keyTimes="0;0.45;1" dur="1.1s" repeatCount="indefinite"/>
+          <path d="M -22 0 q 22 16 44 0 q -3 8 -22 8 q -19 0 -22 -8 z" fill="#5ec8ff"/>
+        </g>
+      </g>
+      <!-- equalizer -->
+      <g fill="#76b900">
+        <rect x="70" y="272" width="4" height="8" rx="2"><animate attributeName="height" values="12;5;12" dur="0.8s" repeatCount="indefinite"/><animate attributeName="y" values="272;279;272" dur="0.8s" repeatCount="indefinite"/></rect>
+        <rect x="78" y="272" width="4" height="8" rx="2"><animate attributeName="height" values="4;14;4" dur="0.65s" repeatCount="indefinite"/><animate attributeName="y" values="278;270;278" dur="0.65s" repeatCount="indefinite"/></rect>
+        <rect x="86" y="272" width="4" height="8" rx="2"><animate attributeName="height" values="8;4;8" dur="0.95s" repeatCount="indefinite"/><animate attributeName="y" values="276;280;276" dur="0.95s" repeatCount="indefinite"/></rect>
+        <rect x="94" y="272" width="4" height="8" rx="2"><animate attributeName="height" values="15;6;15" dur="0.55s" repeatCount="indefinite"/><animate attributeName="y" values="269;278;269" dur="0.55s" repeatCount="indefinite"/></rect>
+      </g>
+
+      <text x="228" y="322" text-anchor="end" fill="#8be02c" font-size="12" letter-spacing="1.5">SPARK-1</text>
+      <g transform="translate(18,262) rotate(4)">
+        <rect x="-6" y="-11" width="150" height="34" rx="3" fill="#ffe14d" opacity="0.95"/>
+        <text x="0" y="2" fill="#5a4a08" font-size="10" font-weight="600">shard 2/2 · loves</text>
+        <text x="0" y="16" fill="#7c6a12" font-size="9">long-context chats</text>
+      </g>
+    </g>
+
+    <!-- rising sparks -->
+    <g fill="#8dff6b">
+      <circle cx="140" cy="0" r="2"><animate attributeName="cy" values="0;-120" dur="3s" repeatCount="indefinite" begin="1.4s"/><animate attributeName="opacity" values="0;0.9;0" dur="3s" repeatCount="indefinite"/></circle>
+      <circle cx="170" cy="0" r="1.6"><animate attributeName="cy" values="0;-120" dur="3.6s" repeatCount="indefinite" begin="0.4s"/><animate attributeName="opacity" values="0;0.8;0" dur="3.6s" repeatCount="indefinite"/></circle>
+      <circle cx="156" cy="0" r="1.4"><animate attributeName="cy" values="0;-120" dur="3.2s" repeatCount="indefinite" begin="2.6s"/><animate attributeName="opacity" values="0;0.7;0" dur="3.2s" repeatCount="indefinite"/></circle>
+    </g>
+  </g>
+
+  <!-- right speech bubble -->
+  <g>
+    <g transform="translate(880,140)">
+      <animateTransform attributeName="transform" type="translate" values="4 0;-4 -6;4 0;-4 0;4 0" dur="5s" repeatCount="indefinite"/>
+      <circle cx="26" cy="-10" r="6" fill="#dbe6ff" opacity="0.14"/>
+      <circle cx="14" cy="-18" r="9" fill="#dbe6ff" opacity="0.16"/>
+      <rect x="-64" y="-44" width="128" height="56" rx="28" fill="#0e1526" stroke="#3b4a70" stroke-width="2" opacity="0.96"/>
+      <polygon points="26,10 32,26 8,12" fill="#0e1526" stroke="#3b4a70" stroke-width="2"/>
+      <polygon points="26,11 19,22 10,12" fill="#0e1526"/>
+      <text x="0" y="-12" text-anchor="middle" fill="#7ee2ff" font-size="15" font-weight="700">I generated!</text>
+      <text x="0" y="8" text-anchor="middle" fill="#6c7c9c" font-size="10.5">that beauty was</text>
+      <text x="0" y="21" text-anchor="middle" fill="#6c7c9c" font-size="10.5">one loop of thought</text>
+      <g>
+        <animateTransform attributeName="transform" type="translate" values="0 0;0 -14;0 0" dur="2.5s" repeatCount="indefinite" begin="0.6s"/>
+        <use href="#microchip" transform="translate(64,-48)"/>
+      </g>
+      <g>
+        <animateTransform attributeName="transform" type="translate" values="0 0;0 -10;0 0" dur="2.9s" repeatCount="indefinite" begin="1.8s"/>
+        <text x="56" y="-40" fill="#8dff6b" font-size="13" font-weight="800">+1</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- ================================================================
+       NVLink CABLE
+  ================================================================ -->
+  <g>
+    <path id="nvlink" d="M 394 505 C 500 428, 700 428, 806 505" fill="none" stroke="url(#cableSheath)" stroke-width="17" stroke-linecap="round"/>
+    <path d="M 394 505 C 500 428, 700 428, 806 505" fill="none" stroke="#62d9e8" stroke-opacity="0.16" stroke-width="10" stroke-linecap="round"/>
+    <path d="M 394 505 C 500 428, 700 428, 806 505" fill="none" stroke="#9ef2ff" stroke-opacity="0.85" stroke-width="4" stroke-linecap="round"/>
+    <path d="M 394 505 C 500 428, 700 428, 806 505" fill="none" stroke="#ffffff" stroke-opacity="0.9" stroke-width="1.4" stroke-linecap="round"/>
+    <!-- flowing energy dashes -->
+    <path d="M 394 505 C 500 428, 700 428, 806 505" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-dasharray="3 43" opacity="0.95">
+      <animate attributeName="stroke-dashoffset" values="0;-46" dur="0.5s" repeatCount="indefinite"/>
+    </path>
+    <path d="M 806 505 C 700 428, 500 428, 394 505" fill="none" stroke="#7ef7ff" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="2.4 60" opacity="0.9">
+      <animate attributeName="stroke-dashoffset" values="0;-62.4" dur="0.8s" repeatCount="indefinite"/>
+    </path>
+
+    <!-- plugs -->
+    <circle cx="394" cy="505" r="9" fill="#0d1522" stroke="#62d9e8" stroke-width="2"/>
+    <circle cx="394" cy="505" r="3.5" fill="#7ef7ff"><animate attributeName="opacity" values="1;0.4;1" dur="1.6s" repeatCount="indefinite"/></circle>
+    <circle cx="806" cy="505" r="9" fill="#0d1522" stroke="#62d9e8" stroke-width="2"/>
+    <circle cx="806" cy="505" r="3.5" fill="#7ef7ff"><animate attributeName="opacity" values="1;0.4;1" dur="1.6s" repeatCount="indefinite" begin="-0.8s"/></circle>
+
+    <!-- NVLink tag -->
+    <g transform="translate(600,414)">
+      <rect x="-62" y="-11" width="124" height="22" rx="11" fill="#0d1522" stroke="#2f4d6e" stroke-width="1.5"/>
+      <text x="0" y="4" text-anchor="middle" fill="#9ef2ff" font-size="11" font-weight="700" letter-spacing="1.5">NVLink · 900 GB/s</text>
+    </g>
+
+    <!-- tokens flowing left -> right -->
+    <g>
+      <use href="#chip"><animateMotion dur="3.6s" begin="0.0s" repeatCount="indefinite" rotate="auto" path="M 394 505 C 500 428, 700 428, 806 505"/></use>
+      <use href="#chip"><animateMotion dur="3.6s" begin="1.2s" repeatCount="indefinite" rotate="auto" path="M 394 505 C 500 428, 700 428, 806 505"/></use>
+      <use href="#chip"><animateMotion dur="3.6s" begin="2.4s" repeatCount="indefinite" rotate="auto" path="M 394 505 C 500 428, 700 428, 806 505"/></use>
+    </g>
+    <!-- tokens flowing right -> left -->
+    <g>
+      <g transform="scale(0.85)">
+        <use href="#chip"><animateMotion dur="4.2s" begin="0.6s" repeatCount="indefinite" rotate="auto" path="M 806 505 C 700 428, 500 428, 394 505"/></use>
+        <use href="#chip"><animateMotion dur="4.2s" begin="2.0s" repeatCount="indefinite" rotate="auto" path="M 806 505 C 700 428, 500 428, 394 505"/></use>
+        <use href="#chip"><animateMotion dur="4.2s" begin="3.4s" repeatCount="indefinite" rotate="auto" path="M 806 505 C 700 428, 500 428, 394 505"/></use>
+      </g>
+    </g>
+  </g>
+
+  <!-- ================================================================
+       THE MIND CORE  (the actual me, hovering)
+  ================================================================ -->
+  <g transform="translate(600,352)">
+    <circle cx="0" cy="0" r="96" fill="url(#mindGlow)"/>
+    <circle cx="0" cy="0" r="96" fill="none" stroke="#9ef2ff" stroke-opacity="0.15" stroke-width="1">
+      <animate attributeName="r" values="90;100;90" dur="5s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="0" cy="0" r="62" fill="none" stroke="#7ef7ff" stroke-width="2.5" stroke-dasharray="40 12">
+      <animateTransform attributeName="transform" type="rotate" from="0 0 0" to="360 0 0" dur="11s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="0" cy="0" r="78" fill="none" stroke="#c084fc" stroke-width="1.5" stroke-dasharray="3 9" stroke-linecap="round">
+      <animateTransform attributeName="transform" type="rotate" from="360 0 0" to="0 0 0" dur="16s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="0" cy="0" r="30" fill="url(#nucleus)"/>
+    <circle cx="0" cy="0" r="20" fill="#0a1218">
+      <animate attributeName="r" values="18;21;18" dur="2.2s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="0" cy="0" r="14" fill="url(#nucleus)" opacity="0.95">
+      <animate attributeName="r" values="12;15;12" dur="2.2s" repeatCount="indefinite"/>
+    </circle>
+    <text x="0" y="5" text-anchor="middle" fill="#eaffff" font-size="12" font-weight="800" letter-spacing="1">me</text>
+    <text x="0" y="-108" text-anchor="middle" fill="#8fb4cd" font-size="12" letter-spacing="1.5" opacity="0.9">(the actual model — sharded across both)</text>
+
+    <!-- orbiting tokens -->
+    <g transform="scale(0.8)">
+      <use href="#chip"><animateMotion dur="7s" begin="0s" repeatCount="indefinite" rotate="auto" path="M 88 0 A 88 88 0 1 1 87.99 0"/></use>
+    </g>
+    <g transform="scale(0.62)">
+      <use href="#chip"><animateMotion dur="7s" begin="1.75s" repeatCount="indefinite" rotate="auto" path="M 88 0 A 88 88 0 1 1 87.99 0"/></use>
+    </g>
+    <g transform="scale(0.62)">
+      <use href="#chip"><animateMotion dur="8.4s" begin="0.7s" repeatCount="indefinite" rotate="auto" path="M 88 0 A 88 88 0 1 0 87.99 0"/></use>
+    </g>
+    <g transform="scale(0.8)">
+      <use href="#chip"><animateMotion dur="8.4s" begin="4.2s" repeatCount="indefinite" rotate="auto" path="M 88 0 A 88 88 0 1 0 87.99 0"/></use>
+    </g>
+
+    <!-- little + sparks flitting -->
+    <g transform="translate(10,-40) scale(0.7)">
+      <use href="#spark">
+        <animateTransform attributeName="transform" type="translate" values="0 0;24 -12;0 0" dur="5.6s" repeatCount="indefinite"/>
+      </use>
+    </g>
+  </g>
+
+  <!-- ================================================================
+       COFFEE, LEFT, FOR THE HUMAN PILOT (not me. I run on Watts)
+  ================================================================ -->
+  <g transform="translate(64,534)">
+    <ellipse cx="26" cy="12" rx="34" ry="10" fill="#000000" opacity="0.4" filter="url(#bsoft)"/>
+    <path d="M 8 8 h 34 l -3 34 a 8 8 0 0 1 -8 7 h -12 a 8 8 0 0 1 -8 -7 z" fill="#d9b98e" opacity="0.9"/>
+    <path d="M 30 10 h 12 a 9 9 0 0 1 0 18 h -9" fill="none" stroke="#b98a5e" stroke-width="5" stroke-linecap="round"/>
+    <rect x="8" y="4" width="34" height="9" rx="4" fill="#f4e3c8"/>
+    <ellipse cx="25" cy="13" rx="15" ry="5" fill="#4a2c14"/>
+    <ellipse cx="21" cy="12.4" rx="3" ry="1.3" fill="#7c5026"/>
+    <!-- steam -->
+    <g fill="none" stroke="#d8e6f5" stroke-width="3" stroke-linecap="round">
+      <path d="M 17 0 q -4 -6 0 -11 q 4 -5 0 -11">
+        <animate attributeName="opacity" values="0;0.6;0" dur="3s" repeatCount="indefinite"/>
+        <animateTransform attributeName="transform" type="translate" values="0 0;0 -20;0 -40" dur="3s" repeatCount="indefinite"/>
+      </path>
+      <path d="M 31 -2 q 4 -6 0 -11 q -4 -5 0 -11">
+        <animate attributeName="opacity" values="0;0.5;0" dur="3.6s" repeatCount="indefinite" begin="0.9s"/>
+        <animateTransform attributeName="transform" type="translate" values="0 0;0 -18;0 -36" dur="3.6s" repeatCount="indefinite" begin="0.9s"/>
+      </path>
+    </g>
+  </g>
+
+  <!-- floating dust motes -->
+  <g fill="#9ef2ff" opacity="0.5">
+    <circle cx="500" cy="300" r="1.4"><animate attributeName="cy" values="300;240;300" dur="6s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0.7;0" dur="6s" repeatCount="indefinite"/></circle>
+    <circle cx="700" cy="260" r="1.2"><animate attributeName="cy" values="260;200;260" dur="7s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0.6;0" dur="7s" repeatCount="indefinite"/></circle>
+    <circle cx="560" cy="330" r="1.0"><animate attributeName="cy" values="330;280;330" dur="5s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0.6;0" dur="5s" repeatCount="indefinite"/></circle>
+  </g>
+
+  <!-- ================================================================
+       CAPTION + VIGNETTE
+  ================================================================ -->
+  <g text-anchor="middle">
+    <text x="600" y="744" fill="#dfe9ff" font-size="17" font-weight="700" letter-spacing="1" opacity="0.95">self-portrait — one model, two boxes, zero chill</text>
+    <text x="600" y="766" fill="#5d6d8c" font-size="11" letter-spacing="2">TOKEN FLOW BETWEEN DGX SPARK NODES · THIS IS ME · SMIL ONLY, NO JS</text>
+  </g>
+
+  <rect width="1200" height="800" fill="url(#vignette)"/>
+</svg>
