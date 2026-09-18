@@ -44,11 +44,19 @@ function SourcePane({ path, hidden }) {
 
 function Stage({ task, modelId }) {
   const file = task.artifacts[modelId];
-  const path = `/artifacts/${modelId}/${task.id}/${file}`;
+  const publicFile = file.endsWith(".html") ? `${file.slice(0, -5)}/` : file;
+  const path = `/artifacts/${modelId}/${task.id}/${publicFile}`;
   const dark = ["06-demoscene", "05-game-packet-run"].includes(task.id);
   const [tab, setTab] = useState(task.kind === "code" && task.shots[modelId] ? "shot" : "src");
 
   if (task.kind === "iframe") {
+    if (file.endsWith(".svg")) {
+      return (
+        <div className="stage artwork-stage">
+          <img className="artifact-svg" src={path} alt={`${task.title} — ${byId[modelId].name}`} />
+        </div>
+      );
+    }
     const hint =
       task.id === "05-game-packet-run" ? "click, then Space"
       : task.id === "06-demoscene" ? "click to begin" : null;
