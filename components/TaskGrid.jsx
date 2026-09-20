@@ -47,11 +47,12 @@ export default function TaskGrid() {
             const winnerId = winnerOf(task);
             const winner = MODELS.find((model) => model.id === winnerId);
             const visual = task.shots[ORDER[0]];
+            const cardShot = task.shots[winnerId] || ORDER.map((id) => task.shots[id]).find(Boolean);
             return (
               <Reveal key={task.id} delay={Math.min((index % 3) * 0.04, 0.12)}>
                 <Link className="task-card" href={`/task/${task.id}/`}>
                   <div className="task-media">
-                    {visual ? <img src={`/${task.shots[winnerId || ORDER[0]]}`} alt={`${task.title} benchmark artifact`} loading="lazy" /> : <div className="code-preview"><span>CPP</span><b>&lt;/&gt;</b></div>}
+                    {visual ? <img src={`/${cardShot}`} alt={`${task.title} benchmark artifact`} loading="lazy" /> : <div className="code-preview"><span>CPP</span><b>&lt;/&gt;</b></div>}
                     <span className="task-number">{task.id.slice(0, 2)}</span>
                     <span className="rating-state complete">{REVIEWER.name} scored</span>
                   </div>

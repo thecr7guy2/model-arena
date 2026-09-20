@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { MODELS, TASKS, REVIEWER } from "@/lib/data";
+import { MODELS, TASKS, REVIEWER, RUBRIC } from "@/lib/data";
 import Versus from "@/components/Versus";
 import Reveal from "@/components/Reveal";
 
@@ -33,7 +33,7 @@ export default function Home() {
             <p className="eyebrow">AXITE SECURITY TOOLS / OPEN-EVIDENCE MODEL BENCHMARK</p>
             <h1>Model<br />Showdown<span className="period">.</span></h1>
             <div className="hero-bottom">
-              <p className="lede">Every model faces the same 12 frozen prompts with no retries or cleanup. Inspect the original work, see {REVIEWER.name}&apos;s scores, and track how each new model changes the field.</p>
+              <p className="lede">Every model faces the same 12 frozen prompts with no retries or cleanup. Inspect the original work, see scores from {REVIEWER.name}, and track how each new model changes the field.</p>
               <div className="hero-actions">
                 <Link className="button button-dark" href="/tasks/">Explore the tasks <span aria-hidden>→</span></Link>
                 <Link className="text-link" href="#result">See the result ↓</Link>
@@ -52,8 +52,13 @@ export default function Home() {
             <div className="protocol-steps">
               <article><b>01</b><h3>We freeze the brief</h3><p>Twelve visual, frontend, and systems tasks stay identical across every run.</p></article>
               <article><b>02</b><h3>Models get one attempt</h3><p>No human cleanup, retries, or selective reruns. The generated artifact is the evidence.</p></article>
-              <article><b>03</b><h3>One judge scores the work</h3><p>{REVIEWER.name} scores each artifact. Like any LLM judge, it may introduce bias, so every artifact and the evidence behind each verdict are published for inspection.</p></article>
+              <article><b>03</b><h3>One disclosed judge scores the work</h3><p>{REVIEWER.name} renders, runs and interacts with each artifact. Every verdict publishes its supporting evidence.</p></article>
             </div>
+            <aside className="judge-disclosure" aria-label="Evaluation judge and rubric">
+              <div className="judge-id"><span>Evaluation judge</span><strong>{REVIEWER.model}</strong><p>{REVIEWER.effort} · {REVIEWER.date}</p></div>
+              <div><span>Visual tasks</span><p>{RUBRIC.visual.map(([label, weight]) => `${label} ${weight}%`).join(" · ")}</p></div>
+              <div><span>Systems tasks</span><p>{RUBRIC.systems.map(([label, weight]) => `${label} ${weight}%`).join(" · ")}</p></div>
+            </aside>
             <div className="roster">
               <div className="roster-label">Models in this benchmark <span>{MODELS.length} completed runs</span></div>
               <div className="roster-grid">
@@ -62,7 +67,7 @@ export default function Home() {
                     <div><span>Model {String(index + 1).padStart(2, "0")}</span><small>Run complete</small></div>
                     <h3>{model.name}</h3>
                     <p>{TASKS.length} fixed tasks. One attempt per task.</p>
-                    <time>{model.ranOn.split(" · ")[0]}</time>
+                    <time>{model.hardware} · {model.ranOn.split(" · ")[0]}</time>
                   </article>
                 ))}
                 <article className="roster-next">
@@ -80,16 +85,17 @@ export default function Home() {
         <div className="wrap">
           <Reveal>
             <div className="section-label"><span>01</span> The current result <b>{REVIEWER.name} average</b></div>
-            <div className="scoreboard">
-              {MODELS.map((model, index) => (
-                <article className="score-side" key={model.id} style={{ "--ac": model.accent, "--score-ac": model.chart }}>
-                  <div className="model-index">MODEL {String(index + 1).padStart(2, "0")}</div>
-                  <h2>{model.name}</h2>
-                  <div className="giant-score"><strong>{averages[model.id].toFixed(1)}</strong><small>out of 10</small></div>
-                  <div className="model-facts"><span>{wins[model.id]} wins</span><span>{model.totals.split(" · ")[0]}</span></div>
+            <div className="leaderboard">
+              {ranking.map((model, index) => (
+                <article className="leader-row" key={model.id} style={{ "--ac": model.accent, "--score-ac": model.chart }}>
+                  <span className="leader-rank">{String(index + 1).padStart(2, "0")}</span>
+                  <div className="leader-name"><span className="hardware-chip">{model.hardware}</span><h2>{model.name}</h2><p>{model.style}</p></div>
+                  <div className="leader-facts"><span>{wins[model.id]} task wins</span><span>{model.totals.split(" · ")[0]}</span></div>
+                  <div className="leader-score"><strong>{averages[model.id].toFixed(1)}</strong><small>/ 10</small></div>
                 </article>
               ))}
             </div>
+            <p className="hardware-caveat">Hardware disclosure: GLM 5.3 Flash and DeepSeek V4.1 Flash ran on 4× DGX Spark. The other runs used 2× DGX Spark. Quality scores compare artifacts; raw speed figures describe the complete deployment.</p>
             <p className="result-callout"><span>{leader.short} leads the current field</span>{ranking.length > 1 ? ` by ${lead.toFixed(1)} points` : ""}, but the aggregate hides the interesting failures.</p>
             <Link className="result-link" href="/tasks/">See all task scores <span aria-hidden>→</span></Link>
           </Reveal>
@@ -113,7 +119,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="home-cta"><div className="wrap"><p>Review all {TASKS.length} tasks with {REVIEWER.name}&apos;s scores and written verdicts.</p><Link className="button button-dark" href="/tasks/">Open the benchmark <span>→</span></Link></div></section>
+      <section className="home-cta"><div className="wrap"><p>Review all {TASKS.length} tasks with scores and written verdicts from {REVIEWER.name}.</p><Link className="button button-dark" href="/tasks/">Open the benchmark <span>→</span></Link></div></section>
     </main>
   );
 }

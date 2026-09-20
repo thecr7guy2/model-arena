@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 800 1000" width="800" height="1000">
+  <title>Flamingo Splicing Fiber at the Top of a Utility Pole in a Thunderstorm</title>
+  <desc>A flamingo in a hard hat splices a glowing fiber-optic cable atop a utility pole while lightning strikes and three hedgehogs watch from a picnic blanket below, one holding a tiny umbrella.</desc>
+
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0b0f22"/>
+      <stop offset="0.45" stop-color="#1c2547"/>
+      <stop offset="0.8" stop-color="#33405f"/>
+      <stop offset="1" stop-color="#4b5678"/>
+    </linearGradient>
+    <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#22301f"/>
+      <stop offset="1" stop-color="#0d160f"/>
+    </linearGradient>
+    <linearGradient id="wood" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#3a2413"/>
+      <stop offset="0.35" stop-color="#7a5230"/>
+      <stop offset="0.6" stop-color="#654125"/>
+      <stop offset="1" stop-color="#33200f"/>
+    </linearGradient>
+    <linearGradient id="flamingoBody" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffa6c5"/>
+      <stop offset="1" stop-color="#ef5c95"/>
+    </linearGradient>
+    <radialGradient id="glowCyan" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#c8fffb" stop-opacity="0.95"/>
+      <stop offset="0.35" stop-color="#3ce8ff" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#3ce8ff" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="lightningGlow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#fff8c0" stop-opacity="0.5"/>
+      <stop offset="1" stop-color="#fff8c0" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="vig" cx="0.5" cy="0.45" r="0.8">
+      <stop offset="0" stop-color="#05070f" stop-opacity="0"/>
+      <stop offset="0.62" stop-color="#05070f" stop-opacity="0"/>
+      <stop offset="1" stop-color="#05070f" stop-opacity="0.85"/>
+    </radialGradient>
+    <pattern id="checks" width="40" height="40" patternUnits="userSpaceOnUse">
+      <rect width="40" height="40" fill="#e8e2d4"/>
+      <rect width="20" height="20" fill="#c0392b"/>
+      <rect x="20" y="20" width="20" height="20" fill="#c0392b"/>
+    </pattern>
+    <pattern id="rain" width="70" height="90" patternUnits="userSpaceOnUse">
+      <line x1="12" y1="-10" x2="2" y2="30" stroke="#a9c2e8" stroke-width="1.4" opacity="0.55"/>
+      <line x1="46" y1="20" x2="36" y2="60" stroke="#a9c2e8" stroke-width="1.2" opacity="0.45"/>
+      <line x1="28" y1="55" x2="18" y2="95" stroke="#a9c2e8" stroke-width="1.3" opacity="0.5"/>
+    </pattern>
+    <pattern id="rain2" width="130" height="140" patternUnits="userSpaceOnUse">
+      <line x1="26" y1="-20" x2="6" y2="60" stroke="#c4d8f5" stroke-width="2" opacity="0.4"/>
+      <line x1="92" y1="40" x2="72" y2="120" stroke="#c4d8f5" stroke-width="2.4" opacity="0.35"/>
+      <line x1="54" y1="90" x2="34" y2="170" stroke="#c4d8f5" stroke-width="1.8" opacity="0.3"/>
+    </pattern>
+    <filter id="glow" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="4" result="b"/>
+      <feMerge>
+        <feMergeNode in="b"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="glowBig" x="-150%" y="-150%" width="400%" height="400%">
+      <feGaussianBlur stdDeviation="10" result="b"/>
+      <feMerge>
+        <feMergeNode in="b"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <g id="hh">
+      <ellipse cx="0" cy="30" rx="42" ry="6" fill="#000000" opacity="0.25"/>
+      <path d="M-38,8 L-32,-14 L-24,-2 L-18,-20 L-8,-4 L-2,-24 L6,-6 L12,-22 L20,-4 L26,-16 L34,4 Z" fill="#5c3a20"/>
+      <ellipse cx="-2" cy="6" rx="34" ry="22" fill="#7b4f2e"/>
+      <circle cx="18" cy="-4" r="5" fill="#c99a6f"/>
+      <circle cx="26" cy="8" r="15" fill="#e0b98f"/>
+      <ellipse cx="40" cy="12" rx="7" ry="6" fill="#d9ad83"/>
+      <circle cx="46" cy="11" r="3.4" fill="#241a12"/>
+      <circle cx="28" cy="4" r="2.6" fill="#1a120c"/>
+      <circle cx="28.8" cy="3.2" r="0.9" fill="#ffffff" opacity="0.8"/>
+      <ellipse cx="22" cy="26" rx="8" ry="4" fill="#5c3a20"/>
+      <ellipse cx="-18" cy="27" rx="8" ry="4" fill="#5c3a20"/>
+    </g>
+  </defs>
+
+  <!-- sky -->
+  <rect x="0" y="0" width="800" height="1000" fill="url(#sky)"/>
+
+  <!-- lightning -->
+  <circle cx="610" cy="240" r="250" fill="url(#lightningGlow)"/>
+  <polyline points="642,36 606,148 632,142 592,258 620,250 574,368" fill="none" stroke="#fff3a6" stroke-width="9" stroke-linejoin="round" stroke-linecap="round" opacity="0.5" filter="url(#glowBig)"/>
+  <polyline points="642,36 606,148 632,142 592,258 620,250 574,368" fill="none" stroke="#fffce0" stroke-width="3.2" stroke-linejoin="round" stroke-linecap="round"/>
+  <polyline points="620,250 662,296 646,306 688,352" fill="none" stroke="#fff3a6" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round" opacity="0.85" filter="url(#glow)"/>
+
+  <!-- clouds -->
+  <g fill="#0e1328" opacity="0.92">
+    <ellipse cx="110" cy="55" rx="190" ry="72"/>
+    <ellipse cx="370" cy="26" rx="205" ry="62"/>
+    <ellipse cx="655" cy="52" rx="225" ry="78"/>
+  </g>
+  <g fill="#1b2340" opacity="0.72">
+    <ellipse cx="215" cy="112" rx="245" ry="60"/>
+    <ellipse cx="605" cy="122" rx="265" ry="56"/>
+  </g>
+  <ellipse cx="600" cy="118" rx="185" ry="46" fill="#6a7397" opacity="0.18"/>
+
+  <!-- distant treeline -->
+  <path d="M0,858 Q120,818 260,853 Q400,880 560,844 Q700,813 800,854 L800,882 L0,882 Z" fill="#131d18" opacity="0.95"/>
+
+  <!-- ground -->
+  <rect x="0" y="864" width="800" height="136" fill="url(#ground)"/>
+
+  <!-- puddles -->
+  <ellipse cx="165" cy="936" rx="96" ry="15" fill="#39597a" opacity="0.55"/>
+  <ellipse cx="165" cy="936" rx="70" ry="9" fill="none" stroke="#9fc4e8" stroke-width="1.2" opacity="0.2"/>
+  <ellipse cx="150" cy="932" rx="34" ry="4" fill="none" stroke="#9fc4e8" stroke-width="1" opacity="0.16"/>
+  <ellipse cx="340" cy="973" rx="72" ry="12" fill="#39597a" opacity="0.5"/>
+  <ellipse cx="336" cy="971" rx="46" ry="6" fill="none" stroke="#9fc4e8" stroke-width="1.1" opacity="0.18"/>
+  <ellipse cx="252" cy="948" rx="18" ry="3" fill="#35e6ff" opacity="0.12"/>
+
+  <!-- grass tufts -->
+  <g stroke="#3f6b3f" stroke-width="2.4" fill="none" stroke-linecap="round">
+    <path d="M58,882 q4,-14 2,-22 M64,882 q6,-12 12,-18 M52,882 q-4,-10 -10,-14"/>
+    <path d="M148,878 q4,-13 2,-20 M154,878 q6,-11 12,-16 M142,878 q-4,-9 -10,-13"/>
+    <path d="M246,874 q4,-13 2,-20 M252,874 q6,-11 12,-16 M240,874 q-4,-9 -10,-13"/>
+    <path d="M330,880 q4,-12 2,-19 M336,880 q6,-10 12,-15 M324,880 q-4,-8 -10,-12"/>
+    <path d="M770,872 q4,-12 2,-19 M776,872 q6,-10 12,-15"/>
+  </g>
+
+  <!-- pole -->
+  <rect x="374" y="105" width="46" height="765" rx="7" fill="url(#wood)"/>
+  <g stroke="#2c1a0c" stroke-width="1.6" fill="none" opacity="0.4">
+    <path d="M384,120 C388,300 382,520 386,850"/>
+    <path d="M400,130 C396,340 402,560 398,850"/>
+    <path d="M412,150 C416,380 410,600 414,850"/>
+  </g>
+  <ellipse cx="397" cy="106" rx="23" ry="7" fill="#8a6038"/>
+  <ellipse cx="397" cy="106" rx="13" ry="4" fill="#5a3a20"/>
+
+  <!-- crossarm and braces -->
+  <line x1="397" y1="252" x2="282" y2="188" stroke="#4a301c" stroke-width="7" stroke-linecap="round"/>
+  <line x1="397" y1="252" x2="512" y2="188" stroke="#4a301c" stroke-width="7" stroke-linecap="round"/>
+  <rect x="258" y="168" width="284" height="18" rx="8" fill="#5a3a20" stroke="#3a2413" stroke-width="2"/>
+  <g fill="#5d7f9f">
+    <rect x="277" y="150" width="10" height="18" rx="3"/>
+    <ellipse cx="282" cy="150" rx="8" ry="4.5" fill="#8ab3d1"/>
+    <rect x="506" y="150" width="10" height="18" rx="3"/>
+    <ellipse cx="511" cy="150" rx="8" ry="4.5" fill="#8ab3d1"/>
+  </g>
+
+  <!-- power wires -->
+  <g fill="none" stroke="#0b0e18" stroke-width="3">
+    <path d="M0,132 Q140,178 282,155"/>
+    <path d="M282,155 Q396,182 511,155"/>
+    <path d="M511,155 Q660,182 800,134"/>
+    <path d="M0,208 Q150,240 300,214"/>
+    <path d="M300,214 Q420,244 540,214"/>
+    <path d="M540,214 Q680,240 800,206"/>
+  </g>
+
+  <!-- drop fiber down the pole -->
+  <path d="M402,186 C410,380 394,600 400,864" fill="none" stroke="#26323f" stroke-width="5"/>
+  <path d="M402,186 C410,380 394,600 400,864" fill="none" stroke="#35e6ff" stroke-width="1.1" opacity="0.28"/>
+  <g fill="#1b2733">
+    <rect x="396" y="300" width="12" height="8" rx="2"/>
+    <rect x="396" y="500" width="12" height="8" rx="2"/>
+    <rect x="396" y="700" width="12" height="8" rx="2"/>
+  </g>
+
+  <!-- splicer device clipped on cable -->
+  <rect x="326" y="149" width="30" height="16" rx="5" fill="#1b2c3d" stroke="#4fd4ea" stroke-width="1.4"/>
+  <circle cx="335" cy="157" r="2.2" fill="#7cff9e"/>
+  <circle cx="343" cy="157" r="2.2" fill="#ffd166"/>
+
+  <!-- fiber-optic cable -->
+  <g fill="none" stroke-linecap="round">
+    <path d="M0,236 C40,198 90,168 152,162 L240,157" stroke="#35e6ff" stroke-width="9" opacity="0.3" filter="url(#glow)"/>
+    <path d="M262,155 L340,160 L520,168 C600,178 700,240 800,296" stroke="#35e6ff" stroke-width="9" opacity="0.3" filter="url(#glow)"/>
+    <path d="M0,236 C40,198 90,168 152,162 L240,157" stroke="#6ff0ff" stroke-width="4.5" opacity="0.6" filter="url(#glow)"/>
+    <path d="M262,155 L340,160 L520,168 C600,178 700,240 800,296" stroke="#6ff0ff" stroke-width="4.5" opacity="0.6" filter="url(#glow)"/>
+    <path d="M0,236 C40,198 90,168 152,162 L240,157" stroke="#e8fffd" stroke-width="2.2"/>
+    <path d="M262,155 L340,160 L520,168 C600,178 700,240 800,296" stroke="#e8fffd" stroke-width="2.2"/>
+  </g>
+
+  <!-- splice point -->
+  <circle cx="251" cy="156" r="24" fill="url(#glowCyan)"/>
+  <rect x="238" y="150" width="26" height="12" rx="5" fill="#1e3247" stroke="#63e7ff" stroke-width="1.5"/>
+  <circle cx="240" cy="157" r="5" fill="#d9fffb" filter="url(#glow)"/>
+  <circle cx="262" cy="155" r="5" fill="#d9fffb" filter="url(#glow)"/>
+  <circle cx="251" cy="156" r="3.4" fill="#ffffff" filter="url(#glow)"/>
+  <g stroke="#ffe98a" stroke-width="2" stroke-linecap="round" filter="url(#glow)">
+    <line x1="251" y1="150" x2="245" y2="130"/>
+    <line x1="251" y1="150" x2="268" y2="132"/>
+    <line x1="247" y1="156" x2="230" y2="141"/>
+    <line x1="257" y1="156" x2="272" y2="146"/>
+  </g>
+
+  <!-- flamingo -->
+  <g>
+    <!-- legs -->
+    <path d="M296,138 L288,168" stroke="#f9a8c6" stroke-width="5" stroke-linecap="round" fill="none"/>
+    <path d="M313,136 L318,168" stroke="#f9a8c6" stroke-width="5" stroke-linecap="round" fill="none"/>
+    <path d="M282,168 q7,-5 15,-1 M312,168 q7,-5 15,-1" stroke="#f9a8c6" stroke-width="3" stroke-linecap="round" fill="none"/>
+
+    <!-- tail -->
+    <path d="M348,94 C376,94 392,104 398,118 C378,127 358,123 346,112 Z" fill="#ef5a92"/>
+    <path d="M356,99 C376,100 388,108 392,116 M352,106 C370,108 380,113 386,118" stroke="#d94a80" stroke-width="1.6" fill="none" opacity="0.7"/>
+
+    <!-- body -->
+    <ellipse cx="302" cy="104" rx="54" ry="34" transform="rotate(-8 302 104)" fill="url(#flamingoBody)"/>
+
+    <!-- wing -->
+    <path d="M288,84 C320,72 352,84 356,102 C344,122 316,126 296,116 C286,110 282,94 288,84 Z" fill="#f47fa8" stroke="#e0558c" stroke-width="2"/>
+    <g stroke="#e0558c" stroke-width="1.8" fill="none" opacity="0.75">
+      <path d="M296,86 C312,92 330,96 348,98"/>
+      <path d="M292,96 C310,102 328,106 346,108"/>
+      <path d="M294,106 C312,112 328,115 342,115"/>
+    </g>
+
+    <!-- neck -->
+    <path d="M274,92 C248,80 226,72 230,46" stroke="#fb8db4" stroke-width="16" fill="none" stroke-linecap="round"/>
+    <path d="M272,88 C250,78 232,70 234,50" stroke="#ffa9c9" stroke-width="6" fill="none" stroke-linecap="round" opacity="0.6"/>
+
+    <!-- head -->
+    <circle cx="230" cy="42" r="15" fill="#fb8db4"/>
+    <circle cx="226" cy="42" r="2.8" fill="#141419"/>
+    <circle cx="227" cy="41" r="0.9" fill="#ffffff" opacity="0.9"/>
+
+    <!-- beak -->
+    <path d="M222,48 C216,84 230,120 243,148 L252,143 C240,114 228,82 236,46 Z" fill="#fdf3e3" stroke="#e6d4bd" stroke-width="1"/>
+    <circle cx="247" cy="146" r="5" fill="#20202a"/>
+
+    <!-- hard hat -->
+    <path d="M214,38 C214,16 246,16 246,38 L248,44 L212,44 Z" fill="#ffcc29" stroke="#d99e00" stroke-width="1.5"/>
+    <path d="M200,44 Q230,36 260,44 Q230,52 200,44 Z" fill="#ffd84d" stroke="#d99e00" stroke-width="1.5"/>
+    <path d="M222,18 C224,26 224,32 223,38 M238,18 C236,26 236,32 237,38" stroke="#e0a800" stroke-width="1.5" fill="none" opacity="0.85"/>
+    <circle cx="230" cy="22" r="4.2" fill="#fff9d6" filter="url(#glow)"/>
+  </g>
+
+  <!-- picnic blanket -->
+  <path d="M462,878 L742,878 L794,982 L420,982 Z" fill="url(#checks)" stroke="#8e2b20" stroke-width="3"/>
+  <path d="M462,878 L742,878 L746,888 L456,888 Z" fill="#000000" opacity="0.12"/>
+
+  <!-- hedgehogs -->
+  <use xlink:href="#hh" href="#hh" transform="translate(536,914) scale(0.9)"/>
+  <use xlink:href="#hh" href="#hh" transform="translate(710,908) scale(0.82)"/>
+
+  <!-- middle hedgehog, facing the pole, holding the umbrella -->
+  <use xlink:href="#hh" href="#hh" transform="translate(622,930) scale(-1.05,1.05)"/>
+  <path d="M576,936 L652,760" stroke="#6b4a2f" stroke-width="5" stroke-linecap="round"/>
+  <path d="M576,938 q-3,15 -15,12.5" stroke="#5c3a20" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <circle cx="651" cy="758" r="3.5" fill="#5c3a20"/>
+  <path d="M588,758 Q650,666 712,758 Q699,768 686,757 Q673,769 660,758 Q647,770 634,758 Q621,770 608,757 Q597,767 588,758 Z" fill="#d7263d" stroke="#7f1020" stroke-width="2"/>
+  <g stroke="#7f1020" stroke-width="1.4" fill="none" opacity="0.65">
+    <path d="M650,712 L686,757"/>
+    <path d="M650,712 L660,758"/>
+    <path d="M650,712 L634,758"/>
+    <path d="M650,712 L608,757"/>
+  </g>
+  <ellipse cx="578" cy="934" rx="7" ry="5.5" fill="#e0b98f" stroke="#c99a6f" stroke-width="1"/>
+
+  <!-- vignette -->
+  <rect x="0" y="0" width="800" height="1000" fill="url(#vig)" opacity="0.62"/>
+
+  <!-- rain -->
+  <rect x="0" y="0" width="800" height="1000" fill="url(#rain)" opacity="0.5"/>
+  <rect x="0" y="0" width="800" height="1000" fill="url(#rain2)" opacity="0.3"/>
+</svg>

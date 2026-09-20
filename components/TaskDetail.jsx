@@ -101,7 +101,7 @@ function Panel({ task, modelId, index }) {
     >
       <div className="panel-head">
         <div className="who"><span className="model-code">0{index + 1}</span><span className="name">{m.name}</span></div>
-        <span className="era-mini">{m.eraLabel}</span>
+        <span className="era-mini">{m.hardware} · {m.eraLabel}</span>
       </div>
       <Stage task={task} modelId={modelId} />
       <div className="meta-row">
@@ -125,6 +125,7 @@ function Panel({ task, modelId, index }) {
 }
 
 export default function TaskDetail({ taskId }) {
+  const [activeModel, setActiveModel] = useState("all");
   const t = TASKS.find((x) => x.id === taskId);
   const idx = TASKS.indexOf(t);
   const prev = idx > 0 ? TASKS[idx - 1] : null;
@@ -152,11 +153,26 @@ export default function TaskDetail({ taskId }) {
         </details>
         <div className="case-flow" aria-label="How to read this task">
           <span><b>01</b> Inspect every original output</span>
-          <span><b>02</b> Compare {REVIEWER.name}&apos;s scores</span>
+          <span><b>02</b> Compare scores from {REVIEWER.name}</span>
           <span><b>03</b> Read the verdict and evidence</span>
         </div>
+        <div className="model-switcher" role="group" aria-label="Choose models to compare">
+          <button className={activeModel === "all" ? "on" : ""} onClick={() => setActiveModel("all")}>All five</button>
+          {ORDER.map((mid) => (
+            <button
+              key={mid}
+              className={activeModel === mid ? "on" : ""}
+              onClick={() => setActiveModel(mid)}
+              style={{ "--ac": byId[mid].accent }}
+            >
+              <i />{byId[mid].short}<small>{t.scores[mid].toFixed(1)} · {byId[mid].hardware}</small>
+            </button>
+          ))}
+        </div>
         <div className="panels">
-          {ORDER.map((mid, i) => <Panel key={mid} task={t} modelId={mid} index={i} />)}
+          {ORDER.filter((mid) => activeModel === "all" || activeModel === mid).map((mid) => (
+            <Panel key={mid} task={t} modelId={mid} index={ORDER.indexOf(mid)} />
+          ))}
         </div>
       </div>
     </main>
