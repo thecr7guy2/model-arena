@@ -78,7 +78,7 @@ export default function StatsSection() {
     <section id="telemetry">
       <div className="wrap">
         <div className="telemetry-key" style={{ "--model-count": MODELS.length }}>
-          {MODELS.map((model, index) => <div key={model.id} style={{ "--ac": model.accent }}><span>0{index + 1}</span><i /><b>{model.name}</b><small>{model.ranOn}</small></div>)}
+          {MODELS.map((model, index) => <div key={model.id} style={{ "--ac": model.accent }}><span>0{index + 1}</span><i /><b>{model.name}</b><small>{model.hardware} · {model.ranOn}</small></div>)}
         </div>
         <div className="stat-tiles">
           {STATS.rows.map((row, i) => <StatTile key={row.key} row={row} i={i} />)}

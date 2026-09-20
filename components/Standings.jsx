@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { MODELS, TASKS, REVIEWER } from "@/lib/data";
+import { MODELS, TASKS, REVIEWER, RUBRIC } from "@/lib/data";
 import Reveal from "./Reveal";
 
 export default function Standings() {
@@ -23,17 +23,23 @@ export default function Standings() {
       <div className="wrap">
         <Reveal>
           <div className="scorecard-summary">
-            <div><span>Reviewer</span><strong>{REVIEWER.name}</strong><p>{REVIEWER.role}</p></div>
+            <div><span>Reviewer</span><strong>{REVIEWER.model}</strong><p>{REVIEWER.effort} · {REVIEWER.date}</p></div>
             <div><span>Current leader</span><strong>{leader.model.short}</strong><p>{leader.average.toFixed(1)} average score</p></div>
-            <div><span>Review coverage</span><strong>{totalScores}<small> / {totalScores}</small></strong><p>artifacts scored</p></div>
+            <div><span>Review coverage</span><strong>{totalScores}<small> / {totalScores}</small></strong><p>rendered or executed artifacts scored</p></div>
           </div>
+        </Reveal>
+
+        <Reveal className="rubric-strip">
+          <div><span>Visual rubric</span><p>{RUBRIC.visual.map(([label, weight]) => `${label} ${weight}%`).join(" · ")}</p></div>
+          <div><span>Systems rubric</span><p>{RUBRIC.systems.map(([label, weight]) => `${label} ${weight}%`).join(" · ")}</p></div>
+          <p className="rubric-note">Scores measure delivered quality. Hardware-dependent telemetry is disclosed separately and is not folded into the quality average.</p>
         </Reveal>
 
         <div className="standing-table">
           <div className="standing-row standing-header"><span>Contender</span><span>{REVIEWER.name} average</span><span>Task wins</span><span>Coverage</span></div>
           {rows.map(({ model, average, wins: taskWins }) => (
             <Reveal className="standing-row" key={model.id} style={{ "--ac": model.accent }}>
-              <div className="standing-model"><i /><div><b>{model.name}</b><small>{model.style}</small></div></div>
+              <div className="standing-model"><i /><div><b>{model.name}</b><small>{model.hardware} · {model.style}</small></div></div>
               <strong>{average.toFixed(1)}</strong>
               <strong>{taskWins}</strong>
               <div className="coverage"><span>{TASKS.length} / {TASKS.length}</span><i><b style={{ width: "100%" }} /></i></div>
