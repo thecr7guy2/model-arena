@@ -11,6 +11,7 @@ A living large language model benchmark from [aXite Security Tools](https://www.
 - 12 fixed prompts spanning visual design, frontend development, systems programming, networking, and code review
 - 60 original artifacts from five locally served model runs
 - Per-task scores, verdicts, and supporting evidence from GPT-5.6 Sol at high evaluation effort
+- A future-proof ranking view with model search, three-model focused comparison, and one-at-a-time artifact inspection
 - Request timing, token usage, tool-call, and throughput telemetry from the benchmark runs
 - A static Next.js application that can be deployed directly to Vercel
 

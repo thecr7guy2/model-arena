@@ -3,7 +3,7 @@ import { REVIEWER } from "@/lib/data";
 
 export const metadata = {
   title: "Results | Model Showdown by aXite",
-  description: "GPT-5.6 Sol high-effort scores across all five models and every benchmark task.",
+  description: "GPT-5.6 Sol high-effort scores across the growing model field and every benchmark task.",
 };
 
 export default function StandingsPage() {

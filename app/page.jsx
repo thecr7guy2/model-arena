@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { MODELS, TASKS, REVIEWER, RUBRIC } from "@/lib/data";
+import { MODELS, TASKS, REVIEWER } from "@/lib/data";
 import Versus from "@/components/Versus";
 import Reveal from "@/components/Reveal";
 
@@ -21,83 +21,57 @@ export default function Home() {
   });
   const ranking = [...MODELS].sort((a, b) => averages[b.id] - averages[a.id]);
   const leader = ranking[0];
-  const lead = ranking.length > 1 ? averages[ranking[0].id] - averages[ranking[1].id] : 0;
   const first = MODELS[0];
   const latest = MODELS[MODELS.length - 1];
 
   return (
-    <main className="home">
-      <section className="hero">
-        <div className="wrap hero-copy">
-          <Reveal>
-            <p className="eyebrow">AXITE SECURITY TOOLS / OPEN-EVIDENCE MODEL BENCHMARK</p>
-            <h1>Model<br />Showdown<span className="period">.</span></h1>
-            <div className="hero-bottom">
-              <p className="lede">Every model faces the same 12 frozen prompts with no retries or cleanup. Inspect the original work, see scores from {REVIEWER.name}, and track how each new model changes the field.</p>
-              <div className="hero-actions">
-                <Link className="button button-dark" href="/tasks/">Explore the tasks <span aria-hidden>→</span></Link>
-                <Link className="text-link" href="#result">See the result ↓</Link>
-              </div>
-            </div>
-          </Reveal>
-        </div>
-        <div className="hero-rule" aria-hidden><span>{TASKS.length} FROZEN TASKS</span><span>{TASKS.length * MODELS.length} LIVE ARTIFACTS</span><span>{MODELS.length} CURRENT MODELS</span></div>
-      </section>
-
-      <section className="protocol-section" id="method">
+    <main className="home home-modern">
+      <section className="hero hero-modern">
         <div className="wrap">
           <Reveal>
-            <div className="section-label"><span>00</span> How the benchmark works <b>A growing field, one fixed test</b></div>
-            <div className="protocol-intro"><h2>Same test.<br />Every time.</h2><p>Model Showdown is a living benchmark, not a disposable head-to-head. The prompt suite stays frozen. When a new model arrives on the cluster, it runs the same tasks and joins the existing record.</p></div>
-            <div className="protocol-steps">
-              <article><b>01</b><h3>We freeze the brief</h3><p>Twelve visual, frontend, and systems tasks stay identical across every run.</p></article>
-              <article><b>02</b><h3>Models get one attempt</h3><p>No human cleanup, retries, or selective reruns. The generated artifact is the evidence.</p></article>
-              <article><b>03</b><h3>One disclosed judge scores the work</h3><p>{REVIEWER.name} renders, runs and interacts with each artifact. Every verdict publishes its supporting evidence.</p></article>
-            </div>
-            <aside className="judge-disclosure" aria-label="Evaluation judge and rubric">
-              <div className="judge-id"><span>Evaluation judge</span><strong>{REVIEWER.model}</strong><p>{REVIEWER.effort} · {REVIEWER.date}</p></div>
-              <div><span>Visual tasks</span><p>{RUBRIC.visual.map(([label, weight]) => `${label} ${weight}%`).join(" · ")}</p></div>
-              <div><span>Systems tasks</span><p>{RUBRIC.systems.map(([label, weight]) => `${label} ${weight}%`).join(" · ")}</p></div>
-            </aside>
-            <div className="roster">
-              <div className="roster-label">Models in this benchmark <span>{MODELS.length} completed runs</span></div>
-              <div className="roster-grid">
-                {MODELS.map((model, index) => (
-                  <article className="roster-model" key={model.id} style={{ "--ac": model.accent }}>
-                    <div><span>Model {String(index + 1).padStart(2, "0")}</span><small>Run complete</small></div>
-                    <h3>{model.name}</h3>
-                    <p>{TASKS.length} fixed tasks. One attempt per task.</p>
-                    <time>{model.hardware} · {model.ranOn.split(" · ")[0]}</time>
-                  </article>
-                ))}
-                <article className="roster-next">
-                  <div><span>Next model</span><small>Future entry</small></div>
-                  <h3>The field stays open.</h3>
-                  <p>Each new model runs the same tasks and joins the same scorecard.</p>
-                </article>
+            <div className="hero-modern-grid">
+              <div className="hero-message">
+                <p className="eyebrow">Independent model benchmark</p>
+                <h1>One test.<br />Every model.</h1>
+                <p className="lede">Twelve fixed tasks. One uninterrupted attempt. Every artifact preserved so you can see the result, not just the score.</p>
+                <div className="hero-actions">
+                  <Link className="button button-dark" href="/standings/">See the results <span aria-hidden>→</span></Link>
+                  <Link className="text-link" href="/tasks/">Browse all tasks</Link>
+                </div>
               </div>
+              <aside className="leader-feature" aria-label="Current benchmark leader">
+                <span>Current leader</span>
+                <strong>{averages[leader.id].toFixed(1)}</strong>
+                <h2>{leader.name}</h2>
+                <p>{leader.hardware} · {wins[leader.id]} task wins</p>
+              </aside>
             </div>
+          </Reveal>
+          <Reveal className="home-ranking">
+            <div className="home-ranking-head"><span>Current field</span><span>{MODELS.length} models · {MODELS.length * TASKS.length} artifacts</span></div>
+            {ranking.slice(0, 5).map((model, index) => (
+              <Link className="home-rank-row" href="/standings/" key={model.id}>
+                <span>{String(index + 1).padStart(2, "0")}</span>
+                <div><b>{model.name}</b><small>{model.hardware}</small></div>
+                <strong>{averages[model.id].toFixed(1)}</strong>
+                <i aria-hidden>→</i>
+              </Link>
+            ))}
+            {MODELS.length > 5 && <Link className="quiet-link" href="/standings/">View all {MODELS.length} models →</Link>}
           </Reveal>
         </div>
       </section>
 
-      <section className="result-band" id="result">
+      <section className="method-modern" id="method">
         <div className="wrap">
           <Reveal>
-            <div className="section-label"><span>01</span> The current result <b>{REVIEWER.name} average</b></div>
-            <div className="leaderboard">
-              {ranking.map((model, index) => (
-                <article className="leader-row" key={model.id} style={{ "--ac": model.accent, "--score-ac": model.chart }}>
-                  <span className="leader-rank">{String(index + 1).padStart(2, "0")}</span>
-                  <div className="leader-name"><span className="hardware-chip">{model.hardware}</span><h2>{model.name}</h2><p>{model.style}</p></div>
-                  <div className="leader-facts"><span>{wins[model.id]} task wins</span><span>{model.totals.split(" · ")[0]}</span></div>
-                  <div className="leader-score"><strong>{averages[model.id].toFixed(1)}</strong><small>/ 10</small></div>
-                </article>
-              ))}
+            <p className="eyebrow">How it stays fair</p>
+            <div className="method-title"><h2>Simple rules.<br />Visible evidence.</h2><p>New models join the same benchmark instead of replacing the old comparison. Scores are useful; the original work is the proof.</p></div>
+            <div className="method-lines">
+              <article><span>01</span><h3>One frozen brief</h3><p>The same visual, frontend and systems tasks for every model.</p></article>
+              <article><span>02</span><h3>No cleanup</h3><p>One attempt per task, with the delivered artifact preserved as-is.</p></article>
+              <article><span>03</span><h3>One disclosed judge</h3><p>{REVIEWER.model} · {REVIEWER.effort.toLowerCase()}.</p></article>
             </div>
-            <p className="hardware-caveat">Hardware disclosure: GLM 5.3 Flash and DeepSeek V4.1 Flash ran on 4× DGX Spark. The other runs used 2× DGX Spark. Quality scores compare artifacts; raw speed figures describe the complete deployment.</p>
-            <p className="result-callout"><span>{leader.short} leads the current field</span>{ranking.length > 1 ? ` by ${lead.toFixed(1)} points` : ""}, but the aggregate hides the interesting failures.</p>
-            <Link className="result-link" href="/tasks/">See all task scores <span aria-hidden>→</span></Link>
           </Reveal>
         </div>
       </section>
@@ -105,8 +79,8 @@ export default function Home() {
       <section className="exhibit-section">
         <div className="wrap">
           <Reveal>
-            <div className="section-label"><span>02</span> Baseline versus newest <b>Drag to compare</b></div>
-            <div className="exhibit-title"><h2>A pelican on a bicycle.</h2><p>The benchmark classic exposes spatial reasoning in a single glance. Both birds ride — only one grew a pelican&apos;s beak.</p></div>
+            <p className="eyebrow">Look beyond the score</p>
+            <div className="exhibit-title"><h2>The same prompt.<br />Two very different answers.</h2><p>Drag across the benchmark&apos;s pelican task to compare the first run with the newest.</p></div>
             <Versus
               left={`/artifacts/${first.id}/01-pelican-svg/pelican.svg`}
               right={`/artifacts/${latest.id}/01-pelican-svg/pelican.svg`}
@@ -119,7 +93,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="home-cta"><div className="wrap"><p>Review all {TASKS.length} tasks with scores and written verdicts from {REVIEWER.name}.</p><Link className="button button-dark" href="/tasks/">Open the benchmark <span>→</span></Link></div></section>
+      <section className="home-cta"><div className="wrap"><div><p className="eyebrow">Open evidence</p><h2>See what each model actually made.</h2></div><Link className="button button-dark" href="/tasks/">Explore the benchmark <span>→</span></Link></div></section>
     </main>
   );
 }

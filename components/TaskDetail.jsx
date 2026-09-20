@@ -125,8 +125,9 @@ function Panel({ task, modelId, index }) {
 }
 
 export default function TaskDetail({ taskId }) {
-  const [activeModel, setActiveModel] = useState("all");
   const t = TASKS.find((x) => x.id === taskId);
+  const initialModel = [...ORDER].sort((a, b) => t.scores[b] - t.scores[a])[0];
+  const [activeModel, setActiveModel] = useState(initialModel);
   const idx = TASKS.indexOf(t);
   const prev = idx > 0 ? TASKS[idx - 1] : null;
   const next = idx < TASKS.length - 1 ? TASKS[idx + 1] : null;
@@ -152,27 +153,19 @@ export default function TaskDetail({ taskId }) {
           <pre>{t.prompt}</pre>
         </details>
         <div className="case-flow" aria-label="How to read this task">
-          <span><b>01</b> Inspect every original output</span>
-          <span><b>02</b> Compare scores from {REVIEWER.name}</span>
+          <span><b>01</b> Choose an original output</span>
+          <span><b>02</b> Switch models without page clutter</span>
           <span><b>03</b> Read the verdict and evidence</span>
         </div>
-        <div className="model-switcher" role="group" aria-label="Choose models to compare">
-          <button className={activeModel === "all" ? "on" : ""} onClick={() => setActiveModel("all")}>All five</button>
-          {ORDER.map((mid) => (
-            <button
-              key={mid}
-              className={activeModel === mid ? "on" : ""}
-              onClick={() => setActiveModel(mid)}
-              style={{ "--ac": byId[mid].accent }}
-            >
-              <i />{byId[mid].short}<small>{t.scores[mid].toFixed(1)} · {byId[mid].hardware}</small>
-            </button>
-          ))}
+        <div className="model-picker">
+          <label htmlFor="model-picker">Viewing model</label>
+          <select id="model-picker" value={activeModel} onChange={(event) => setActiveModel(event.target.value)}>
+            {ORDER.map((mid) => <option key={mid} value={mid}>{byId[mid].name} · {t.scores[mid].toFixed(1)} · {byId[mid].hardware}</option>)}
+          </select>
+          <span>{ORDER.indexOf(activeModel) + 1} of {ORDER.length}</span>
         </div>
         <div className="panels">
-          {ORDER.filter((mid) => activeModel === "all" || activeModel === mid).map((mid) => (
-            <Panel key={mid} task={t} modelId={mid} index={ORDER.indexOf(mid)} />
-          ))}
+          <Panel key={activeModel} task={t} modelId={activeModel} index={ORDER.indexOf(activeModel)} />
         </div>
       </div>
     </main>
